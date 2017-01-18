@@ -1,0 +1,56 @@
+msgid "Assign a privilege or group flag to multiple groups"
+msgstr "Ein Recht oder Gruppenmerkmal mehreren Gruppen zuweisen"
+
+msgid "Groups whose name starting with ..."
+msgstr "Gruppen, dessen Name mit ... beginnt"
+
+msgid "Groups whose name ending with ..."
+msgstr "Gruppen, dessen Name mit ... endet"
+
+msgid "Groups whose name contains ..."
+msgstr "Gruppen, dessen Name ... enthält"
+
+msgid "Groups whose name match with the following regular expression ..."
+msgstr "Gruppen, dessen Name auf den folgenden regulären Ausdruck passt:"
+
+msgid "Select target"
+msgstr "Ziel auswählen"
+
+msgid "Pattern should not be empty."
+msgstr "Muster sollte nicht leer sein."
+
+msgid "No matching groups found."
+msgstr "Keine passenden Gruppen gefunden."
+
+msgid "Advanced privilege assignment"
+msgstr "Erweiterte Rechte-Zuweisung"
+
+msgid "Enter a pattern..."
+msgstr "Muster eingeben..."
+
+msgid "Please select a target."
+msgstr "Bitte wählen sie ein Ziel."
+
+msgid "Added one group flag to one group."
+msgstr "Ein Gruppenmerkmal zu einer Gruppe hinzugefügt."
+
+msgid "Added %s group flags to one group."
+msgstr "%s Gruppenmerkmale zu einer Gruppe hinzugefügt."
+
+msgid "Added one group flag to %s groups."
+msgstr "Ein Gruppenmerkmal zu %s Gruppen hinzugefügt."
+
+msgid "Added %s group flags to %s groups."
+msgstr "%s Gruppenmerkmale zu %s Gruppen hinzugefügt."
+
+msgid "Added one privilege to one group."
+msgstr "Ein Recht zu einer Gruppe hinzugefügt."
+
+msgid "Added %s privileges to one group."
+msgstr "%s Rechte zu einer Gruppe hinzugefügt."
+
+msgid "Added one privilege to %s groups."
+msgstr "Ein Recht zu %s Gruppen hinzugefügt."
+
+msgid "Added %s privileges to %s groups."
+msgstr "%s Rechte zu %s Gruppen hinzugefügt."

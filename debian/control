@@ -1,0 +1,23 @@
+Source: stsbl-iserv-advanced-privilege
+Section: misc
+Priority: extra
+Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-advanced-privilege
+
+Package: stsbl-iserv-advanced-privilege
+Architecture: all
+Depends: stsbl-iserv3-maintenance
+Description: Erweiterte Rechte-Verwaltung für IServ
+ Enthält einen Rechteeditor für die IServ 3-Oberfläche, der es erlaubt nach anpassbaren Kriterien Rechte und Gruppenmerkmale zu mehreren Gruppen auf einmal hinzuzufügen.
+ .
+ https://it.stsbl.de/wp-content/uploads/2017/01/stsbl-iserv-advanced-privilege.png
+ .
+ Dabei können folgende Kriterien angewandet werden:
+ .
+ * Name der Gruppe enthält.
+ * Name der Gruppe beginnt mit.
+ * Name der Gruppe endet mit.
+ * Namen der Gruppe gegen eine regulären Ausdruck prüfen.
+Tag: suite::iserv:portal, role::plugin, status::recommended, status::highlighted

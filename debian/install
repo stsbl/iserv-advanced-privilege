@@ -1,0 +1,15 @@
+#bin/*		usr/bin
+#bundle/*	usr/share/iserv/src/IServ
+#*Bundle		usr/share/iserv/src/IServ
+#config/*	usr/share/iserv/iservcfg/config
+#db/*		usr/share/iserv/db
+#iconf/*		usr/share/iserv/iconf
+#iservchk/*	usr/share/iserv/iconf/etc/iserv/chk.d
+#lib/*		usr/lib/iserv
+#priv/*		usr/share/iserv/priv
+#roles/*		usr/share/iserv/roles
+#sbin/*		usr/sbin
+share/*		usr/share/iserv
+src/*		usr/share/iserv/src
+#appdata/*	srv/deploy/appdata
+#install/*	srv/deploy/install

@@ -1,0 +1,5 @@
+debian/stsbl-iserv-advanced-privilege/*
+debian/stsbl-iserv-advanced-privilege.debhelper.log
+debian/stsbl-iserv-advanced-privilege.substvars
+debian/files
+debian/debhelper-build-stamp
