@@ -25,39 +25,72 @@
 IServ.AdvancedPrivilege = {};
 
 IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
-    function hidePattern()
+    function hideAssignPattern()
     {
         $('#multiple-assign-form-group-pattern').hide();
         $('#multiple-assign-form-group-pattern').removeAttr('required');
     }
 
-    function showPattern()
+    function showAssignPattern()
     {
         $('#multiple-assign-form-group-pattern').show();
         $('#multiple-assign-form-group-pattern').attr('required', 'required');
     }
     
+    function hideRevokePattern()
+    {
+        $('#multiple-revoke-form-group-pattern').hide();
+        $('#multiple-revoke-form-group-pattern').removeAttr('required');
+    }
+
+    function showRevokePattern()
+    {
+        $('#multiple-revoke-form-group-pattern').show();
+        $('#multiple-revoke-form-group-pattern').attr('required', 'required');
+    }
+    
     function initialize()
     {
-        if ($('#form_target_0').is(':checked')) {
+        if ($('#assign_target_0').is(':checked')) {
             $('#multiple-assign-form-group-pattern').hide();
             $('#multiple-assign-form-group-pattern').removeAttr('required');
         }
         
-        $('#form_target_0').change(function () {
-            hidePattern()
+        if ($('#revoke_target_0').is(':checked')) {
+            $('#multiple-revoke-form-group-pattern').hide();
+            $('#multiple-revoke-form-group-pattern').removeAttr('required');
+        }
+        
+        $('#assign_target_0').change(function () {
+            hideAssignPattern();
         });
-        $('#form_target_1').change(function () {
-            showPattern()
+        $('#assign_target_1').change(function () {
+            showAssignPattern();
         });
-        $('#form_target_2').change(function () {
-            showPattern()
+        $('#assign_target_2').change(function () {
+            showAssignPattern();
         });
-        $('#form_target_3').change(function() {
-            showPattern()
+        $('#assign_target_3').change(function() {
+            showAssignPattern();
         });
-        $('#form_target_4').change(function() {
-            showPattern()
+        $('#assign_target_4').change(function() {
+            showAssignPattern();
+        });
+        
+        $('#revoke_target_0').change(function () {
+            hideRevokePattern();
+        });
+        $('#revoke_target_1').change(function () {
+            showRevokePattern();
+        });
+        $('#revoke_target_2').change(function () {
+            showRevokePattern();
+        });
+        $('#revoke_target_3').change(function() {
+            showRevokePattern();
+        });
+        $('#revoke_target_4').change(function() {
+            showRevokePattern();
         });
     }
 

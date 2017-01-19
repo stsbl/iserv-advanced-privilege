@@ -54,3 +54,30 @@ msgstr "Ein Recht zu %s Gruppen hinzugefügt."
 
 msgid "Added %s privileges to %s groups."
 msgstr "%s Rechte zu %s Gruppen hinzugefügt."
+
+msgid "Removed one group flag from one group."
+msgstr "Ein Gruppenmerkmal von einer Gruppe entfernt."
+
+msgid "Removed %s group flags from one group."
+msgstr "%s Gruppenmerkmale von einer Gruppe entfernt."
+
+msgid "Removed one group flag from %s groups."
+msgstr "Ein Gruppenmerkmal von %s Gruppen entfernt."
+
+msgid "Removed %s group flags from %s groups."
+msgstr "%s Gruppenmerkmale von %s Gruppen entfernt."
+
+msgid "Removed one privilege from one group."
+msgstr "Ein Recht von einer Gruppe entfernt."
+
+msgid "Removed %s privileges from one group."
+msgstr "%s Rechte von einer Gruppe entfernt."
+
+msgid "Added one privilege to %s groups."
+msgstr "Ein Recht zu %s Gruppen hinzugefügt."
+
+msgid "Added %s privileges to %s groups."
+msgstr "%s Rechte zu %s Gruppen hinzugefügt."
+
+msgid "Select at least one privilege or group flag."
+msgstr "Wählen sie zumindest ein Recht oder Gruppenmerkmal aus."

@@ -6,6 +6,7 @@ use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Form\Type\GettextEntityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,15 +47,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class AdminController extends PageController
 {
     /**
-     * Get multiple assign form
+     * Get multiple assign/revoke form
      * 
+     * @param string $action
      * @return Form
      */
-    private function getForm()
+    private function getForm($action)
     {
-        $builder = $this->createFormBuilder();
+        $builder = $this->get('form.factory')->createNamedBuilder($action);
         
         $builder
+            ->setAction($this->generateUrl('admin_adv_priv').sprintf('?action=%s', $action))
             ->add('target', ChoiceType::class, [
                 'choices' => [
                     _('All groups') => 'all',
@@ -122,7 +125,14 @@ class AdminController extends PageController
     {
         $this->get('iserv.flash')->alert(_('No matching groups found.'));
     }
-    
+
+    /**
+     * Sends a flash message for empty items (flags, privileges).
+     */
+    private function sendNoItemsMessage()
+    {
+        $this->get('iserv.flash')->alert(_('Select at least one privilege or group flag.'));
+    }
     /**
      * index action
      * 
@@ -133,99 +143,58 @@ class AdminController extends PageController
      */
     public function indexAction(Request $request)
     {
-        $form = $this->getForm();
-        $form->handleRequest($request);
+        $assignForm = $this->getForm('assign');
+        $assignForm->handleRequest($request);
+        $revokeForm = $this->getForm('revoke');
+        $revokeForm->handleRequest($request);
         
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($request->query->has('action')) {
+            $action = $request->query->get('action');
+        } else {
+            $action = null;
+        }
+        
+        if ($action === 'assign') {
+            $this->handleAssignForm($assignForm);
+        } else if ($action === 'revoke') {
+            $this->handleRevokeForm($revokeForm);
+        }
+        
+        // track path
+        $this->addBreadcrumb(_('Privileges'), $this->generateUrl('admin_privilege_index'));
+        $this->addBreadcrumb(_('Advanced privilege assignment'), $this->generateUrl('admin_adv_priv'));
+        
+        $assignView = $assignForm->createView();
+        $revokeView = $revokeForm->createView();
+        
+        //$securityHandler = $this->get('iserv.security_handler');
+        //die($securityHandler->getSessionPassword());
+        
+        return ['multiple_assign_form' => $assignView, 'multiple_revoke_form' => $revokeView];
+    }
+    
+    /**
+     * Handles response from assignForm
+     * 
+     * @param Form $assignForm
+     */
+    private function handleAssignForm(Form $assignForm)
+    {
+        if ($assignForm->isValid() && $assignForm->isSubmitted()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
-            $data = $form->getData();
+            $data = $assignForm->getData();
             $flags = $data['flags']->toArray();
             $privileges = $data['privileges']->toArray();
-           
-            /* @var $group \IServ\CoreBundle\Entity\Group */
-            if ($data['target'] == 'all') {
-                $groups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
-            } else if ($data['target'] == 'ending-with') {
-                if (empty($data['pattern'])) {
-                    $this->sendEmptyPatternMessage();
-                    goto render;
-                }
-                
-                try {
-                    /* @var $qb \Doctrine\ORM\QueryBuilder */
-                    $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
-                    $qb
-                        ->select('g')
-                        ->from('IServCoreBundle:Group', 'g')
-                        ->where('g.name LIKE :query')
-                        ->setParameter('query', '%'.$data['pattern']);
-                    ;
-                    
-                    $groups = $qb->getQuery()->getResult();
-                } catch (Doctrine\ORM\NoResultException $e) {
-                    // Just ignore no results \o/
-                }
-                
-            } else if ($data['target'] == 'starting-with') {
-                if (empty($data['pattern'])) {
-                    $this->sendEmptyPatternMessage();
-                    goto render;
-                }
-                
-                try {
-                    /* @var $qb \Doctrine\ORM\QueryBuilder */
-                    $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
-                    $qb
-                        ->select('g')
-                        ->from('IServCoreBundle:Group', 'g')
-                        ->where('g.name LIKE :query')
-                        ->setParameter('query', $data['pattern'].'%');
-                    ;
-                    
-                    $groups = $qb->getQuery()->getResult();
-                } catch (Doctrine\ORM\NoResultException $e) {
-                    // Just ignore no results \o/
-                }
-
-            } else if ($data['target'] == 'contains') {
-                if (empty($data['pattern'])) {
-                    $this->sendEmptyPatternMessage();
-                    goto render;
-                }
-                
-                try {
-                    /* @var $qb \Doctrine\ORM\QueryBuilder */
-                    $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
-                    $qb
-                        ->select('g')
-                        ->from('IServCoreBundle:Group', 'g')
-                        ->where('g.name LIKE :query')
-                        ->setParameter('query', '%'.$data['pattern'].'%');
-                    ;
-                    
-                    $groups = $qb->getQuery()->getResult();
-                } catch (Doctrine\ORM\NoResultException $e) {
-                    // Just ignore no results \o/
-                }
-
-            } else if ($data['target'] == 'matches') {
-                $allGroups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
-                $groups = [];
-               
-                foreach ($allGroups as $g) {
-                    if (preg_match(sprintf('/%s/', $data['pattern']), $g->getName())) {
-                        $groups[] = $g;
-                    }
-                }
-               
-            } else {
-               throw new \InvalidArgumentException(sprintf('Not an implemented target: %s.', $data['target']));
-            }
+            $groups = $this->findGroups($data['target'], $data['pattern']);
             
             if (count($groups) < 1) {
                 $this->sendNoGroupsMessage();
-                goto render;                   
+                goto end;                   
+            }
+            
+            if (count($privileges) < 1 && count($flags) < 1) {
+                $this->sendNoItemsMessage();
             }
                
             /* @var $flag \IServ\CoreBundle\Entity\GroupFlag */
@@ -246,80 +215,258 @@ class AdminController extends PageController
             $messages = $groupManager->getMessages();
                 
             if (count($messages) > 0) {
-                $success = [];
-                $error = [];
+                $this->sendMessages($messages);
                 
-                foreach ($messages as $message) {
-                    switch ($message['type']) {
-                        case 'success':
-                            $success[] = $message['message'];
-                            break;
-                        case 'error':
-                            $error[] = $message['message'];
-                            break;
-                    }
-                }
-                    
-                if (count($success) > 0) {
-                    $this->get('iserv.flash')->success(implode("\n", $success)); 
-                }
-                    
-                if (count($error) > 0) {
-                   $this->get('iserv.flash')->error(implode("\n", $error)); 
-                }
-                
-                if (count($groups) > 0 && count($flags) > 0) {
-                    if (count($groups) == 1 && count($flags) == 1) {
-                        $message = _('Added one group flag to one group.');
-                        $log = 'Ein Gruppenmerkmal zu einer Gruppe hinzugefügt';
-                    } else if (count($groups) == 1 && count($flags) > 1) {
-                        $message = sprintf(_('Added %s group flags to one group.'), count($flags));
-                        $log = sprintf('%s Gruppenmerkmale zu einer Gruppe hinzugefügt', count($flags));
-                    } else if (count($groups) > 1 && count($flags) == 1) {
-                        $message = sprintf(_('Added one group flag to %s groups.'), count($groups));
-                        $log = sprintf('Ein Gruppenmerkmal zu %s Gruppen hinzugefügt', count($groups));
-                    } else {
-                        $message = sprintf(_('Added %s group flags to %s groups.'), count($flags), count($groups));
-                        $log = sprintf('%s Gruppenmerkmale zu %s Gruppen hinzugefügt', count($flags), count($groups));
-                    }
-                    
-                    $this->get('iserv.flash')->info($message);
-                    $this->get('iserv.logger')->write($log);
-                }
-
-                if (count($groups) > 0 && count($privileges) > 0) {
-                    if (count($groups) == 1 && count($privileges) == 1) {
-                        $message = _('Added one privilege to one group.');
-                        $log = 'Ein Recht zu einer Gruppe hinzugefügt';
-                    } else if (count($groups) == 1 && count($privileges) > 1) {
-                        $message = sprintf(_('Added %s privileges to one group.'), count($privileges));
-                        $log = sprintf('%s Rechte zu einer Gruppe hinzugefügt', count($privileges));
-                    } else if (count($groups) > 1 && count($privileges) == 1) {
-                        $message = sprintf(_('Added one privilege to %s groups.'), count($groups));
-                        $log = sprintf('Ein Recht zu %s Gruppen hinzugefügt', count($groups));
-                    } else {
-                        $message = sprintf(_('Added %s privileges to %s groups.'), count($privileges), count($groups));
-                        $log = sprintf('%s Rechte zu %s Gruppen hinzugefügt', count($privileges), count($groups));
-                    }
-                    
-                    $this->get('iserv.flash')->info($message);
-                    $this->get('iserv.logger')->write($log);
-                }
             }
+            
+            $this->log($groups, $flags, $privileges, 'assign');
         }
         
         // jump hook
-        render:
+        end:
+    }
+    
+    /**
+     * Handles response from revokeForm
+     * 
+     * @param Form $assignForm
+     */
+    private function handleRevokeForm(Form $revokeForm)
+    {
+        if ($revokeForm->isValid() && $revokeForm->isSubmitted()) {
+            /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
+            $groupManager = $this->get('iserv.group_manager');
+            $data = $revokeForm->getData();
+            $flags = $data['flags']->toArray();
+            $privileges = $data['privileges']->toArray();
+            $groups = $this->findGroups($data['target'], $data['pattern']);
+            
+            if (count($groups) < 1) {
+                $this->sendNoGroupsMessage();
+                goto end;                   
+            }
+            
+            if (count($privileges) < 1 && count($flags) < 1) {
+                $this->sendNoItemsMessage();
+            }
+            
+            /* @var $flag \IServ\CoreBundle\Entity\GroupFlag */
+            /* @var $privilege \IServ\CoreBundle\Entity\Privilege */
+            /* @var $group \IServ\CoreBundle\Entity\Group */
+            foreach ($groups as $group) {
+                foreach ($flags as $flag) {
+                    $group->removeFlag($flag);
+                }
+                
+                foreach ($privileges as $privilege) {
+                    $group->removePrivilege($privilege);
+                }
+                
+                $groupManager->update($group);
+            }
+            
+            $messages = $groupManager->getMessages();
+                
+            if (count($messages) > 0) {
+                $this->sendMessages($messages);
+                
+            }
+            
+            $this->log($groups, $flags, $privileges, 'revoke');
+        }
         
-        // track path
-        $this->addBreadcrumb(_('Privileges'), $this->generateUrl('admin_privilege_index'));
-        $this->addBreadcrumb(_('Advanced privilege assignment'), $this->generateUrl('admin_adv_priv'));
+        // jump hook
+        end:
+    }
+    
+    /**
+     * Trys to find groups by given criteria
+     * 
+     * @param string target
+     * @param string $pattern
+     * @return array
+     */
+    private function findGroups($target, $pattern = null)
+    {
+        /* @var $group \IServ\CoreBundle\Entity\Group */
+        if ($target == 'all') {
+            $groups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
+        } else if ($target == 'ending-with') {
+            if (empty($pattern)) {
+                $this->sendEmptyPatternMessage();
+                goto empty_result;
+            }
+                
+            try {
+                /* @var $qb \Doctrine\ORM\QueryBuilder */
+                $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
+                $qb
+                    ->select('g')
+                    ->from('IServCoreBundle:Group', 'g')
+                    ->where('g.name LIKE :query')
+                    ->setParameter('query', '%'.$pattern);
+                ;
+                    
+                $groups = $qb->getQuery()->getResult();
+            } catch (Doctrine\ORM\NoResultException $e) {
+                // Just ignore no results \o/
+            }
+                
+        } else if ($target == 'starting-with') {
+            if (empty($pattern)) {
+                $this->sendEmptyPatternMessage();
+                goto empty_result;
+            }
+                
+            try {
+                /* @var $qb \Doctrine\ORM\QueryBuilder */
+                $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
+                $qb
+                    ->select('g')
+                    ->from('IServCoreBundle:Group', 'g')
+                    ->where('g.name LIKE :query')
+                    ->setParameter('query', $pattern.'%');
+                ;
+                    
+                $groups = $qb->getQuery()->getResult();
+            } catch (Doctrine\ORM\NoResultException $e) {
+                // Just ignore no results \o/
+            }
+
+        } else if ($target == 'contains') {
+            if (empty($pattern)) {
+                $this->sendEmptyPatternMessage();
+                goto empty_result;
+            }
+            
+            try {
+                /* @var $qb \Doctrine\ORM\QueryBuilder */
+                $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
+                $qb
+                    ->select('g')
+                    ->from('IServCoreBundle:Group', 'g')
+                    ->where('g.name LIKE :query')
+                    ->setParameter('query', '%'.$pattern.'%');
+                ;
+                    
+                $groups = $qb->getQuery()->getResult();
+            } catch (Doctrine\ORM\NoResultException $e) {
+                // Just ignore no results \o/
+            }
+
+        } else if ($target == 'matches') {
+            $allGroups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
+            $groups = [];
+
+            foreach ($allGroups as $g) {
+                if (preg_match(sprintf('/%s/', $pattern), $g->getName())) {
+                    $groups[] = $g;
+                }
+            }
+               
+        } else {
+            throw new \InvalidArgumentException(sprintf('Not an implemented target: %s.', $target));
+        }
         
-        $view = $form->createView();
+        return $groups;
         
-        //$securityHandler = $this->get('iserv.security_handler');
-        //die($securityHandler->getSessionPassword());
+        empty_result:
+            return [];
+            
+    }
+    
+    /**
+     * Send messages as flash sorted by category (error, sucess e.g)
+     * 
+     * @param array $messages
+     */
+    private function sendMessages(array $messages)
+    {
+        $success = [];
+        $error = [];
+                
+        foreach ($messages as $message) {
+            switch ($message['type']) {
+                case 'success':
+                    $success[] = $message['message'];
+                    break;
+                case 'error':
+                    $error[] = $message['message'];
+                    break;
+            }
+        }
+                    
+        if (count($success) > 0) {
+            $this->get('iserv.flash')->success(implode("\n", $success)); 
+        }
+                    
+        if (count($error) > 0) {
+            $this->get('iserv.flash')->error(implode("\n", $error)); 
+        }
+    }
+    
+    /**
+     * Log operations and sends finally a conclusion flash message
+     * 
+     * @param array $groups
+     * @param array $flags
+     * @param array $privileges
+     * @param string $action
+     */
+    private function log(array $groups, array $flags, array $privileges, $action = 'assign')
+    {
+        if ($action !== 'assign' && $action !== 'revoke') {
+            throw new \InvalidArgumentException(sprintf('action must be either "assign" or "revoke", "%s" given.', $action));
+        }
         
-        return ['multiple_assign_form' => $view];
+        if ($action == 'assign') {
+            $prefix = 'Added';
+            $preposition = 'to';
+            $logSuffix = 'hinzugefügt';
+            $logPreposition = 'zu';
+        } else {
+            $prefix = 'Removed';
+            $preposition = 'from';
+            $logSuffix = 'entfernt';
+            $logPreposition = 'von';
+        }
+               
+        if (count($groups) > 0 && count($flags) > 0) {
+            if (count($groups) == 1 && count($flags) == 1) {
+                $message = _(sprintf('%s one group flag %s one group.', $prefix, $preposition));
+                $log = sprintf('Ein Gruppenmerkmal %s einer Gruppe %s', $logPreposition, $logSuffix);
+            } else if (count($groups) == 1 && count($flags) > 1) {
+                $message = sprintf(_(sprintf('%s %%s group flags %s one group.', $prefix, $preposition)), count($flag));
+                $log = sprintf('%s Gruppenmerkmale %s einer Gruppe %s', count($flags), $logPreposition, $logSuffix);
+            } else if (count($groups) > 1 && count($flags) == 1) {
+                $message = sprintf(_(sprintf('%s one group flag %s %%s groups.', $prefix, $preposition)), count($groups));
+                $log = sprintf('Ein Gruppenmerkmal %s %s Gruppen %s', $logPreposition, count($groups), $logSuffix);
+            } else {
+                $message = sprintf(_(sptrinf('%s %%s group flags %s %%s groups.', $prefix, $preposition)), count($flags), count($groups));
+                $log = sprintf('%s Gruppenmerkmale %s %s Gruppen %s', count($flags), $preposition, count($groups), $logSuffix);
+            }
+                    
+            $this->get('iserv.flash')->info($message);
+            $this->get('iserv.logger')->write($log);
+        }
+
+        if (count($groups) > 0 && count($privileges) > 0) {
+            if (count($groups) == 1 && count($privileges) == 1) {
+                $message = _(sprintf('%s one privilege %s one group.', $prefix, $preposition));
+                $log = sprintf('Ein Recht %s einer Gruppe %s', $logPreposition, $logSuffix);
+            } else if (count($groups) == 1 && count($privileges) > 1) {
+                $message = sprintf(_(sprintf('%s %%s privileges %s one group.', $prefix, $preposition)), count($privileges));
+                $log = sprintf('%s Rechte %s einer Gruppe %s', count($privileges), $logPreposition, $logSuffix);
+            } else if (count($groups) > 1 && count($privileges) == 1) {
+                $message = sprintf(_(sprintf('%s one privilege %s %%s groups.', $prefix, $preposition)), count($groups));
+                $log = sprintf('Ein Recht %s %s Gruppen %s', $logPreposition, count($groups), $logSuffix);
+            } else {
+                $message = sprintf(_(sprintf('%s %%s privileges %s %%s groups.', $prefix, $preposition)), count($privileges), count($groups));
+                $log = sprintf('%s Rechte %s %s Gruppen %s', count($privileges), $logPreposition, count($groups), $logSuffix);
+            }
+                    
+            $this->get('iserv.flash')->info($message);
+            $this->get('iserv.logger')->write($log);
+        }
     }
 }
