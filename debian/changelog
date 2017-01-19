@@ -1,10 +1,18 @@
+stsbl-iserv-advanced-privilege (17.01.19-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added multiple privileges and flags revoker.
+  * Updated l10n.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Thu, 19 Jan 2017 23:39:32 +0100
+
 stsbl-iserv-advanced-privilege (17.01.18-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
   * Fixed package dependencies. 
   * Fixed package description.
 
- -- Felix Jacobi <felix.jacobi@stsbl.de>  Wed, 18 Jan 2017 03:17:19 +0100
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Wed, 18 Jan 2017 03:17:19 +0100
 
 stsbl-iserv-advanced-privilege (17.01.18-0) experimental; urgency=low
 
