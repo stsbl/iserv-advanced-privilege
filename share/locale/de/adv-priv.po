@@ -73,11 +73,14 @@ msgstr "Ein Recht von einer Gruppe entfernt."
 msgid "Removed %s privileges from one group."
 msgstr "%s Rechte von einer Gruppe entfernt."
 
-msgid "Added one privilege to %s groups."
-msgstr "Ein Recht zu %s Gruppen hinzugefügt."
+msgid "Removed one privilege from %s groups."
+msgstr "Ein Recht von %s Gruppen entfernt."
 
-msgid "Added %s privileges to %s groups."
-msgstr "%s Rechte zu %s Gruppen hinzugefügt."
+msgid "Removed %s privileges from %s groups."
+msgstr "%s Rechte von %s Gruppen entfernt."
 
 msgid "Select at least one privilege or group flag."
 msgstr "Wählen sie zumindest ein Recht oder Gruppenmerkmal aus."
+
+msgid "Revoke a privilege or group flag from multiple groups"
+msgstr "Ein Recht oder Gruppenmerkmal von mehreren Gruppen entfernen"
