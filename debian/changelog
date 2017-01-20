@@ -1,3 +1,11 @@
+stsbl-iserv-advanced-privilege (17.01.20-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added some jquery-ui powered eye-candy.
+  * Added dependency on stsbl-iserv3-js-libs.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Fri, 20 Jan 2017 07:21:17 +0100
+
 stsbl-iserv-advanced-privilege (17.01.19-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
