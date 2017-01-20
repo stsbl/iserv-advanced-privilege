@@ -27,25 +27,25 @@ IServ.AdvancedPrivilege = {};
 IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
     function hideAssignPattern()
     {
-        $('#multiple-assign-form-group-pattern').hide();
+        $('#multiple-assign-form-group-pattern').hide('highlight', {});
         $('#multiple-assign-form-group-pattern').removeAttr('required');
     }
 
     function showAssignPattern()
     {
-        $('#multiple-assign-form-group-pattern').show();
+        $('#multiple-assign-form-group-pattern').show('highlight', {});
         $('#multiple-assign-form-group-pattern').attr('required', 'required');
     }
     
     function hideRevokePattern()
     {
-        $('#multiple-revoke-form-group-pattern').hide();
+        $('#multiple-revoke-form-group-pattern').hide('highlight', {});
         $('#multiple-revoke-form-group-pattern').removeAttr('required');
     }
 
     function showRevokePattern()
     {
-        $('#multiple-revoke-form-group-pattern').show();
+        $('#multiple-revoke-form-group-pattern').show('highlight', {});
         $('#multiple-revoke-form-group-pattern').attr('required', 'required');
     }
     

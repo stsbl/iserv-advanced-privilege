@@ -1,7 +1,11 @@
 {# src/Stsbl/AdvancedPrivilegeBundle/Resources/views/MultipleAssign/index.html.twig #}
 {% extends "IServAdminBundle::page.html.twig" %}
+{% import 'StsblJavaScriptLibraryBundle::jquery-ui.html.twig' as jqu %}
+{% import 'StsblJavaScriptLibraryBundle::jquery-ui-bootstrap.html.twig' as jqub %}
+
 {% form_theme multiple_assign_form _self %}
 {% form_theme multiple_revoke_form _self %}
+
 {% block _assign_pattern_row %}
     <div class="form-group" id="multiple-assign-form-group-pattern">
         <div class="col-lg-2">
@@ -27,12 +31,20 @@
 {% block javascripts %}
     {{ parent() }}
     
+    {{ jqu.integrate() }}
+    
     {% if app.environment != 'prod' %}
 	<!-- {{ _self.templateName }} => adv_priv.js -->
     {% endif %}
     {% javascripts output='js/compiled/adv_priv.js' filter='?uglifyjs2' '@StsblAdvancedPrivilegeBundle/Resources/public/js/adv_priv.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ jqub.integrate() }}
+    
+    {{ parent() }}
 {% endblock %}
 
 {% block page_title %}
