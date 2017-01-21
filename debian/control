@@ -8,7 +8,7 @@ Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-advanced-privilege
 
 Package: stsbl-iserv-advanced-privilege
 Architecture: all
-Depends: iserv-portal, stsbl-iserv3-maintenance, stsbl-iserv3-js-libs
+Depends: iserv-portal, stsbl-iserv3-maintenance
 Description: Erweiterte Rechte-Verwaltung für IServ
  Enthält einen Rechteeditor für die IServ 3-Oberfläche, der es erlaubt nach anpassbaren Kriterien Rechte und Gruppenmerkmale zu mehreren Gruppen auf einmal hinzuzufügen.
  .
