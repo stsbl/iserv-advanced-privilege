@@ -39,7 +39,7 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
     
     function hideRevokePattern()
     {
-        $('#multiple-revoke-form-group-pattern').hide('highlight', {});
+        $('#multiple-revoke-form-group-pattern').hide();
         $('#multiple-revoke-form-group-pattern').removeAttr('required');
     }
 
