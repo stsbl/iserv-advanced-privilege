@@ -1,3 +1,10 @@
+stsbl-iserv-advanced-privilege (17.01.21-1) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Js syntax fixes.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sat, 21 Jan 2017 09:51:32 +0100
+
 stsbl-iserv-advanced-privilege (17.01.21-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
