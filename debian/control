@@ -23,4 +23,4 @@ Description: Erweiterte Rechte-Verwaltung für IServ
  - Name der Gruppe endet mit.
  .
  - Namen der Gruppe gegen eine regulären Ausdruck prüfen.
-Tag: suite::iserv:portal, role::plugin, status::recommended, status::highlighted
+Tag: suite::iserv:portal, role::plugin, status::recommended, status::highlighted, implemented-in::php
