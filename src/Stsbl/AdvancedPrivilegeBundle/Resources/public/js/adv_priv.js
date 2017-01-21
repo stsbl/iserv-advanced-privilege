@@ -28,37 +28,37 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
     function hideAssignPattern()
     {
         $('#multiple-assign-form-group-pattern').hide();
-        $('#multiple-assign-form-group-pattern').removeAttr('required');
+        $('#assign_pattern').prop('required', false);
     }
 
     function showAssignPattern()
     {
         $('#multiple-assign-form-group-pattern').show();
-        $('#multiple-assign-form-group-pattern').attr('required', 'required');
+        $('#assign_pattern').prop('required', true);
     }
     
     function hideRevokePattern()
     {
         $('#multiple-revoke-form-group-pattern').hide();
-        $('#multiple-revoke-form-group-pattern').removeAttr('required');
+        $('#revoke_pattern').prop('required', false);
     }
 
     function showRevokePattern()
     {
         $('#multiple-revoke-form-group-pattern').show();
-        $('#multiple-revoke-form-group-pattern').attr('required', 'required');
+        $('#revoke_pattern').prop('required', true);
     }
     
     function initialize()
     {
         if ($('#assign_target_0').is(':checked')) {
             $('#multiple-assign-form-group-pattern').hide();
-            $('#multiple-assign-form-group-pattern').removeAttr('required');
+            $('#assign_pattern').prop('required', false);
         }
         
         if ($('#revoke_target_0').is(':checked')) {
             $('#multiple-revoke-form-group-pattern').hide();
-            $('#multiple-revoke-form-group-pattern').removeAttr('required');
+            $('#revoke_pattern').prop('required', false);
         }
         
         $('#assign_target_0').change(function () {
