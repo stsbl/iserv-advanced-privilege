@@ -1,10 +1,8 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: stsbl-iserv-advanced-privilege
-Source: <url://example.com>
 
 Files: *
-Copyright: <years> <put author's name and email here>
-           <years> <likewise for another author>
+Copyright: 2017 Felix Jacobi <felix.jacobi@stsbl.de>
 License: MIT
 
 Files: debian/*
