@@ -80,7 +80,7 @@ msgid "Removed %s privileges from %s groups."
 msgstr "%s Rechte von %s Gruppen entfernt."
 
 msgid "Select at least one privilege or group flag."
-msgstr "Wählen sie zumindest ein Recht oder Gruppenmerkmal aus."
+msgstr "Wählen Sie zumindest ein Recht oder Gruppenmerkmal aus."
 
 msgid "Revoke a privilege or group flag from multiple groups"
 msgstr "Ein Recht oder Gruppenmerkmal von mehreren Gruppen entfernen"
