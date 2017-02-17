@@ -25,106 +25,38 @@
 IServ.AdvancedPrivilege = {};
 
 IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
-    function hideAssignPattern()
+    function hidePattern(type)
     {
-        $('#multiple-assign-form-group-pattern').hide();
-        $('#assign_pattern').prop('required', false);
+        $('#multiple-' + type + '-form-group-pattern').hide();
+        $('#' + type + '_pattern').prop('required', false);
     }
 
-    function showAssignPattern()
+    function showPattern(type)
     {
-        $('#multiple-assign-form-group-pattern').show();
-        $('#assign_pattern').prop('required', true);
+        $('#multiple-' + type + '-form-group-pattern').show();
+        $('#' + type + '_pattern').prop('required', true);
     }
     
-    function hideRevokePattern()
-    {
-        $('#multiple-revoke-form-group-pattern').hide();
-        $('#revoke_pattern').prop('required', false);
-    }
-
-    function showRevokePattern()
-    {
-        $('#multiple-revoke-form-group-pattern').show();
-        $('#revoke_pattern').prop('required', true);
-    }
-
-    function hideOwnerPattern()
-    {
-        $('#multiple-owner-form-group-pattern').hide();
-        $('#owner_pattern').prop('required', false);
-    }
-
-    function showOwnerPattern()
-    {
-        $('#multiple-owner-form-group-pattern').show();
-        $('#owner_pattern').prop('required', true);
+    function registerTargetHandler(type)
+    {   
+        if ($('#' + type + '_target_0').is(':checked')) {
+            hidePattern(type);
+        }
+        
+        $('[id^="' + type + '_target_"').change(function () {
+            if ($(this).attr('id') === type + '_target_0') {
+                hidePattern(type);
+            } else {
+                showPattern(type);
+            }
+        });
     }
     
     function initialize()
     {
-        if ($('#assign_target_0').is(':checked')) {
-            $('#multiple-assign-form-group-pattern').hide();
-            $('#assign_pattern').prop('required', false);
-        }
-        
-        if ($('#revoke_target_0').is(':checked')) {
-            $('#multiple-revoke-form-group-pattern').hide();
-            $('#revoke_pattern').prop('required', false);
-        }
-        
-        if ($('#owner_target_0').is(':checked')) {
-            $('#multiple-owner-form-group-pattern').hide();
-            $('#owner_pattern').prop('required', false);
-        }
-        
-        $('#assign_target_0').change(function () {
-            hideAssignPattern();
-        });
-        $('#assign_target_1').change(function () {
-            showAssignPattern();
-        });
-        $('#assign_target_2').change(function () {
-            showAssignPattern();
-        });
-        $('#assign_target_3').change(function() {
-            showAssignPattern();
-        });
-        $('#assign_target_4').change(function() {
-            showAssignPattern();
-        });
-        
-        $('#revoke_target_0').change(function () {
-            hideRevokePattern();
-        });
-        $('#revoke_target_1').change(function () {
-            showRevokePattern();
-        });
-        $('#revoke_target_2').change(function () {
-            showRevokePattern();
-        });
-        $('#revoke_target_3').change(function() {
-            showRevokePattern();
-        });
-        $('#revoke_target_4').change(function() {
-            showRevokePattern();
-        });
-        
-        $('#owner_target_0').change(function () {
-            hideOwnerPattern();
-        });
-        $('#owner_target_1').change(function () {
-            showOwnerPattern();
-        });
-        $('#owner_target_2').change(function () {
-            showOwnerPattern();
-        });
-        $('#owner_target_3').change(function() {
-            showOwnerPattern();
-        });
-        $('#owner_target_4').change(function() {
-            showOwnerPattern();
-        });
+        registerTargetHandler('assign');
+        registerTargetHandler('revoke');
+        registerTargetHandler('owner');
     }
 
     // Public API
