@@ -1,8 +1,9 @@
 {# src/Stsbl/AdvancedPrivilegeBundle/Resources/views/MultipleAssign/index.html.twig #}
 {% extends "IServAdminBundle::page.html.twig" %}
 
-{% form_theme multiple_assign_form _self %}
-{% form_theme multiple_revoke_form _self %}
+{% form_theme multipleAssignForm _self %}
+{% form_theme multipleRevokeForm _self %}
+{% form_theme multipleOwnerForm _self %}
 
 {% block _assign_pattern_row %}
     <div class="form-group" id="multiple-assign-form-group-pattern">
@@ -17,6 +18,17 @@
 
 {% block _revoke_pattern_row %}
     <div class="form-group" id="multiple-revoke-form-group-pattern">
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-10">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block _owner_pattern_row %}
+    <div class="form-group" id="multiple-owner-form-group-pattern">
         <div class="col-lg-2">
         </div>
         <div class="col-lg-10">
@@ -44,10 +56,18 @@
 {% block content %}
     <div class="panel panel-default">
         <div class="panel-heading">
+            <h3 class="panel-title">{{ _('Set an owner for multiple groups') }}</h3>
+        </div>
+        <div class="panel-body">
+            {{ form(multipleOwnerForm) }}
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
             <h3 class="panel-title">{{ _('Assign a privilege or group flag to multiple groups') }}</h3>
         </div>
         <div class="panel-body">
-            {{ form(multiple_assign_form) }}
+            {{ form(multipleAssignForm) }}
         </div>
     </div>
     <div class="panel panel-default">
@@ -55,7 +75,7 @@
             <h3 class="panel-title">{{ _('Revoke a privilege or group flag from multiple groups') }}</h3>
         </div>
         <div class="panel-body">
-            {{ form(multiple_revoke_form) }}
+            {{ form(multipleRevokeForm) }}
         </div>
     </div>
 {% endblock %}

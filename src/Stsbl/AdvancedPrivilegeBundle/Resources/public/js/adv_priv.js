@@ -48,6 +48,18 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
         $('#multiple-revoke-form-group-pattern').show();
         $('#revoke_pattern').prop('required', true);
     }
+
+    function hideOwnerPattern()
+    {
+        $('#multiple-owner-form-group-pattern').hide();
+        $('#owner_pattern').prop('required', false);
+    }
+
+    function showOwnerPattern()
+    {
+        $('#multiple-owner-form-group-pattern').show();
+        $('#owner_pattern').prop('required', true);
+    }
     
     function initialize()
     {
@@ -59,6 +71,11 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
         if ($('#revoke_target_0').is(':checked')) {
             $('#multiple-revoke-form-group-pattern').hide();
             $('#revoke_pattern').prop('required', false);
+        }
+        
+        if ($('#owner_target_0').is(':checked')) {
+            $('#multiple-owner-form-group-pattern').hide();
+            $('#owner_pattern').prop('required', false);
         }
         
         $('#assign_target_0').change(function () {
@@ -91,6 +108,22 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
         });
         $('#revoke_target_4').change(function() {
             showRevokePattern();
+        });
+        
+        $('#owner_target_0').change(function () {
+            hideOwnerPattern();
+        });
+        $('#owner_target_1').change(function () {
+            showOwnerPattern();
+        });
+        $('#owner_target_2').change(function () {
+            showOwnerPattern();
+        });
+        $('#owner_target_3').change(function() {
+            showOwnerPattern();
+        });
+        $('#owner_target_4').change(function() {
+            showOwnerPattern();
         });
     }
 

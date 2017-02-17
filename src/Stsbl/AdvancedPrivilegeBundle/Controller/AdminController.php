@@ -2,11 +2,14 @@
 // src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
 namespace Stsbl\AdvancedPrivilegeBundle\Controller;
 
+use Doctrine\ORM\NoResultException;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Form\Type\GettextEntityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,7 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /*
  * The MIT License
  *
- * Copyright 2017 felix.
+ * Copyright 2017 Felix Jacobi.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,17 +50,14 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class AdminController extends PageController
 {
     /**
-     * Get multiple assign/revoke form
+     * Adds target choice to supplied builder
      * 
-     * @param string $action
-     * @return Form
+     * @param FormBuilderInterface $builder
+     * @return FormBuilderInterface
      */
-    private function getForm($action)
+    private function addTargetChoice(FormBuilderInterface $builder)
     {
-        $builder = $this->get('form.factory')->createNamedBuilder($action);
-        
         $builder
-            ->setAction($this->generateUrl('admin_adv_priv').sprintf('?action=%s', $action))
             ->add('target', ChoiceType::class, [
                 'choices' => [
                     _('All groups') => 'all',
@@ -68,16 +68,39 @@ class AdminController extends PageController
                 ],
                 'label' => _('Select target'),
                 'expanded' => true,
-                'choices_as_values' => true,
                 'constraints' => new NotBlank(['message' => _('Please select a target.')])
             ])
             ->add('pattern', TextType::class, [
-                'required' => false, // handle by js on client side
+                'required' => false, // handled by js on client side
                 'label' => false,
                 'attr' => [
                     'placeholder' => _('Enter a pattern...')
                 ]
             ])
+        ;
+        
+        return $builder;
+    }
+    
+    /**
+     * Get multiple assign/revoke form
+     * 
+     * @param string $action
+     * @return Form
+     */
+    private function getForm($action)
+    {
+        /* @var $builder \Symfony\Component\Form\FormBuilder */
+        $builder = $this->get('form.factory')->createNamedBuilder($action);
+        
+        $builder
+            ->setAction($this->generateUrl('admin_adv_priv').sprintf('?action=%s', $action))
+        ;
+        
+        // add target fields
+        $builder = $this->addTargetChoice($builder);
+        
+        $builder
             ->add('privileges', GettextEntityType::class, [
                 'label' => _('Privileges'),
                 'class' => 'IServCoreBundle:Privilege',
@@ -87,7 +110,7 @@ class AdminController extends PageController
                 'required' => false,
                 'by_reference' => false,
                 'choice_label' => 'fullTitle',
-                'order_by' => array('module', 'title'),
+                'order_by' => ['module', 'title'],
             ])
             ->add('flags', GettextEntityType::class, [
                 'label' => _('Group flags'),
@@ -98,7 +121,45 @@ class AdminController extends PageController
                 'required' => false,
                 'by_reference' => false,
                 'choice_label' => 'title',
-                'order_by' => array('title'),
+                'order_by' => ['title'],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => _('Apply'),
+                'buttonClass' => 'btn-success',
+                'icon' => 'ok'
+            ])
+        ;
+        
+        return $builder->getForm();
+    }
+    
+    /**
+     * Get form for changing the owner of mutliple groups
+     * 
+     * @return Form
+     */
+    private function getOwnerForm()
+    {
+        /* @var $builder \Symfony\Component\Form\FormBuilder */
+        $builder = $this->get('form.factory')->createNamedBuilder('owner');
+        
+        $builder
+            ->setAction($this->generateUrl('admin_adv_priv').sprintf('?action=%s', 'owner'))
+        ;
+        
+        $builder = $this->addTargetChoice($builder);
+        
+        $builder
+            ->add('owner', EntityType::class, [
+                'label' => _('Owner'),
+                'class' => 'IServCoreBundle:User',
+                'select2-icon' => 'legay-act',
+                'select2-style' => 'stack',
+                'multiple' => false,
+                'required' => false,
+                'by_reference' => false,
+                'choice_label' => 'name',
+                'order_by' => ['lastname', 'firstname'],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => _('Apply'),
@@ -137,7 +198,7 @@ class AdminController extends PageController
      * index action
      * 
      * @param Request $request
-     * @return array
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/advanced", name="admin_adv_priv")
      * @Template()
      */
@@ -147,6 +208,8 @@ class AdminController extends PageController
         $assignForm->handleRequest($request);
         $revokeForm = $this->getForm('revoke');
         $revokeForm->handleRequest($request);
+        $ownerForm = $this->getOwnerForm();
+        $ownerForm->handleRequest($request);
         
         if ($request->query->has('action')) {
             $action = $request->query->get('action');
@@ -158,6 +221,13 @@ class AdminController extends PageController
             $this->handleAssignForm($assignForm);
         } else if ($action === 'revoke') {
             $this->handleRevokeForm($revokeForm);
+        } else if ($action === 'owner') {
+            $this->handleOwnerForm($ownerForm);
+        }
+        
+        // redirect user to the index action again to prevent "Send data again?" question of browers
+        if (!empty($action)) {
+            return $this->redirectToRoute('admin_adv_priv');
         }
         
         // track path
@@ -166,15 +236,17 @@ class AdminController extends PageController
         
         $assignView = $assignForm->createView();
         $revokeView = $revokeForm->createView();
+        $ownerView = $ownerForm->createView();
         
-        //$securityHandler = $this->get('iserv.security_handler');
-        //die($securityHandler->getSessionPassword());
-        
-        return ['multiple_assign_form' => $assignView, 'multiple_revoke_form' => $revokeView];
+        return [
+            'multipleAssignForm' => $assignView, 
+            'multipleRevokeForm' => $revokeView,
+            'multipleOwnerForm' => $ownerView
+        ];
     }
     
     /**
-     * Handles response from assignForm
+     * Handles response from assign form
      * 
      * @param Form $assignForm
      */
@@ -227,9 +299,9 @@ class AdminController extends PageController
     }
     
     /**
-     * Handles response from revokeForm
+     * Handles response from revoke form
      * 
-     * @param Form $assignForm
+     * @param Form $revokeForm
      */
     private function handleRevokeForm(Form $revokeForm)
     {
@@ -280,7 +352,43 @@ class AdminController extends PageController
     }
     
     /**
-     * Trys to find groups by given criteria
+     * Handles response from owner form
+     * 
+     * @param Form $ownerForm 
+     */
+    private function handleOwnerForm(Form $ownerForm)
+    {
+        if ($ownerForm->isSubmitted() && $ownerForm->isValid()) {
+            /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
+            $groupManager = $this->get('iserv.group_manager');
+            $data = $ownerForm->getData();
+            $owner = $data['owner'];
+            $groups = $this->findGroups($data['target'], $data['pattern']);
+            
+            if (count($groups) < 1) {
+                $this->sendNoGroupsMessage();
+                return;                  
+            }
+            
+            /* @var $group \IServ\CoreBundle\Entity\Group */
+            foreach ($groups as $group) {
+                $group->setOwner($owner);
+                
+                $groupManager->update($group);
+            }
+            
+            $messages = $groupManager->getMessages();
+                
+            if (count($messages) > 0) {
+                $this->sendMessages($messages);
+                
+            }
+        }
+        
+    }
+    
+    /**
+     * Tries to find groups by given criteria
      * 
      * @param string target
      * @param string $pattern
@@ -308,7 +416,7 @@ class AdminController extends PageController
                 ;
                     
                 $groups = $qb->getQuery()->getResult();
-            } catch (Doctrine\ORM\NoResultException $e) {
+            } catch (NoResultException $e) {
                 // Just ignore no results \o/
             }
                 
