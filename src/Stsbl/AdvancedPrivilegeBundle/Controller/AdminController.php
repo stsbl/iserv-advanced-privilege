@@ -4,8 +4,10 @@ namespace Stsbl\AdvancedPrivilegeBundle\Controller;
 
 use Doctrine\ORM\NoResultException;
 use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Entity\User;
 use IServ\CoreBundle\Form\Type\GettextEntityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Form;
@@ -13,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -125,7 +128,7 @@ class AdminController extends PageController
             ])
             ->add('submit', SubmitType::class, [
                 'label' => _('Apply'),
-                'buttonClass' => 'btn-success',
+                'buttonClass' => 'btn-success has-spinner',
                 'icon' => 'ok'
             ])
         ;
@@ -160,10 +163,13 @@ class AdminController extends PageController
                 'by_reference' => false,
                 'choice_label' => 'name',
                 'order_by' => ['lastname', 'firstname'],
+                'attr' => [
+                    'help_text' => _('To remove the owner from the targets, select no owner.')
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => _('Apply'),
-                'buttonClass' => 'btn-success',
+                'buttonClass' => 'btn-success has-spinner',
                 'icon' => 'ok'
             ])
         ;
@@ -172,37 +178,14 @@ class AdminController extends PageController
     }
     
     /**
-     * Sends a flash message for empty pattern.
-     */
-    private function sendEmptyPatternMessage()
-    {
-        $this->get('iserv.flash')->error(_('Pattern should not be empty.'));
-    }
-    
-    /**
-     * Sends a flash message for empty pattern.
-     */
-    private function sendNoGroupsMessage()
-    {
-        $this->get('iserv.flash')->alert(_('No matching groups found.'));
-    }
-
-    /**
-     * Sends a flash message for empty items (flags, privileges).
-     */
-    private function sendNoItemsMessage()
-    {
-        $this->get('iserv.flash')->alert(_('Select at least one privilege or group flag.'));
-    }
-    /**
-     * index action
+     * Handles submitted forms
      * 
      * @param Request $request
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("/advanced", name="admin_adv_priv")
-     * @Template()
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @Method("POST")
+     * @Route("/advanced/send", name="admin_adv_priv_send", options={"expose": true})
      */
-    public function indexAction(Request $request)
+    public function sendAction(Request $request)
     {
         $assignForm = $this->getForm('assign');
         $assignForm->handleRequest($request);
@@ -211,24 +194,30 @@ class AdminController extends PageController
         $ownerForm = $this->getOwnerForm();
         $ownerForm->handleRequest($request);
         
-        if ($request->query->has('action')) {
-            $action = $request->query->get('action');
-        } else {
-            $action = null;
+        if ($assignForm->isSubmitted()) {
+            return new JsonResponse($this->handleAssignForm($assignForm));
+        } else if ($revokeForm->isSubmitted()) {
+            return new JsonResponse($this->handleRevokeForm($revokeForm));
+        } else if ($ownerForm->isSubmitted()) {
+            return new JsonResponse($this->handleOwnerForm($ownerForm));
         }
         
-        if ($action === 'assign') {
-            $this->handleAssignForm($assignForm);
-        } else if ($action === 'revoke') {
-            $this->handleRevokeForm($revokeForm);
-        } else if ($action === 'owner') {
-            $this->handleOwnerForm($ownerForm);
-        }
-        
-        // redirect user to the index action again to prevent "Send data again?" question of browers
-        if (!empty($action)) {
-            return $this->redirectToRoute('admin_adv_priv');
-        }
+        throw new \RuntimeException('This statement should never be reached!');
+    }
+    
+    /**
+     * index action
+     * 
+     * @param Request $request
+     * @return array
+     * @Route("/advanced", name="admin_adv_priv")
+     * @Template()
+     */
+    public function indexAction(Request $request)
+    {
+        $assignForm = $this->getForm('assign');
+        $revokeForm = $this->getForm('revoke');
+        $ownerForm = $this->getOwnerForm(); 
         
         // track path
         $this->addBreadcrumb(_('Privileges'), $this->generateUrl('admin_privilege_index'));
@@ -249,24 +238,43 @@ class AdminController extends PageController
      * Handles response from assign form
      * 
      * @param Form $assignForm
+     * @return array
      */
     private function handleAssignForm(Form $assignForm)
     {
+        $result = [];
+        
         if ($assignForm->isValid() && $assignForm->isSubmitted()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
             $data = $assignForm->getData();
             $flags = $data['flags']->toArray();
             $privileges = $data['privileges']->toArray();
+            
+            if (empty($data['pattern']) && $data['target'] !== 'all') {
+                $result = $this->addEmptyPatternMessage($result);
+                
+                goto end;
+            }
+            
             $groups = $this->findGroups($data['target'], $data['pattern']);
             
             if (count($groups) < 1) {
-                $this->sendNoGroupsMessage();
-                goto end;                   
+                $result['msg'][] = [
+                    'type' => 'alert',
+                    'message' => _('Pattern should not be empty.')
+                ];
+                
+                goto end;
             }
             
             if (count($privileges) < 1 && count($flags) < 1) {
-                $this->sendNoItemsMessage();
+                $result['msg'][] = [
+                    'type' => 'alert',
+                    'message' => _('Select at least one privilege or group flag.')
+                ];
+                
+                goto end;
             }
                
             /* @var $flag \IServ\CoreBundle\Entity\GroupFlag */
@@ -287,39 +295,59 @@ class AdminController extends PageController
             $messages = $groupManager->getMessages();
                 
             if (count($messages) > 0) {
-                $this->sendMessages($messages);
+                $result = $this->addMessages($messages, $result);
                 
             }
             
-            $this->log($groups, $flags, $privileges, 'assign');
+            $result = $this->log($groups, $flags, $privileges, $result, 'assign');
         }
         
         // jump hook
         end:
+            return $result;
     }
     
     /**
      * Handles response from revoke form
      * 
      * @param Form $revokeForm
+     * @return array
      */
     private function handleRevokeForm(Form $revokeForm)
     {
+        $result = [];
+        
         if ($revokeForm->isValid() && $revokeForm->isSubmitted()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
             $data = $revokeForm->getData();
             $flags = $data['flags']->toArray();
             $privileges = $data['privileges']->toArray();
+            
+            if (empty($data['pattern']) && $data['target'] !== 'all') {
+                $result = $this->addEmptyPatternMessage($result);
+                
+                goto end;
+            }
+            
             $groups = $this->findGroups($data['target'], $data['pattern']);
             
             if (count($groups) < 1) {
-                $this->sendNoGroupsMessage();
-                goto end;                   
+                $result['msg'][] = [
+                    'type' => 'alert',
+                    'message' => _('No matching groups found.')
+                ];
+                
+                goto end;
             }
             
             if (count($privileges) < 1 && count($flags) < 1) {
-                $this->sendNoItemsMessage();
+                $result['msg'][] = [
+                    'type' => 'alert',
+                    'message' => _('Select at least one privilege or group flag.')
+                ];
+                
+                goto end;
             }
             
             /* @var $flag \IServ\CoreBundle\Entity\GroupFlag */
@@ -340,34 +368,48 @@ class AdminController extends PageController
             $messages = $groupManager->getMessages();
                 
             if (count($messages) > 0) {
-                $this->sendMessages($messages);
-                
+                $result = $this->addMessages($messages, $result);
             }
             
-            $this->log($groups, $flags, $privileges, 'revoke');
+            $result = $this->log($groups, $flags, $privileges, $result, 'revoke');
         }
         
         // jump hook
         end:
+            return $result;
     }
     
     /**
      * Handles response from owner form
      * 
-     * @param Form $ownerForm 
+     * @param Form $ownerForm
+     * @return array
      */
     private function handleOwnerForm(Form $ownerForm)
     {
+        $result = [];
+        
         if ($ownerForm->isSubmitted() && $ownerForm->isValid()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
             $data = $ownerForm->getData();
             $owner = $data['owner'];
+            
+            if (empty($data['pattern']) && $data['target'] !== 'all') {
+                $result = $this->addEmptyPatternMessage($result);
+                
+                goto end;
+            }
+            
             $groups = $this->findGroups($data['target'], $data['pattern']);
             
             if (count($groups) < 1) {
-                $this->sendNoGroupsMessage();
-                return;                  
+                $result['msg'][] = [
+                    'type' => 'alert',
+                    'message' => _('No matching groups found.')
+                ];
+                
+                goto end;
             }
             
             /* @var $group \IServ\CoreBundle\Entity\Group */
@@ -380,31 +422,31 @@ class AdminController extends PageController
             $messages = $groupManager->getMessages();
                 
             if (count($messages) > 0) {
-                $this->sendMessages($messages);
+                $result = $this->addMessages($messages, $result);
                 
             }
+            
+            $result = $this->logOwner($groups, $owner, $result);
         }
         
+        end:
+            return $result;
     }
     
     /**
      * Tries to find groups by given criteria
      * 
      * @param string target
+     * @param array $result
      * @param string $pattern
-     * @return array
+     * @return array<\IServ\CoreBundle\Entity\Group>
      */
     private function findGroups($target, $pattern = null)
     {
         /* @var $group \IServ\CoreBundle\Entity\Group */
         if ($target == 'all') {
             $groups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
-        } else if ($target == 'ending-with') {
-            if (empty($pattern)) {
-                $this->sendEmptyPatternMessage();
-                goto empty_result;
-            }
-                
+        } else if ($target == 'ending-with') {   
             try {
                 /* @var $qb \Doctrine\ORM\QueryBuilder */
                 $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
@@ -419,13 +461,7 @@ class AdminController extends PageController
             } catch (NoResultException $e) {
                 // Just ignore no results \o/
             }
-                
-        } else if ($target == 'starting-with') {
-            if (empty($pattern)) {
-                $this->sendEmptyPatternMessage();
-                goto empty_result;
-            }
-                
+        } else if ($target == 'starting-with') {          
             try {
                 /* @var $qb \Doctrine\ORM\QueryBuilder */
                 $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
@@ -440,13 +476,7 @@ class AdminController extends PageController
             } catch (Doctrine\ORM\NoResultException $e) {
                 // Just ignore no results \o/
             }
-
         } else if ($target == 'contains') {
-            if (empty($pattern)) {
-                $this->sendEmptyPatternMessage();
-                goto empty_result;
-            }
-            
             try {
                 /* @var $qb \Doctrine\ORM\QueryBuilder */
                 $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
@@ -458,10 +488,9 @@ class AdminController extends PageController
                 ;
                     
                 $groups = $qb->getQuery()->getResult();
-            } catch (Doctrine\ORM\NoResultException $e) {
+            } catch (NoResultException $e) {
                 // Just ignore no results \o/
             }
-
         } else if ($target == 'matches') {
             $allGroups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
             $groups = [];
@@ -471,24 +500,22 @@ class AdminController extends PageController
                     $groups[] = $g;
                 }
             }
-               
         } else {
             throw new \InvalidArgumentException(sprintf('Not an implemented target: %s.', $target));
         }
         
         return $groups;
-        
-        empty_result:
-            return [];
             
     }
     
     /**
-     * Send messages as flash sorted by category (error, sucess e.g)
+     * Add messages from messages array to ouput array sorted by category (error, sucess e.g)
      * 
      * @param array $messages
+     * @param array $output
+     * @return array
      */
-    private function sendMessages(array $messages)
+    private function addMessages(array $messages, array $output)
     {
         $success = [];
         $error = [];
@@ -505,40 +532,102 @@ class AdminController extends PageController
         }
                     
         if (count($success) > 0) {
-            $this->get('iserv.flash')->success(implode("\n", $success)); 
+            $output['msg'][] = [
+                'type' => 'success',
+                'message' => nl2br(implode("\n", $success))
+            ];
         }
                     
         if (count($error) > 0) {
-            $this->get('iserv.flash')->error(implode("\n", $error)); 
+            $output['msg'][] = [
+                'type' => 'error',
+                'message' => nl2br(implode("\n", $error))
+            ];
         }
+        
+        return $output;
     }
     
     /**
-     * Log operations and sends finally a conclusion flash message
+     * Adds messages for empty pattern
+     * 
+     * @param array $result
+     * @return array
+     */
+    private function addEmptyPatternMessage(array $result)
+    {
+        $result['msg'][] = [
+            'type' => 'alert',
+            'message' => _('Pattern should not be empty.')
+        ];
+    }
+    
+    /**
+     * Log owner operations and add conclusion to response array.
+     * 
+     * @param array $groups
+     * @param User $owner
+     * @param array $result
+     * @return array
+     */
+    private function logOwner(array $groups, User $owner, array $result)
+    {
+        if (count($groups) > 0) {
+            if (is_null($owner)) {
+                if (count($groups) == 1) {
+                    $message = _('Removed owner of one group.');
+                    $log = 'Besitzer von einer Gruppe entfernt';
+                } else {
+                    $message = __('Removed owner of %s groups.', count($groups));
+                    $log = sprintf('Besitzer von %s Gruppen entfernt', count($groups));
+                }
+            } else {
+                if (count($groups) == 1) {
+                    $message = __('Set owner of one group to %s.', (string)$owner);
+                    $log = sprintf('Besitzer von einer Gruppe gesetzt auf %s', (string)$owner);
+                } else {
+                    $message = __('Set owner of %s groups to %s.', count($groups), (string)$owner);
+                    $log = sprintf('Besitzer von %s Gruppen gesetzt auf %s', count($groups), (string)$owner);
+                }
+            }
+            
+            $result['msg'][] = [
+                'type' => 'info',
+                'message' => $message
+            ];
+            $this->get('iserv.logger')->write($log);
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Log operations and add conclusion to response array.
      * 
      * @param array $groups
      * @param array $flags
      * @param array $privileges
+     * @param array $output
      * @param string $action
      */
-    private function log(array $groups, array $flags, array $privileges, $action = 'assign')
+    private function log(array $groups, array $flags, array $privileges, array $result, $action = 'assign')
     {
         if ($action !== 'assign' && $action !== 'revoke') {
             throw new \InvalidArgumentException(sprintf('action must be either "assign" or "revoke", "%s" given.', $action));
         }
         
-        if ($action == 'assign') {
+        if ($action === 'assign') {
             $prefix = 'Added';
             $preposition = 'to';
             $logSuffix = 'hinzugefügt';
             $logPreposition = 'zu';
-        } else {
+        } else if ($action === 'revoke') {
             $prefix = 'Removed';
             $preposition = 'from';
             $logSuffix = 'entfernt';
             $logPreposition = 'von';
         }
-               
+        
         if (count($groups) > 0 && count($flags) > 0) {
             if (count($groups) == 1 && count($flags) == 1) {
                 $message = _(sprintf('%s one group flag %s one group.', $prefix, $preposition));
@@ -554,7 +643,10 @@ class AdminController extends PageController
                 $log = sprintf('%s Gruppenmerkmale %s %s Gruppen %s', count($flags), $preposition, count($groups), $logSuffix);
             }
                     
-            $this->get('iserv.flash')->info($message);
+            $result['msg'][] = [
+                'type' => 'info',
+                'message' => $message
+            ];  
             $this->get('iserv.logger')->write($log);
         }
 
@@ -573,8 +665,13 @@ class AdminController extends PageController
                 $log = sprintf('%s Rechte %s %s Gruppen %s', count($privileges), $logPreposition, count($groups), $logSuffix);
             }
                     
-            $this->get('iserv.flash')->info($message);
+            $result['msg'][] = [
+                'type' => 'info',
+                'message' => $message
+            ];
             $this->get('iserv.logger')->write($log);
         }
+        
+        return $result;
     }
 }

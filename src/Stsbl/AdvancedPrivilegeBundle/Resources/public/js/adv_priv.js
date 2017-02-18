@@ -70,13 +70,68 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
         $('form').submit(submitHandler);
         
         $('#multiple-confirm-approve').click(function () {
+            $('#multiple-confirm').modal('hide');
             currentForm.unbind('submit', submitHandler);
+            var target = IServ.Routing.generate('admin_adv_priv_send');
+            var spinner = IServ.Spinner.add('#' + currentForm.attr('name') + '_submit');
+                
+            var sendHandler = function(e) {
+                $.ajax({
+                    beforeSend: function() {
+                        IServ.Loading.on('stsbl.adv-priv.form');
+                        spinner.data('spinner').start();
+                    },
+                    error: function() {
+                        IServ.Loading.off('stsbl.adv.form');
+                        spinner.data('spinner').stop();
+                    
+                        IServ.Message.error(_('Error during applying changes.'), false, '#groupmail-compose-hook');
+                    },
+                    success: function() {    
+                        IServ.Loading.off('stsbl.adv-priv.form');
+                        spinner.data('spinner').stop();
+                    },
+                    url: target,
+                    type: 'POST',
+                    data: new FormData(this),
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false
+                });
+                
+                e.preventDefault();
+                return false;
+            };
+            
+            currentForm.submit(sendHandler);
+            // submit the form
             currentForm.submit();
+            
+            // set back handler to default
+            currentForm.unbind('submit', sendHandler);
+            currentForm.submit(submitHandler);
         });
     }
     
     function initialize()
     {
+        // Bind AJAX interceptor
+        $(document).ajaxSuccess(function(event, xhr, settings) {
+            if (typeof xhr.responseJSON !== 'undefined' && typeof xhr.responseJSON.msg !== 'undefined') {
+                $.each(xhr.responseJSON.msg, function(k, v) {
+                    if (v.type === 'info') {
+                        IServ.Message.info(v.message, false, '.output');
+                    } else if (v.type === 'alert') {
+                        IServ.Message.warning(v.message, false, '.output');
+                    } else if (v.type === 'error') {
+                        IServ.Message.error(v.message, false, '.output');
+                    } else if (v.type === 'success') {
+                        IServ.Message.success(v.message, false, '.output');
+                    }
+                });
+            }
+        });
+        
         registerTargetHandler('assign');
         registerTargetHandler('revoke');
         registerTargetHandler('owner');

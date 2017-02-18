@@ -54,6 +54,8 @@
 {% endblock %}
 
 {% block content %}
+    <div class="output pt">
+    </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">{{ _('Set an owner for multiple groups') }}</h3>
@@ -89,7 +91,7 @@
                 <div class="modal-body">
                     <p>{{ _("Do you really want to apply the changes on the IServ group management? Careless settings could destroy the required privilege assignment for productive working.") }}</p>
                     <div class="form-group">
-                        <button type="submit" id="multiple-confirm-approve" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> {{ _('Apply') }}</button>&nbsp;
+                        <button type="submit" id="multiple-confirm-approve" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> {{ _('Apply') }}</button>&nbsp;
                         <button type="submit" id="multiple-confirm-cancel" data-dismiss="modal" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> {{ _('Cancel') }}</button>&nbsp;
                     </div>
                 </div>
