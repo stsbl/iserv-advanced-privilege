@@ -53,6 +53,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class AdminController extends PageController
 {
     /**
+     * @var array
+     */
+    private $messages = ['msg' => []];
+    
+    /**
      * Adds target choice to supplied builder
      * 
      * @param FormBuilderInterface $builder
@@ -195,11 +200,14 @@ class AdminController extends PageController
         $ownerForm->handleRequest($request);
         
         if ($assignForm->isSubmitted()) {
-            return new JsonResponse($this->handleAssignForm($assignForm));
+            $this->handleAssignForm($assignForm);
+            return new JsonResponse($this->messages);
         } else if ($revokeForm->isSubmitted()) {
-            return new JsonResponse($this->handleRevokeForm($revokeForm));
+            $this->handleRevokeForm($revokeForm);
+            return new JsonResponse($this->messages);
         } else if ($ownerForm->isSubmitted()) {
-            return new JsonResponse($this->handleOwnerForm($ownerForm));
+            $this->handleOwnerForm($ownerForm);
+            return new JsonResponse($this->messages);
         }
         
         throw new \RuntimeException('This statement should never be reached!');
@@ -242,7 +250,6 @@ class AdminController extends PageController
      */
     private function handleAssignForm(Form $assignForm)
     {
-        $result = [];
         
         if ($assignForm->isValid() && $assignForm->isSubmitted()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
@@ -252,7 +259,7 @@ class AdminController extends PageController
             $privileges = $data['privileges']->toArray();
             
             if (empty($data['pattern']) && $data['target'] !== 'all') {
-                $result = $this->addEmptyPatternMessage($result);
+                $this->addEmptyPatternMessage();
                 
                 goto end;
             }
@@ -260,19 +267,13 @@ class AdminController extends PageController
             $groups = $this->findGroups($data['target'], $data['pattern']);
             
             if (count($groups) < 1) {
-                $result['msg'][] = [
-                    'type' => 'alert',
-                    'message' => _('Pattern should not be empty.')
-                ];
+                $this->addMessage('alert', _('No matching groups found.'));
                 
                 goto end;
             }
             
             if (count($privileges) < 1 && count($flags) < 1) {
-                $result['msg'][] = [
-                    'type' => 'alert',
-                    'message' => _('Select at least one privilege or group flag.')
-                ];
+                $this->addMessage('alert', _('Select at least one privilege or group flag.'));
                 
                 goto end;
             }
@@ -295,16 +296,14 @@ class AdminController extends PageController
             $messages = $groupManager->getMessages();
                 
             if (count($messages) > 0) {
-                $result = $this->addMessages($messages, $result);
-                
+                $this->addGroupManagerMessages($messages);
             }
             
-            $result = $this->log($groups, $flags, $privileges, $result, 'assign');
+            $this->log($groups, $flags, $privileges, 'assign');
         }
         
         // jump hook
         end:
-            return $result;
     }
     
     /**
@@ -315,8 +314,6 @@ class AdminController extends PageController
      */
     private function handleRevokeForm(Form $revokeForm)
     {
-        $result = [];
-        
         if ($revokeForm->isValid() && $revokeForm->isSubmitted()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
@@ -325,7 +322,7 @@ class AdminController extends PageController
             $privileges = $data['privileges']->toArray();
             
             if (empty($data['pattern']) && $data['target'] !== 'all') {
-                $result = $this->addEmptyPatternMessage($result);
+                $this->addEmptyPatternMessage();
                 
                 goto end;
             }
@@ -333,19 +330,13 @@ class AdminController extends PageController
             $groups = $this->findGroups($data['target'], $data['pattern']);
             
             if (count($groups) < 1) {
-                $result['msg'][] = [
-                    'type' => 'alert',
-                    'message' => _('No matching groups found.')
-                ];
+                $this->addMessage('alert', _('No matching groups found.'));
                 
                 goto end;
             }
             
             if (count($privileges) < 1 && count($flags) < 1) {
-                $result['msg'][] = [
-                    'type' => 'alert',
-                    'message' => _('Select at least one privilege or group flag.')
-                ];
+                $this->addMessage('alert', _('Select at least one privilege or group flag.'));
                 
                 goto end;
             }
@@ -368,27 +359,23 @@ class AdminController extends PageController
             $messages = $groupManager->getMessages();
                 
             if (count($messages) > 0) {
-                $result = $this->addMessages($messages, $result);
+                $this->addGroupManagerMessages($messages);
             }
             
-            $result = $this->log($groups, $flags, $privileges, $result, 'revoke');
+            $this->log($groups, $flags, $privileges, 'revoke');
         }
         
         // jump hook
         end:
-            return $result;
     }
     
     /**
      * Handles response from owner form
      * 
      * @param Form $ownerForm
-     * @return array
      */
     private function handleOwnerForm(Form $ownerForm)
     {
-        $result = [];
-        
         if ($ownerForm->isSubmitted() && $ownerForm->isValid()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
@@ -404,10 +391,7 @@ class AdminController extends PageController
             $groups = $this->findGroups($data['target'], $data['pattern']);
             
             if (count($groups) < 1) {
-                $result['msg'][] = [
-                    'type' => 'alert',
-                    'message' => _('No matching groups found.')
-                ];
+                $this->addMessage('alert', _('No matching groups found.'));
                 
                 goto end;
             }
@@ -422,22 +406,21 @@ class AdminController extends PageController
             $messages = $groupManager->getMessages();
                 
             if (count($messages) > 0) {
-                $result = $this->addMessages($messages, $result);
+                $this->addGroupManagerMessages($messages);
                 
             }
             
-            $result = $this->logOwner($groups, $owner, $result);
+            $this->logOwner($groups, $owner);
         }
         
+        // jump hook
         end:
-            return $result;
     }
     
     /**
      * Tries to find groups by given criteria
      * 
      * @param string target
-     * @param array $result
      * @param string $pattern
      * @return array<\IServ\CoreBundle\Entity\Group>
      */
@@ -509,13 +492,12 @@ class AdminController extends PageController
     }
     
     /**
-     * Add messages from messages array to ouput array sorted by category (error, sucess e.g)
+     * Add messages by the group manager to ouput array sorted by category (error, sucess e.g)
      * 
      * @param array $messages
-     * @param array $output
      * @return array
      */
-    private function addMessages(array $messages, array $output)
+    private function addGroupManagerMessages(array $messages)
     {
         $success = [];
         $error = [];
@@ -532,34 +514,41 @@ class AdminController extends PageController
         }
                     
         if (count($success) > 0) {
-            $output['msg'][] = [
-                'type' => 'success',
-                'message' => nl2br(implode("\n", $success))
-            ];
+            $this->addMessage('success', nl2br(implode("\n", $success)));
         }
                     
         if (count($error) > 0) {
-            $output['msg'][] = [
-                'type' => 'error',
-                'message' => nl2br(implode("\n", $error))
-            ];
+            $this->addMessage('error', nl2br(implode("\n", $error)));
         }
         
-        return $output;
+        return $this->messages;
+    }
+    
+    /**
+     * Adds a message to result message collection
+     * 
+     * @param string $type
+     * @param string $message
+     * @return array
+     */
+    private function addMessage($type, $message)
+    {
+        $this->messages['msg'][] = [
+            'type' => $type,
+            'message' => $message
+        ];
+        
+        return $this->messages;
     }
     
     /**
      * Adds messages for empty pattern
      * 
-     * @param array $result
      * @return array
      */
-    private function addEmptyPatternMessage(array $result)
+    private function addEmptyPatternMessage()
     {
-        $result['msg'][] = [
-            'type' => 'alert',
-            'message' => _('Pattern should not be empty.')
-        ];
+        return $this->addMessage('alert', _('Pattern should not be empty.'));
     }
     
     /**
@@ -567,10 +556,9 @@ class AdminController extends PageController
      * 
      * @param array $groups
      * @param User $owner
-     * @param array $result
      * @return array
      */
-    private function logOwner(array $groups, User $owner, array $result)
+    private function logOwner(array $groups, User $owner)
     {
         if (count($groups) > 0) {
             if (is_null($owner)) {
@@ -591,14 +579,11 @@ class AdminController extends PageController
                 }
             }
             
-            $result['msg'][] = [
-                'type' => 'info',
-                'message' => $message
-            ];
+            $this->addMessage('info', $message);
             $this->get('iserv.logger')->write($log);
         }
         
-        return $result;
+        return $this->messages;
     }
     
     /**
@@ -610,7 +595,7 @@ class AdminController extends PageController
      * @param array $output
      * @param string $action
      */
-    private function log(array $groups, array $flags, array $privileges, array $result, $action = 'assign')
+    private function log(array $groups, array $flags, array $privileges, $action = 'assign')
     {
         if ($action !== 'assign' && $action !== 'revoke') {
             throw new \InvalidArgumentException(sprintf('action must be either "assign" or "revoke", "%s" given.', $action));
@@ -643,10 +628,7 @@ class AdminController extends PageController
                 $log = sprintf('%s Gruppenmerkmale %s %s Gruppen %s', count($flags), $preposition, count($groups), $logSuffix);
             }
                     
-            $result['msg'][] = [
-                'type' => 'info',
-                'message' => $message
-            ];  
+            $this->addMessage('info', $message);  
             $this->get('iserv.logger')->write($log);
         }
 
@@ -665,13 +647,10 @@ class AdminController extends PageController
                 $log = sprintf('%s Rechte %s %s Gruppen %s', count($privileges), $logPreposition, count($groups), $logSuffix);
             }
                     
-            $result['msg'][] = [
-                'type' => 'info',
-                'message' => $message
-            ];
+            $this->addMessage('info', $message);
             $this->get('iserv.logger')->write($log);
         }
         
-        return $result;
+        return $this->messages;
     }
 }
