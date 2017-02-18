@@ -25,6 +25,10 @@
 IServ.AdvancedPrivilege = {};
 
 IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
+    "use strict";
+    
+    var currentForm;
+    
     function hidePattern(type)
     {
         $('#multiple-' + type + '-form-group-pattern').hide();
@@ -52,11 +56,31 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
         });
     }
     
+    function registerFormHandler()
+    {
+        var submitHandler = function(e) {
+            $('#multiple-confirm').modal('show');
+            
+            currentForm = $(this);
+            
+            e.preventDefault();
+            return false;
+        };
+        
+        $('form').submit(submitHandler);
+        
+        $('#multiple-confirm-approve').click(function () {
+            currentForm.unbind('submit', submitHandler);
+            currentForm.submit();
+        });
+    }
+    
     function initialize()
     {
         registerTargetHandler('assign');
         registerTargetHandler('revoke');
         registerTargetHandler('owner');
+        registerFormHandler();
     }
 
     // Public API

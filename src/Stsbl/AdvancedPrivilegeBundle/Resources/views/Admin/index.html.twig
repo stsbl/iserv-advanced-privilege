@@ -78,4 +78,22 @@
             {{ form(multipleRevokeForm) }}
         </div>
     </div>
+    <div id="multiple-confirm" class="modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{ _('Apply changes') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ _("Do you really want to apply the changes on the IServ group management? Careless settings could destroy the required privilege assignment for productive working.") }}</p>
+                    <div class="form-group">
+                        <button type="submit" id="multiple-confirm-approve" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> {{ _('Apply') }}</button>&nbsp;
+                        <button type="submit" id="multiple-confirm-cancel" data-dismiss="modal" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> {{ _('Cancel') }}</button>&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
