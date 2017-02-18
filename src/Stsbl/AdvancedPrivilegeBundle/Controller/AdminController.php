@@ -560,22 +560,24 @@ class AdminController extends PageController
      */
     private function logOwner(array $groups, User $owner = null)
     {
-        if (count($groups) > 0) {
+        $count = count($groups);
+        
+        if ($count > 0) {
             if (is_null($owner)) {
-                if (count($groups) == 1) {
+                if ($count == 1) {
                     $message = _('Removed owner of one group.');
                     $log = 'Besitzer von einer Gruppe entfernt';
                 } else {
-                    $message = __('Removed owner of %s groups.', count($groups));
-                    $log = sprintf('Besitzer von %s Gruppen entfernt', count($groups));
+                    $message = __('Removed owner of %s groups.', $count);
+                    $log = sprintf('Besitzer von %s Gruppen entfernt', $count);
                 }
             } else {
-                if (count($groups) == 1) {
+                if ($count == 1) {
                     $message = __('Set owner of one group to %s.', (string)$owner);
                     $log = sprintf('Besitzer von einer Gruppe gesetzt auf %s', (string)$owner);
                 } else {
-                    $message = __('Set owner of %s groups to %s.', count($groups), (string)$owner);
-                    $log = sprintf('Besitzer von %s Gruppen gesetzt auf %s', count($groups), (string)$owner);
+                    $message = __('Set owner of %s groups to %s.', $count, (string)$owner);
+                    $log = sprintf('Besitzer von %s Gruppen gesetzt auf %s', $count, (string)$owner);
                 }
             }
             
@@ -613,38 +615,42 @@ class AdminController extends PageController
             $logPreposition = 'von';
         }
         
-        if (count($groups) > 0 && count($flags) > 0) {
-            if (count($groups) == 1 && count($flags) == 1) {
+        $countGroups = count($groups);
+        $countFlags = count($flags);
+        $countPrivileges = count($privileges);
+        
+        if ($countGroups > 0 && $countFlags > 0) {
+            if ($countGroups == 1 && $countFlags == 1) {
                 $message = _(sprintf('%s one group flag %s one group.', $prefix, $preposition));
                 $log = sprintf('Ein Gruppenmerkmal %s einer Gruppe %s', $logPreposition, $logSuffix);
-            } else if (count($groups) == 1 && count($flags) > 1) {
+            } else if ($countGroups == 1 && $countFlags > 1) {
                 $message = sprintf(_(sprintf('%s %%s group flags %s one group.', $prefix, $preposition)), count($flag));
-                $log = sprintf('%s Gruppenmerkmale %s einer Gruppe %s', count($flags), $logPreposition, $logSuffix);
-            } else if (count($groups) > 1 && count($flags) == 1) {
-                $message = sprintf(_(sprintf('%s one group flag %s %%s groups.', $prefix, $preposition)), count($groups));
-                $log = sprintf('Ein Gruppenmerkmal %s %s Gruppen %s', $logPreposition, count($groups), $logSuffix);
+                $log = sprintf('%s Gruppenmerkmale %s einer Gruppe %s', $countFlags, $logPreposition, $logSuffix);
+            } else if ($countGroups > 1 && $countFlags == 1) {
+                $message = sprintf(_(sprintf('%s one group flag %s %%s groups.', $prefix, $preposition)), $countGroups);
+                $log = sprintf('Ein Gruppenmerkmal %s %s Gruppen %s', $logPreposition, $countGroups, $logSuffix);
             } else {
-                $message = sprintf(_(sptrinf('%s %%s group flags %s %%s groups.', $prefix, $preposition)), count($flags), count($groups));
-                $log = sprintf('%s Gruppenmerkmale %s %s Gruppen %s', count($flags), $preposition, count($groups), $logSuffix);
+                $message = sprintf(_(sptrinf('%s %%s group flags %s %%s groups.', $prefix, $preposition)), $countFlags, $countGroups);
+                $log = sprintf('%s Gruppenmerkmale %s %s Gruppen %s', $countFlags, $preposition, $countGroups, $logSuffix);
             }
             
             $this->get('iserv.logger')->write($log);
             $this->addMessage('info', $message);
         }
 
-        if (count($groups) > 0 && count($privileges) > 0) {
-            if (count($groups) == 1 && count($privileges) == 1) {
+        if ($countGroups > 0 && $countPrivileges > 0) {
+            if ($countGroups == 1 && $countPrivileges == 1) {
                 $message = _(sprintf('%s one privilege %s one group.', $prefix, $preposition));
                 $log = sprintf('Ein Recht %s einer Gruppe %s', $logPreposition, $logSuffix);
-            } else if (count($groups) == 1 && count($privileges) > 1) {
-                $message = sprintf(_(sprintf('%s %%s privileges %s one group.', $prefix, $preposition)), count($privileges));
-                $log = sprintf('%s Rechte %s einer Gruppe %s', count($privileges), $logPreposition, $logSuffix);
-            } else if (count($groups) > 1 && count($privileges) == 1) {
-                $message = sprintf(_(sprintf('%s one privilege %s %%s groups.', $prefix, $preposition)), count($groups));
-                $log = sprintf('Ein Recht %s %s Gruppen %s', $logPreposition, count($groups), $logSuffix);
+            } else if ($countGroups == 1 && $countPrivileges > 1) {
+                $message = sprintf(_(sprintf('%s %%s privileges %s one group.', $prefix, $preposition)), $countPrivileges);
+                $log = sprintf('%s Rechte %s einer Gruppe %s', $countPrivileges, $logPreposition, $logSuffix);
+            } else if ($countGroups > 1 && $countPrivileges == 1) {
+                $message = sprintf(_(sprintf('%s one privilege %s %%s groups.', $prefix, $preposition)), $countGroups);
+                $log = sprintf('Ein Recht %s %s Gruppen %s', $logPreposition, $countGroups, $logSuffix);
             } else {
-                $message = sprintf(_(sprintf('%s %%s privileges %s %%s groups.', $prefix, $preposition)), count($privileges), count($groups));
-                $log = sprintf('%s Rechte %s %s Gruppen %s', count($privileges), $logPreposition, count($groups), $logSuffix);
+                $message = sprintf(_(sprintf('%s %%s privileges %s %%s groups.', $prefix, $preposition)), $countPrivileges, $countGroups);
+                $log = sprintf('%s Rechte %s %s Gruppen %s', $countPrivileges, $logPreposition, $countGroups, $logSuffix);
             }
             
             $this->get('iserv.logger')->write($log);
