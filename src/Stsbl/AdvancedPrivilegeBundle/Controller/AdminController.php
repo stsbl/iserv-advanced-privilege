@@ -579,8 +579,8 @@ class AdminController extends PageController
                 }
             }
             
-            $this->addMessage('info', $message);
             $this->get('iserv.logger')->write($log);
+            $this->addMessage('info', $message);
         }
         
         return $this->messages;
@@ -627,9 +627,9 @@ class AdminController extends PageController
                 $message = sprintf(_(sptrinf('%s %%s group flags %s %%s groups.', $prefix, $preposition)), count($flags), count($groups));
                 $log = sprintf('%s Gruppenmerkmale %s %s Gruppen %s', count($flags), $preposition, count($groups), $logSuffix);
             }
-                    
-            $this->addMessage('info', $message);  
+            
             $this->get('iserv.logger')->write($log);
+            $this->addMessage('info', $message);
         }
 
         if (count($groups) > 0 && count($privileges) > 0) {
@@ -646,9 +646,9 @@ class AdminController extends PageController
                 $message = sprintf(_(sprintf('%s %%s privileges %s %%s groups.', $prefix, $preposition)), count($privileges), count($groups));
                 $log = sprintf('%s Rechte %s %s Gruppen %s', count($privileges), $logPreposition, count($groups), $logSuffix);
             }
-                    
-            $this->addMessage('info', $message);
+            
             $this->get('iserv.logger')->write($log);
+            $this->addMessage('info', $message);
         }
         
         return $this->messages;
