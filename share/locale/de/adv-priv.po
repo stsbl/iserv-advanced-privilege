@@ -84,3 +84,24 @@ msgstr "Wählen Sie zumindest ein Recht oder Gruppenmerkmal aus."
 
 msgid "Revoke a privilege or group flag from multiple groups"
 msgstr "Ein Recht oder Gruppenmerkmal von mehreren Gruppen entfernen"
+
+msgid "Set an owner for multiple groups"
+msgstr "Einen Besitzer für mehrere Gruppen setzen"
+
+msgid "To remove the owner from the targets, select no owner."
+msgstr "Um den Besitzer von den Zielen zu entfernen, wählen Sie keinen Besitzer aus."
+
+msgid "Set owner of one group to %s."
+msgstr "Besitzer von einer Gruppe gesetzt auf %s."
+
+msgid "Set owner of %s groups to %s."
+msgstr "Besitzer von %s Gruppen gesetzt auf %s."
+
+msgid "Removed owner of %s groups."
+msgstr "Besitzer von 14 Gruppen entfernt."
+
+msgid "Removed owner of one group."
+msgstr "Benitzer von einer Gruppe entfernt."
+
+msgid "Do you really want to apply the changes on the IServ group management? Careless settings could destroy the required privilege assignment for productive working."
+msgstr "Möchten Sie die Änderungen wirklich auf die IServ-Gruppenverwaltung anwenden? Unvorsichtige Einstellungen könnten die benötigte Rechtezuweisung für den produktiven Arbeitsablauf beschädigen."
