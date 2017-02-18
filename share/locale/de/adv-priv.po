@@ -29,7 +29,7 @@ msgid "Enter a pattern..."
 msgstr "Muster eingeben..."
 
 msgid "Please select a target."
-msgstr "Bitte wählen sie ein Ziel."
+msgstr "Bitte wählen Sie ein Ziel."
 
 msgid "Added one group flag to one group."
 msgstr "Ein Gruppenmerkmal zu einer Gruppe hinzugefügt."

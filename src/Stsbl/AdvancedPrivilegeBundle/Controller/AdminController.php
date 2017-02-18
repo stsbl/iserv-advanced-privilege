@@ -250,8 +250,7 @@ class AdminController extends PageController
      */
     private function handleAssignForm(Form $assignForm)
     {
-        
-        if ($assignForm->isValid() && $assignForm->isSubmitted()) {
+        if ($assignForm->isValid()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
             $data = $assignForm->getData();
@@ -300,6 +299,10 @@ class AdminController extends PageController
             }
             
             $this->log($groups, $flags, $privileges, 'assign');
+        } else {
+            $errors = preg_replace('/^ERROR: /', '', (string)$assignForm->getErrors(true));
+            
+            $this->addMessage('error', $errors);
         }
         
         // jump hook
@@ -314,7 +317,7 @@ class AdminController extends PageController
      */
     private function handleRevokeForm(Form $revokeForm)
     {
-        if ($revokeForm->isValid() && $revokeForm->isSubmitted()) {
+        if ($revokeForm->isValid()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
             $data = $revokeForm->getData();
@@ -363,6 +366,10 @@ class AdminController extends PageController
             }
             
             $this->log($groups, $flags, $privileges, 'revoke');
+        } else {
+            $errors = preg_replace('/^ERROR: /', '', (string)$revokeForm->getErrors(true));
+            
+            $this->addMessage('error', $errors);
         }
         
         // jump hook
@@ -376,14 +383,14 @@ class AdminController extends PageController
      */
     private function handleOwnerForm(Form $ownerForm)
     {
-        if ($ownerForm->isSubmitted() && $ownerForm->isValid()) {
+        if ($ownerForm->isValid()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
             $groupManager = $this->get('iserv.group_manager');
             $data = $ownerForm->getData();
             $owner = $data['owner'];
             
             if (empty($data['pattern']) && $data['target'] !== 'all') {
-                $result = $this->addEmptyPatternMessage($result);
+                $this->addEmptyPatternMessage();
                 
                 goto end;
             }
@@ -411,6 +418,10 @@ class AdminController extends PageController
             }
             
             $this->logOwner($groups, $owner);
+        } else {
+            $errors = preg_replace('/^ERROR: /', '', (string)$ownerForm->getErrors(true));
+            
+            $this->addMessage('error', $errors);
         }
         
         // jump hook
@@ -542,13 +553,23 @@ class AdminController extends PageController
     }
     
     /**
-     * Adds messages for empty pattern
+     * Add messages for empty pattern
      * 
      * @return array
      */
     private function addEmptyPatternMessage()
     {
         return $this->addMessage('alert', _('Pattern should not be empty.'));
+    }
+    
+    /**
+     * Add message for not selected target
+     * 
+     * @return array
+     */
+    private function addEmptyTargetMessage()
+    {
+        return $this->addMessage('alert', _('Please select a target.'));
     }
     
     /**
