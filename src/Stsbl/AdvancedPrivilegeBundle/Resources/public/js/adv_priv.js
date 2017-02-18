@@ -29,6 +29,22 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
     
     var currentForm;
     
+    function smoothScrollToOutput()
+    {
+        $('html, body').animate({
+            scrollTop: $('.output').offset().top
+        }, 1000);
+    }
+    
+    function resetForm()
+    {
+        currentForm[0].reset();
+        $('#' + currentForm.attr('name') + '_owner').select2('val', '');
+        $('#' + currentForm.attr('name') + '_privileges').select2('val', '');
+        $('#' + currentForm.attr('name') + '_flags').val('val', '');
+        showPattern(currentForm.attr('name'));
+    }
+    
     function hidePattern(type)
     {
         $('#multiple-' + type + '-form-group-pattern').hide();
@@ -82,14 +98,16 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
                         spinner.data('spinner').start();
                     },
                     error: function() {
-                        IServ.Loading.off('stsbl.adv.form');
+                        IServ.Loading.off('stsbl.adv-priv.form');
                         spinner.data('spinner').stop();
                     
-                        IServ.Message.error(_('Error during applying changes.'), false, '#groupmail-compose-hook');
+                        IServ.Message.error(_('Error during applying changes.'), false, '.output');
                     },
                     success: function() {    
                         IServ.Loading.off('stsbl.adv-priv.form');
                         spinner.data('spinner').stop();
+                        resetForm();
+                        smoothScrollToOutput();
                     },
                     url: target,
                     type: 'POST',

@@ -558,7 +558,7 @@ class AdminController extends PageController
      * @param User $owner
      * @return array
      */
-    private function logOwner(array $groups, User $owner)
+    private function logOwner(array $groups, User $owner = null)
     {
         if (count($groups) > 0) {
             if (is_null($owner)) {
