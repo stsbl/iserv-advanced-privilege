@@ -45,6 +45,14 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
         showPattern(currentForm.attr('name'));
     }
     
+    function removeAlerts()
+    {
+        // remove old alerts
+        $('.output > .alert').each(function() {
+            $(this).alert('close');
+        });
+    }
+    
     function hidePattern(type)
     {
         $('#multiple-' + type + '-form-group-pattern').hide();
@@ -94,6 +102,7 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
             var sendHandler = function(e) {
                 $.ajax({
                     beforeSend: function() {
+                        removeAlerts();
                         IServ.Loading.on('stsbl.adv-priv.form');
                         spinner.data('spinner').start();
                     },
