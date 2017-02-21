@@ -1,3 +1,24 @@
+stsbl-iserv-advanced-privilege (17.02.21-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Fixed l10n.
+  * Updated copyright.
+  * Replace deprecated _self.templateName with _self.
+  * Added support for set owner of multiple groups.
+  * Simplified js code.
+  * Added confirmation of applying changes.
+  * Handle form submit via ajax.
+  * Unfified message handling.
+  * Reset forms after success.
+  * Updated l10n.
+  * Fixed logging.
+  * Improved group, privilege and flag counting.
+  * Clear alerts before sending a new request.
+  * Added confirmation dialog animations.
+  * Added form error handling.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Tue, 21 Feb 2017 23:19:41 +0100
+
 stsbl-iserv-advanced-privilege (17.01.22-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
