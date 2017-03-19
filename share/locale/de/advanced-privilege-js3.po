@@ -1,7 +1,10 @@
 msgid ""
 msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-19 17:13+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/public/js/adv_priv.js:113
 msgid "Error during applying changes."
 msgstr "Fehler während des Anwendens der Änderungen."

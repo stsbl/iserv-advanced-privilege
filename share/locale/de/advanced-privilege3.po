@@ -1,0 +1,210 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-19 17:23+0100\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:215
+#: src/Stsbl/AdvancedPrivilegeBundle/EventListener/MenuListener.php:50
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:232
+msgid "Advanced privilege assignment"
+msgstr "Erweiterte Rechte-Zuweisung"
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:217
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:113
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:231
+msgid "Privileges"
+msgstr "Rechte"
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:244
+msgid "Set an owner for multiple groups"
+msgstr "Einen Besitzer für mehrere Gruppen setzen"
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:258
+msgid "Assign a privilege or group flag to multiple groups"
+msgstr "Ein Recht oder Gruppenmerkmal mehreren Gruppen zuweisen"
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:272
+msgid "Revoke a privilege or group flag from multiple groups"
+msgstr "Ein Recht oder Gruppenmerkmal von mehreren Gruppen entfernen"
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:290
+msgid "Apply changes"
+msgstr "Änderungen übernehmen"
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:296
+msgid ""
+"Do you really want to apply the changes on the IServ group management? "
+"Careless settings could destroy the required privilege assignment for "
+"productive working."
+msgstr ""
+"Möchten Sie die Änderungen wirklich auf die IServ-Gruppenverwaltung "
+"anwenden? Unvorsichtige Einstellungen könnten die benötigte Rechtezuweisung "
+"für den produktiven Arbeitsablauf beschädigen."
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:301
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:135
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:176
+msgid "Apply"
+msgstr "Übernehmen"
+
+#: /tmp/advanced-privilege-StsblAdvancedPrivilegeBundle.twig.php:305
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:34
+msgid "Added one group flag to one group."
+msgstr "Ein Gruppenmerkmal zu einer Gruppe hinzugefügt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:35
+#, php-format
+msgid "Added %s group flags to one group."
+msgstr "%s Gruppenmerkmale zu einer Gruppe hinzugefügt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:36
+#, php-format
+msgid "Added one group flag to %s groups."
+msgstr "Ein Gruppenmerkmal zu %s Gruppen hinzugefügt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:37
+#, php-format
+msgid "Added %s group flags to %s groups."
+msgstr "%s Gruppenmerkmale zu %s Gruppen hinzugefügt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:39
+msgid "Removed one group flag from one group."
+msgstr "Ein Gruppenmerkmal von einer Gruppe entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:40
+#, php-format
+msgid "Removed %s group flags from one group."
+msgstr "%s Gruppenmerkmale von einer Gruppe entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:41
+#, php-format
+msgid "Removed one group flag from %s groups."
+msgstr "Ein Gruppenmerkmal von %s Gruppen entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:42
+#, php-format
+msgid "Removed %s group flags from %s groups."
+msgstr "%s Gruppenmerkmale von %s Gruppen entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:44
+msgid "Added one privilege to one group."
+msgstr "Ein Recht zu einer Gruppe hinzugefügt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:45
+#, php-format
+msgid "Added %s privileges to one group."
+msgstr "%s Rechte zu einer Gruppe hinzugefügt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:46
+#, php-format
+msgid "Added one privilege to %s groups."
+msgstr "Ein Recht zu %s Gruppen hinzugefügt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:47
+#, php-format
+msgid "Added %s privileges to %s groups."
+msgstr "%s Rechte zu %s Gruppen hinzugefügt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:49
+msgid "Removed one privilege from one group."
+msgstr "Ein Recht von einer Gruppe entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:50
+#, php-format
+msgid "Removed %s privileges from one group."
+msgstr "%s Rechte von einer Gruppe entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:51
+#, php-format
+msgid "Removed one privilege from %s groups."
+msgstr "Ein Recht von %s Gruppen entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php:52
+#, php-format
+msgid "Removed %s privileges from %s groups."
+msgstr "%s Rechte von %s Gruppen entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:71
+msgid "All groups"
+msgstr "Alle Gruppen"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:72
+msgid "Groups whose name starting with ..."
+msgstr "Gruppen, dessen Name mit ... beginnt"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:73
+msgid "Groups whose name ending with ..."
+msgstr "Gruppen, dessen Name mit ... endet"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:74
+msgid "Groups whose name contains ..."
+msgstr "Gruppen, dessen Name ... enthält"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:75
+msgid "Groups whose name match with the following regular expression ..."
+msgstr "Gruppen, dessen Name auf den folgenden regulären Ausdruck passt:"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:77
+msgid "Select target"
+msgstr "Ziel auswählen"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:79
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:572
+msgid "Please select a target."
+msgstr "Bitte wählen Sie ein Ziel."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:85
+msgid "Enter a pattern..."
+msgstr "Muster eingeben..."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:124
+msgid "Group flags"
+msgstr "Gruppenmerkmale"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:162
+msgid "Owner"
+msgstr "Besitzer"
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:172
+msgid "To remove the owner from the targets, select no owner."
+msgstr ""
+"Um den Besitzer von den Zielen zu entfernen, wählen Sie keinen Besitzer aus."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:269
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:336
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:401
+msgid "No matching groups found."
+msgstr "Keine passenden Gruppen gefunden."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:275
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:342
+msgid "Select at least one privilege or group flag."
+msgstr "Wählen Sie zumindest ein Recht oder Gruppenmerkmal aus."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:562
+msgid "Pattern should not be empty."
+msgstr "Muster sollte nicht leer sein."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:589
+msgid "Removed owner of one group."
+msgstr "Benitzer von einer Gruppe entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:592
+#, fuzzy, php-format
+msgid "Removed owner of %s groups."
+msgstr "Besitzer von 14 Gruppen entfernt."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:597
+#, php-format
+msgid "Set owner of one group to %s."
+msgstr "Besitzer von einer Gruppe gesetzt auf %s."
+
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:600
+#, php-format
+msgid "Set owner of %s groups to %s."
+msgstr "Besitzer von %s Gruppen gesetzt auf %s."
