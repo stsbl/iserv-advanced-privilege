@@ -1,3 +1,12 @@
+stsbl-iserv-advanced-privilege (17.05.07-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Updated i18n.
+  * Switched from EntityType to UserType to allow deletion of input.
+  * Renamed translation => tranlations.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 07 May 2017 23:53:11 +0200
+
 stsbl-iserv-advanced-privilege (17.02.21-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
