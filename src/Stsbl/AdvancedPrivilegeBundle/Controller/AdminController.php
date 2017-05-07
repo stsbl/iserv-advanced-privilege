@@ -6,10 +6,10 @@ use Doctrine\ORM\NoResultException;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Entity\User;
 use IServ\CoreBundle\Form\Type\GettextEntityType;
+use IServ\CoreBundle\Form\Type\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -158,16 +158,10 @@ class AdminController extends PageController
         $builder = $this->addTargetChoice($builder);
         
         $builder
-            ->add('owner', EntityType::class, [
+            ->add('owner', UserType::class, [
                 'label' => _('Owner'),
-                'class' => 'IServCoreBundle:User',
-                'select2-icon' => 'legay-act',
-                'select2-style' => 'stack',
                 'multiple' => false,
                 'required' => false,
-                'by_reference' => false,
-                'choice_label' => 'name',
-                'order_by' => ['lastname', 'firstname'],
                 'attr' => [
                     'help_text' => _('To remove the owner from the targets, select no owner.')
                 ]
