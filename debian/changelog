@@ -1,9 +1,17 @@
+stsbl-iserv-advanced-privilege (17.05.24-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Updated l10n.
+  * Removed highlighted status.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Wed, 24 May 2017 07:01:14 +0200
+
 stsbl-iserv-advanced-privilege (17.05.07-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
   * Updated i18n.
   * Switched from EntityType to UserType to allow deletion of input.
-  * Renamed translation => tranlations.
+  * Renamed translation => translations.
 
  -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 07 May 2017 23:53:11 +0200
 
