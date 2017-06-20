@@ -192,7 +192,7 @@ class AdminController extends PageController
         $revokeForm->handleRequest($request);
         $ownerForm = $this->getOwnerForm();
         $ownerForm->handleRequest($request);
-        
+
         if ($assignForm->isSubmitted()) {
             $this->handleAssignForm($assignForm);
             return new JsonResponse($this->messages);
@@ -388,20 +388,23 @@ class AdminController extends PageController
                 
                 goto end;
             }
-            
-            $groups = $this->findGroups($data['target'], $data['pattern']);
+
+            $skipOwner = $owner === null ? true : false;
+            $groups = $this->findGroups($data['target'], $data['pattern'], $skipOwner);
             
             if (count($groups) < 1) {
                 $this->addMessage('alert', _('No matching groups found.'));
                 
                 goto end;
             }
-            
+
+            $i = 0;
             /* @var $group \IServ\CoreBundle\Entity\Group */
             foreach ($groups as $group) {
                 $group->setOwner($owner);
-                
                 $groupManager->update($group);
+
+                $i++;
             }
             
             $messages = $groupManager->getMessages();
@@ -410,8 +413,8 @@ class AdminController extends PageController
                 $this->addGroupManagerMessages($messages);
                 
             }
-            
-            $this->logOwner($groups, $owner);
+
+            $this->logOwner($groups, $owner, $i);
         } else {
             $errors = preg_replace('/^ERROR: /', '', (string)$ownerForm->getErrors(true));
             
@@ -427,9 +430,10 @@ class AdminController extends PageController
      * 
      * @param string target
      * @param string $pattern
+     * @param boolean $skipNoOwner
      * @return array<\IServ\CoreBundle\Entity\Group>
      */
-    private function findGroups($target, $pattern = null)
+    private function findGroups($target, $pattern = null, $skipNoOwner = false)
     {
         /* @var $group \IServ\CoreBundle\Entity\Group */
         if ($target == 'all') {
@@ -441,9 +445,13 @@ class AdminController extends PageController
                 $qb
                     ->select('g')
                     ->from('IServCoreBundle:Group', 'g')
-                    ->where('g.name LIKE :query')
+                    ->where($qb->expr()->like('g.name', ':query'))
                     ->setParameter('query', '%'.$pattern);
                 ;
+
+                if ($skipNoOwner) {
+                    $qb->andWhere($qb->expr()->isNotNull('g.owner'));
+                }
                     
                 $groups = $qb->getQuery()->getResult();
             } catch (NoResultException $e) {
@@ -456,12 +464,16 @@ class AdminController extends PageController
                 $qb
                     ->select('g')
                     ->from('IServCoreBundle:Group', 'g')
-                    ->where('g.name LIKE :query')
+                    ->where($qb->expr()->like('g.name', ':query'))
                     ->setParameter('query', $pattern.'%');
                 ;
+
+                if ($skipNoOwner) {
+                    $qb->andWhere($qb->expr()->isNotNull('g.owner'));
+                }
                     
                 $groups = $qb->getQuery()->getResult();
-            } catch (Doctrine\ORM\NoResultException $e) {
+            } catch (NoResultException $e) {
                 // Just ignore no results \o/
             }
         } else if ($target == 'contains') {
@@ -484,6 +496,10 @@ class AdminController extends PageController
             $groups = [];
 
             foreach ($allGroups as $g) {
+                if ($skipNoOwner && $g->getOwner() === null) {
+                    continue;
+                }
+
                 if (preg_match(sprintf('/%s/', $pattern), $g->getName())) {
                     $groups[] = $g;
                 }
@@ -557,37 +573,30 @@ class AdminController extends PageController
     }
     
     /**
-     * Add message for not selected target
-     * 
-     * @return array
-     */
-    private function addEmptyTargetMessage()
-    {
-        return $this->addMessage('alert', _('Please select a target.'));
-    }
-    
-    /**
      * Log owner operations and add conclusion to response array.
      * 
      * @param array $groups
      * @param User $owner
+     * @param integer $count
      * @return array
      */
-    private function logOwner(array $groups, User $owner = null)
+    private function logOwner(array $groups, User $owner = null, $count = null)
     {
-        $count = count($groups);
-        
+        if ($count === null) {
+            $count = count($groups);
+        }
+
         if ($count > 0) {
-            if (is_null($owner)) {
-                if ($count == 1) {
+            if ($owner === null) {
+                if ($count === 1) {
                     $message = _('Removed owner of one group.');
                     $log = 'Besitzer von einer Gruppe entfernt';
                 } else {
-                    $message = __('Removed owner of %s groups.', $count);
                     $log = sprintf('Besitzer von %s Gruppen entfernt', $count);
+                    $message = __('Removed owner of %s groups.', $count);
                 }
             } else {
-                if ($count == 1) {
+                if ($count === 1) {
                     $message = __('Set owner of one group to %s.', (string)$owner);
                     $log = sprintf('Besitzer von einer Gruppe gesetzt auf %s', (string)$owner);
                 } else {
