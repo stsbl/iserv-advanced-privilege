@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-21 00:35+0200\n"
+"POT-Creation-Date: 2017-06-21 00:38+0200\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -235,6 +235,7 @@ msgid "Removed owner of one group."
 msgstr "Benitzer von einer Gruppe entfernt."
 
 #: debian/stsbl-iserv-advanced-privilege/usr/share/iserv/src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:586
+#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:596
 #, fuzzy, php-format
 msgid "Removed owner of %s groups."
 msgstr "Besitzer von %s Gruppen entfernt."
@@ -250,8 +251,3 @@ msgstr "Besitzer von einer Gruppe gesetzt auf %s."
 #, php-format
 msgid "Set owner of %s groups to %s."
 msgstr "Besitzer von %s Gruppen gesetzt auf %s."
-
-#: src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php:596
-#, php-format
-msgid "Removed owner of %o groups."
-msgstr ""
