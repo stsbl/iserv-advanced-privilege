@@ -1,3 +1,14 @@
+stsbl-iserv-advanced-privilege (17.06.21-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Updated install file.
+  * Updated build deps and rules.
+  * Fixed build deps.
+  * Improved query builder handling.
+  * Fixed hardcoded group amount in l10n.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Wed, 21 Jun 2017 00:37:28 +0200
+
 stsbl-iserv-advanced-privilege (17.05.24-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
