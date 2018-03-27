@@ -3,12 +3,17 @@ Section: misc
 Priority: extra
 Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
 Build-Depends: debhelper (>= 10), iserv3-dev
-Standards-Version: 3.9.5
+Build-Depends-Indep: iserv3-dev
+Standards-Version: 4.1.3.0
 Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-advanced-privilege
 
 Package: stsbl-iserv-advanced-privilege
 Architecture: all
-Depends: iserv-portal, stsbl-iserv3-maintenance
+Depends: ${misc:Depends},
+  ${perl:Depends},
+  iserv-portal,
+  stsbl-iserv3-maintenance,
+Xb-Private-IServ-Revision: ${iserv:Revision}
 Description: Erweiterte Rechte-Verwaltung für IServ
  Enthält einen Rechteeditor für die IServ 3-Oberfläche, der es erlaubt nach anpassbaren Kriterien Rechte und Gruppenmerkmale zu mehreren Gruppen auf einmal hinzuzufügen.
  .
