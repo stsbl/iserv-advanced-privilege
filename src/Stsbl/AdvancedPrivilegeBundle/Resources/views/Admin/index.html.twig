@@ -38,17 +38,6 @@
     </div>
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    
-    {% if app.environment != 'prod' %}
-	<!-- {{ _self }} => adv_priv.js -->
-    {% endif %}
-    {% javascripts output='js/compiled/adv_priv.js' filter='?uglifyjs2' '@StsblAdvancedPrivilegeBundle/Resources/public/js/adv_priv.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
 {% block page_title %}
     {{ _('Advanced privilege assignment') }} - {{ _('Privileges') }}
 {% endblock %}
@@ -98,4 +87,13 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => adv_priv.js -->
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('js/adv_priv.js', 'stsbl-advanced-privilege') }}"></script>
 {% endblock %}
