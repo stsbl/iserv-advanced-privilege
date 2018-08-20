@@ -1,7 +1,18 @@
 ## src/Stsbl/AdvancedPrivilegeBundle/Resources/config/services.yml
 services:
-    stsbl.advancedprivileges.menu:
-        class: Stsbl\AdvancedPrivilegeBundle\EventListener\MenuListener # Out MenuListener Class
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    Stsbl\AdvancedPrivilegeBundle\:
+        resource: '../../*'
+
+    Stsbl\AdvancedPrivilegeBundle\Controller\:
+        public: true
+        resource: '../../Controller/*'
+        tags: ['controller.service_arguments']
+
+    Stsbl\AdvancedPrivilegeBundle\EventListener\MenuListener:
         tags:
-        #  - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu } # Tells IServ about the main menu method
-          - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu } # Tells IServ about the admin menu method
+          - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu }

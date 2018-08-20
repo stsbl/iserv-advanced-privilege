@@ -2,22 +2,17 @@
 // src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
 namespace Stsbl\AdvancedPrivilegeBundle\Controller;
 
-use Doctrine\ORM\NoResultException;
-use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Entity\User;
-use IServ\CoreBundle\Form\Type\GettextEntityType;
-use IServ\CoreBundle\Form\Type\UserType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use IServ\CoreBundle\Service\Logger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Stsbl\AdvancedPrivilegeBundle\Form\Type\GroupChoiceType;
+use Stsbl\AdvancedPrivilegeBundle\Form\Type\OwnerType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Routing\Annotation\Route;
 
 /*
  * The MIT License
@@ -50,130 +45,42 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("admin/privileges")
  */
-class AdminController extends PageController
+class AdminController extends AbstractPageController
 {
     /**
      * @var array
      */
     private $messages = ['msg' => []];
-    
-    /**
-     * Adds target choice to supplied builder
-     * 
-     * @param FormBuilderInterface $builder
-     * @return FormBuilderInterface
-     */
-    private function addTargetChoice(FormBuilderInterface $builder)
-    {
-        $builder
-            ->add('target', ChoiceType::class, [
-                'choices' => [
-                    _('All groups') => 'all',
-                    _('Groups whose name starting with ...') => 'starting-with',
-                    _('Groups whose name ending with ...') => 'ending-with',
-                    _('Groups whose name contains ...') => 'contains',
-                    _('Groups whose name match with the following regular expression ...') => 'matches'
-                ],
-                'label' => _('Select target'),
-                'expanded' => true,
-                'constraints' => new NotBlank(['message' => _('Please select a target.')])
-            ])
-            ->add('pattern', TextType::class, [
-                'required' => false, // handled by js on client side
-                'label' => false,
-                'attr' => [
-                    'placeholder' => _('Enter a pattern...')
-                ]
-            ])
-        ;
-        
-        return $builder;
-    }
-    
+
     /**
      * Get multiple assign/revoke form
-     * 
+     *
      * @param string $action
-     * @return Form
+     * @return FormInterface
      */
-    private function getForm($action)
+    private function createGroupChoiceForm(string $action): FormInterface
     {
-        /* @var $builder \Symfony\Component\Form\FormBuilder */
-        $builder = $this->get('form.factory')->createNamedBuilder($action);
-        
-        $builder
-            ->setAction($this->generateUrl('admin_adv_priv').sprintf('?action=%s', $action))
-        ;
-        
-        // add target fields
-        $builder = $this->addTargetChoice($builder);
-        
-        $builder
-            ->add('privileges', GettextEntityType::class, [
-                'label' => _('Privileges'),
-                'class' => 'IServCoreBundle:Privilege',
-                'select2-icon' => 'legacy-keys',
-                'select2-style' => 'stack',
-                'multiple' => true,
-                'required' => false,
-                'by_reference' => false,
-                'choice_label' => 'fullTitle',
-                'order_by' => ['module', 'title'],
-            ])
-            ->add('flags', GettextEntityType::class, [
-                'label' => _('Group flags'),
-                'class' => 'IServCoreBundle:GroupFlag',
-                'select2-icon' => 'fugue-tag-label',
-                'select2-style' => 'stack',
-                'multiple' => true,
-                'required' => false,
-                'by_reference' => false,
-                'choice_label' => 'title',
-                'order_by' => ['title'],
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => _('Apply'),
-                'buttonClass' => 'btn-success has-spinner',
-                'icon' => 'ok'
-            ])
-        ;
-        
-        return $builder->getForm();
+        return $this->get('form.factory')->createNamed(
+            $action,
+            GroupChoiceType::class,
+            null,
+            ['action' =>$this->generateUrl('admin_adv_priv'), 'action_type' => $action]
+        );
     }
     
     /**
      * Get form for changing the owner of mutliple groups
-     * 
-     * @return Form
+     *
+     * @return FormInterface
      */
-    private function getOwnerForm()
+    private function getOwnerForm(): FormInterface
     {
-        /* @var $builder \Symfony\Component\Form\FormBuilder */
-        $builder = $this->get('form.factory')->createNamedBuilder('owner');
-        
-        $builder
-            ->setAction($this->generateUrl('admin_adv_priv').sprintf('?action=%s', 'owner'))
-        ;
-        
-        $builder = $this->addTargetChoice($builder);
-        
-        $builder
-            ->add('owner', UserType::class, [
-                'label' => _('Owner'),
-                'multiple' => false,
-                'required' => false,
-                'attr' => [
-                    'help_text' => _('To remove the owner from the targets, select no owner.')
-                ]
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => _('Apply'),
-                'buttonClass' => 'btn-success has-spinner',
-                'icon' => 'ok'
-            ])
-        ;
-        
-        return $builder->getForm();
+        return $this->get('form.factory')->createNamed(
+            'owner',
+            OwnerType::class,
+            null,
+            ['action' =>$this->generateUrl('admin_adv_priv')]
+        );
     }
     
     /**
@@ -181,68 +88,65 @@ class AdminController extends PageController
      * 
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @Method("POST")
-     * @Route("/advanced/send", name="admin_adv_priv_send", options={"expose": true})
+     * @Route("/advanced/send", name="admin_adv_priv_send", options={"expose": true}, methods={"POST"})
      */
     public function sendAction(Request $request)
     {
-        $assignForm = $this->getForm('assign');
+        $assignForm = $this->createGroupChoiceForm('assign');
         $assignForm->handleRequest($request);
-        $revokeForm = $this->getForm('revoke');
+        $revokeForm = $this->createGroupChoiceForm('revoke');
         $revokeForm->handleRequest($request);
         $ownerForm = $this->getOwnerForm();
         $ownerForm->handleRequest($request);
 
         if ($assignForm->isSubmitted()) {
             $this->handleAssignForm($assignForm);
+
             return new JsonResponse($this->messages);
-        } else if ($revokeForm->isSubmitted()) {
+        } elseif ($revokeForm->isSubmitted()) {
             $this->handleRevokeForm($revokeForm);
+
             return new JsonResponse($this->messages);
-        } else if ($ownerForm->isSubmitted()) {
+        } elseif ($ownerForm->isSubmitted()) {
             $this->handleOwnerForm($ownerForm);
+
             return new JsonResponse($this->messages);
         }
         
         throw new \RuntimeException('This statement should never be reached!');
     }
-    
+
     /**
-     * index action
-     * 
-     * @param Request $request
-     * @return array
      * @Route("/advanced", name="admin_adv_priv")
      * @Template()
+     *     *
+     * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $assignForm = $this->getForm('assign');
-        $revokeForm = $this->getForm('revoke');
-        $ownerForm = $this->getOwnerForm(); 
+        $assignForm = $this->createGroupChoiceForm('assign');
+        $revokeForm = $this->createGroupChoiceForm('revoke');
+        $ownerForm = $this->getOwnerForm();
         
         // track path
         $this->addBreadcrumb(_('Privileges'), $this->generateUrl('admin_privilege_index'));
         $this->addBreadcrumb(_('Advanced privilege assignment'), $this->generateUrl('admin_adv_priv'));
         
-        $assignView = $assignForm->createView();
-        $revokeView = $revokeForm->createView();
-        $ownerView = $ownerForm->createView();
-        
         return [
-            'multipleAssignForm' => $assignView, 
-            'multipleRevokeForm' => $revokeView,
-            'multipleOwnerForm' => $ownerView
+            'multipleAssignForm' => $assignForm->createView(),
+            'multipleRevokeForm' => $revokeForm->createView(),
+            'multipleOwnerForm' => $ownerForm->createView(),
         ];
     }
-    
+
     /**
      * Handles response from assign form
-     * 
-     * @param Form $assignForm
-     * @return array
+     *
+     * @param FormInterface $assignForm
+     * @throws \IServ\CrudBundle\Exception\DatabaseConstraintException
+     * @throws \IServ\CrudBundle\Exception\ObjectManagerException
      */
-    private function handleAssignForm(Form $assignForm)
+    private function handleAssignForm(FormInterface $assignForm)
     {
         if ($assignForm->isValid()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
@@ -302,14 +206,15 @@ class AdminController extends PageController
         // jump hook
         end:
     }
-    
+
     /**
      * Handles response from revoke form
-     * 
-     * @param Form $revokeForm
-     * @return array
+     *
+     * @param FormInterface $revokeForm
+     * @throws \IServ\CrudBundle\Exception\DatabaseConstraintException
+     * @throws \IServ\CrudBundle\Exception\ObjectManagerException
      */
-    private function handleRevokeForm(Form $revokeForm)
+    private function handleRevokeForm(FormInterface $revokeForm)
     {
         if ($revokeForm->isValid()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
@@ -369,13 +274,15 @@ class AdminController extends PageController
         // jump hook
         end:
     }
-    
+
     /**
      * Handles response from owner form
-     * 
-     * @param Form $ownerForm
+     *
+     * @param FormInterface $ownerForm
+     * @throws \IServ\CrudBundle\Exception\DatabaseConstraintException
+     * @throws \IServ\CrudBundle\Exception\ObjectManagerException
      */
-    private function handleOwnerForm(Form $ownerForm)
+    private function handleOwnerForm(FormInterface $ownerForm)
     {
         if ($ownerForm->isValid()) {
             /* @var $groupManager \IServ\CoreBundle\Service\GroupManager */
@@ -438,60 +345,45 @@ class AdminController extends PageController
         /* @var $group \IServ\CoreBundle\Entity\Group */
         if ($target == 'all') {
             $groups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
-        } else if ($target == 'ending-with') {   
-            try {
-                /* @var $qb \Doctrine\ORM\QueryBuilder */
-                $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
-                $qb
-                    ->select('g')
-                    ->from('IServCoreBundle:Group', 'g')
-                    ->where($qb->expr()->like('g.name', ':query'))
-                    ->setParameter('query', '%'.$pattern);
-                ;
+        } else if ($target == 'ending-with') {
+            /* @var $qb \Doctrine\ORM\QueryBuilder */
+            $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
+            $qb
+                ->select('g')
+                ->from('IServCoreBundle:Group', 'g')
+                ->where($qb->expr()->like('g.name', ':query'))
+                ->setParameter('query', '%'.$pattern);;
 
-                if ($skipNoOwner) {
-                    $qb->andWhere($qb->expr()->isNotNull('g.owner'));
-                }
-                    
-                $groups = $qb->getQuery()->getResult();
-            } catch (NoResultException $e) {
-                // Just ignore no results \o/
+            if ($skipNoOwner) {
+                $qb->andWhere($qb->expr()->isNotNull('g.owner'));
             }
-        } else if ($target == 'starting-with') {          
-            try {
-                /* @var $qb \Doctrine\ORM\QueryBuilder */
-                $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
-                $qb
-                    ->select('g')
-                    ->from('IServCoreBundle:Group', 'g')
-                    ->where($qb->expr()->like('g.name', ':query'))
-                    ->setParameter('query', $pattern.'%');
-                ;
 
-                if ($skipNoOwner) {
-                    $qb->andWhere($qb->expr()->isNotNull('g.owner'));
-                }
-                    
-                $groups = $qb->getQuery()->getResult();
-            } catch (NoResultException $e) {
-                // Just ignore no results \o/
+            $groups = $qb->getQuery()->getResult();
+        } else if ($target == 'starting-with') {
+            /* @var $qb \Doctrine\ORM\QueryBuilder */
+            $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
+            $qb
+                ->select('g')
+                ->from('IServCoreBundle:Group', 'g')
+                ->where($qb->expr()->like('g.name', ':query'))
+                ->setParameter('query', $pattern.'%');;
+
+            if ($skipNoOwner) {
+                $qb->andWhere($qb->expr()->isNotNull('g.owner'));
             }
-        } else if ($target == 'contains') {
-            try {
-                /* @var $qb \Doctrine\ORM\QueryBuilder */
-                $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
-                $qb
-                    ->select('g')
-                    ->from('IServCoreBundle:Group', 'g')
-                    ->where('g.name LIKE :query')
-                    ->setParameter('query', '%'.$pattern.'%');
-                ;
-                    
-                $groups = $qb->getQuery()->getResult();
-            } catch (NoResultException $e) {
-                // Just ignore no results \o/
-            }
-        } else if ($target == 'matches') {
+
+            $groups = $qb->getQuery()->getResult();
+        } elseif ($target == 'contains') {
+            /* @var $qb \Doctrine\ORM\QueryBuilder */
+            $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
+            $qb
+                ->select('g')
+                ->from('IServCoreBundle:Group', 'g')
+                ->where('g.name LIKE :query')
+                ->setParameter('query', '%'.$pattern.'%');;
+
+            $groups = $qb->getQuery()->getResult();
+        } elseif ($target == 'matches') {
             $allGroups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
             $groups = [];
 
@@ -611,32 +503,30 @@ class AdminController extends PageController
         
         return $this->messages;
     }
-    
+
     /**
      * Log operations and add conclusion to response array.
-     * 
+     *
      * @param array $groups
      * @param array $flags
      * @param array $privileges
-     * @param array $output
      * @param string $action
+     * @return array
      */
     private function log(array $groups, array $flags, array $privileges, $action = 'assign')
     {
-        if ($action !== 'assign' && $action !== 'revoke') {
-            throw new \InvalidArgumentException(sprintf('action must be either "assign" or "revoke", "%s" given.', $action));
-        }
-        
         if ($action === 'assign') {
             $prefix = 'Added';
             $preposition = 'to';
             $logSuffix = 'hinzugefügt';
             $logPreposition = 'zu';
-        } else if ($action === 'revoke') {
+        } elseif ($action === 'revoke') {
             $prefix = 'Removed';
             $preposition = 'from';
             $logSuffix = 'entfernt';
             $logPreposition = 'von';
+        } else {
+            throw new \InvalidArgumentException(sprintf('$action must be either "assign" or "revoke", "%s" given.', $action));
         }
         
         $countGroups = count($groups);
@@ -647,14 +537,14 @@ class AdminController extends PageController
             if ($countGroups == 1 && $countFlags == 1) {
                 $message = _(sprintf('%s one group flag %s one group.', $prefix, $preposition));
                 $log = sprintf('Ein Gruppenmerkmal %s einer Gruppe %s', $logPreposition, $logSuffix);
-            } else if ($countGroups == 1 && $countFlags > 1) {
-                $message = sprintf(_(sprintf('%s %%s group flags %s one group.', $prefix, $preposition)), count($flag));
+            } elseif ($countGroups == 1 && $countFlags > 1) {
+                $message = sprintf(_(sprintf('%s %%s group flags %s one group.', $prefix, $preposition)), $countFlags);
                 $log = sprintf('%s Gruppenmerkmale %s einer Gruppe %s', $countFlags, $logPreposition, $logSuffix);
-            } else if ($countGroups > 1 && $countFlags == 1) {
+            } elseif ($countGroups > 1 && $countFlags == 1) {
                 $message = sprintf(_(sprintf('%s one group flag %s %%s groups.', $prefix, $preposition)), $countGroups);
                 $log = sprintf('Ein Gruppenmerkmal %s %s Gruppen %s', $logPreposition, $countGroups, $logSuffix);
             } else {
-                $message = sprintf(_(sptrinf('%s %%s group flags %s %%s groups.', $prefix, $preposition)), $countFlags, $countGroups);
+                $message = sprintf(_(sprintf('%s %%s group flags %s %%s groups.', $prefix, $preposition)), $countFlags, $countGroups);
                 $log = sprintf('%s Gruppenmerkmale %s %s Gruppen %s', $countFlags, $preposition, $countGroups, $logSuffix);
             }
             
@@ -666,10 +556,10 @@ class AdminController extends PageController
             if ($countGroups == 1 && $countPrivileges == 1) {
                 $message = _(sprintf('%s one privilege %s one group.', $prefix, $preposition));
                 $log = sprintf('Ein Recht %s einer Gruppe %s', $logPreposition, $logSuffix);
-            } else if ($countGroups == 1 && $countPrivileges > 1) {
+            } elseif ($countGroups == 1 && $countPrivileges > 1) {
                 $message = sprintf(_(sprintf('%s %%s privileges %s one group.', $prefix, $preposition)), $countPrivileges);
                 $log = sprintf('%s Rechte %s einer Gruppe %s', $countPrivileges, $logPreposition, $logSuffix);
-            } else if ($countGroups > 1 && $countPrivileges == 1) {
+            } elseif ($countGroups > 1 && $countPrivileges == 1) {
                 $message = sprintf(_(sprintf('%s one privilege %s %%s groups.', $prefix, $preposition)), $countGroups);
                 $log = sprintf('Ein Recht %s %s Gruppen %s', $logPreposition, $countGroups, $logSuffix);
             } else {
@@ -682,5 +572,18 @@ class AdminController extends PageController
         }
         
         return $this->messages;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        $services = parent::getSubscribedServices();
+
+        $services['form.factory'] = FormFactoryInterface::class;
+        $services['iserv.logger'] = Logger::class;
+
+        return $services;
     }
 }
