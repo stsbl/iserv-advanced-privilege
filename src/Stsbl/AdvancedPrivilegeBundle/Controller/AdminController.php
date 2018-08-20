@@ -345,28 +345,34 @@ class AdminController extends AbstractPageController
         /* @var $group \IServ\CoreBundle\Entity\Group */
         if ($target == 'all') {
             $groups = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->findAll();
-        } else if ($target == 'ending-with') {
+        } elseif ($target == 'ending-with') {
             /* @var $qb \Doctrine\ORM\QueryBuilder */
-            $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
+            $qb = $this->getDoctrine()
+                ->getRepository('IServCoreBundle:Group')
+                ->createQueryBuilder(self::class)
+            ;
+
             $qb
                 ->select('g')
                 ->from('IServCoreBundle:Group', 'g')
                 ->where($qb->expr()->like('g.name', ':query'))
-                ->setParameter('query', '%'.$pattern);;
+                ->setParameter('query', '%'.$pattern)
+            ;
 
             if ($skipNoOwner) {
                 $qb->andWhere($qb->expr()->isNotNull('g.owner'));
             }
 
             $groups = $qb->getQuery()->getResult();
-        } else if ($target == 'starting-with') {
+        } elseif ($target == 'starting-with') {
             /* @var $qb \Doctrine\ORM\QueryBuilder */
             $qb = $this->getDoctrine()->getRepository('IServCoreBundle:Group')->createQueryBuilder(self::class);
             $qb
                 ->select('g')
                 ->from('IServCoreBundle:Group', 'g')
                 ->where($qb->expr()->like('g.name', ':query'))
-                ->setParameter('query', $pattern.'%');;
+                ->setParameter('query', $pattern.'%')
+            ;
 
             if ($skipNoOwner) {
                 $qb->andWhere($qb->expr()->isNotNull('g.owner'));
@@ -380,7 +386,8 @@ class AdminController extends AbstractPageController
                 ->select('g')
                 ->from('IServCoreBundle:Group', 'g')
                 ->where('g.name LIKE :query')
-                ->setParameter('query', '%'.$pattern.'%');;
+                ->setParameter('query', '%'.$pattern.'%')
+            ;
 
             $groups = $qb->getQuery()->getResult();
         } elseif ($target == 'matches') {
@@ -401,12 +408,11 @@ class AdminController extends AbstractPageController
         }
         
         return $groups;
-            
     }
     
     /**
      * Add messages by the group manager to ouput array sorted by category (error, sucess e.g)
-     * 
+     *
      * @param array $messages
      * @return array
      */
@@ -439,7 +445,7 @@ class AdminController extends AbstractPageController
     
     /**
      * Adds a message to result message collection
-     * 
+     *
      * @param string $type
      * @param string $message
      * @return array
@@ -456,7 +462,7 @@ class AdminController extends AbstractPageController
     
     /**
      * Add messages for empty pattern
-     * 
+     *
      * @return array
      */
     private function addEmptyPatternMessage()
@@ -466,7 +472,7 @@ class AdminController extends AbstractPageController
     
     /**
      * Log owner operations and add conclusion to response array.
-     * 
+     *
      * @param array $groups
      * @param User $owner
      * @param integer $count
