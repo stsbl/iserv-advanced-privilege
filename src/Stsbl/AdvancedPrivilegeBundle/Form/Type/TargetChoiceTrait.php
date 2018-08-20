@@ -2,10 +2,10 @@
 // src/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
 namespace Stsbl\AdvancedPrivilegeBundle\Form\Type;
 
+use Stsbl\AdvancedPrivilegeBundle\Model\AbstractTargetChoice;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
  * The MIT License
@@ -47,15 +47,15 @@ trait TargetChoiceTrait
         $builder
             ->add('target', ChoiceType::class, [
                 'choices' => [
-                    _('All groups') => 'all',
-                    _('Groups whose name starting with ...') => 'starting-with',
-                    _('Groups whose name ending with ...') => 'ending-with',
-                    _('Groups whose name contains ...') => 'contains',
-                    _('Groups whose name match with the following regular expression ...') => 'matches'
+                    _('All groups') => AbstractTargetChoice::TARGET_ALL,
+                    _('Groups whose name starting with ...') => AbstractTargetChoice::TARGET_STARTING_WITH,
+                    _('Groups whose name ending with ...') => AbstractTargetChoice::TARGET_ENDING_WITH,
+                    _('Groups whose name contains ...') => AbstractTargetChoice::TARGET_CONTAINS,
+                    _('Groups whose name match with the following regular expression ...') =>
+                        AbstractTargetChoice::TARGET_MATCHES,
                 ],
                 'label' => _('Select target'),
                 'expanded' => true,
-                'constraints' => new NotBlank(['message' => _('Please select a target.')])
             ])
             ->add('pattern', TextType::class, [
                 'required' => false, // handled by js on client side

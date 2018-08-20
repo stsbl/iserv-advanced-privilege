@@ -1,11 +1,6 @@
-<?php declare(strict_types=1);
-// src/Stsbl/AdvancedPrivilegeBundle/Form/Type/OwnerType.php
-namespace Stsbl\AdvancedPrivilegeBundle\Form\Type;
-
-use IServ\CoreBundle\Form\Type\UserType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
+<?php declare(strict_types = 1);
+// src/Stsbl/AdvancedPrivilegeBundle/Model/Owner.php
+namespace Stsbl\AdvancedPrivilegeBundle\Model;
 
 /*
  * The MIT License
@@ -31,35 +26,35 @@ use Symfony\Component\Form\FormBuilderInterface;
  * THE SOFTWARE.
  */
 
+use IServ\CoreBundle\Entity\User;
+
 /**
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class OwnerType extends AbstractType
+class OwnerChoice extends AbstractTargetChoice
 {
-    use TargetChoiceTrait;
+    /**
+     * @var User|null
+     */
+    private $owner;
 
     /**
-     * {@inheritdoc}
+     * @return User|null
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function getOwner()/*: ?User*/
     {
-        $this->addTargetChoice($builder);
+        return $this->owner;
+    }
 
-        $builder
-            ->add('owner', UserType::class, [
-                'label' => _('Owner'),
-                'multiple' => false,
-                'required' => false,
-                'attr' => [
-                    'help_text' => _('To remove the owner from the targets, select no owner.')
-                ]
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => _('Apply'),
-                'buttonClass' => 'btn-success has-spinner',
-                'icon' => 'ok'
-            ])
-        ;
+    /**
+     * @param User|null $owner
+     * @return $this
+     */
+    public function setOwner(User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
     }
 }

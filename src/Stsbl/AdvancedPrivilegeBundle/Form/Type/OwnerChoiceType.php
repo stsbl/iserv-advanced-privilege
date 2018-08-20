@@ -1,11 +1,10 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Form/Type/GroupChoiceType.php
+// src/Stsbl/AdvancedPrivilegeBundle/Form/Type/OwnerType.php
 namespace Stsbl\AdvancedPrivilegeBundle\Form\Type;
 
-use IServ\CoreBundle\Form\Type\GettextEntityType;
-use Stsbl\AdvancedPrivilegeBundle\Model\GroupChoice;
+use IServ\CoreBundle\Form\Type\UserType;
+use Stsbl\AdvancedPrivilegeBundle\Model\OwnerChoice;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,7 +37,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class GroupChoiceType extends AbstractType
+class OwnerChoiceType extends AbstractType
 {
     use TargetChoiceTrait;
 
@@ -50,35 +49,18 @@ class GroupChoiceType extends AbstractType
         $this->addTargetChoice($builder);
 
         $builder
-            ->add('privileges', GettextEntityType::class, [
-                'label' => _('Privileges'),
-                'class' => 'IServCoreBundle:Privilege',
-                'select2-icon' => 'legacy-keys',
-                'select2-style' => 'stack',
-                'multiple' => true,
+            ->add('owner', UserType::class, [
+                'label' => _('Owner'),
+                'multiple' => false,
                 'required' => false,
-                'by_reference' => false,
-                'choice_label' => 'fullTitle',
-                'order_by' => ['module', 'title'],
-            ])
-            ->add('flags', GettextEntityType::class, [
-                'label' => _('Group flags'),
-                'class' => 'IServCoreBundle:GroupFlag',
-                'select2-icon' => 'fugue-tag-label',
-                'select2-style' => 'stack',
-                'multiple' => true,
-                'required' => false,
-                'by_reference' => false,
-                'choice_label' => 'title',
-                'order_by' => ['title'],
+                'attr' => [
+                    'help_text' => _('To remove the owner from the targets, select no owner.')
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => _('Apply'),
                 'buttonClass' => 'btn-success has-spinner',
-                'icon' => 'ok',
-            ])
-            ->add('action', HiddenType::class, [
-                'data' => $options['action_type'],
+                'icon' => 'ok'
             ])
         ;
     }
@@ -88,10 +70,6 @@ class GroupChoiceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults(['action_type' => null, 'data_class' => GroupChoice::class])
-            ->setAllowedTypes('action_type', 'string')
-            ->setAllowedValues('action_type', GroupChoice::getValidActions())
-        ;
+        $resolver->setDefaults(['data_class' => OwnerChoice::class]);
     }
 }

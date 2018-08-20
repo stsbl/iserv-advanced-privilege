@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php
 
 /* 
@@ -50,3 +50,9 @@ _('Removed one privilege from one group.');
 _('Removed %s privileges from one group.');
 _('Removed one privilege from %s groups.');
 _('Removed %s privileges from %s groups.');
+
+// Constraints
+_('The target choice is not valid.');
+_('Please select a target.');
+_('The action is not valid.');
+_('Please select at least one privilege or group flag.');

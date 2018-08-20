@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/AdvancedPrivilegeBundle/Stsbl/StsblMultipleAssignBundle.php
 namespace Stsbl\AdvancedPrivilegeBundle;
 

@@ -7,6 +7,7 @@ services:
 
     Stsbl\AdvancedPrivilegeBundle\:
         resource: '../../*'
+        exclude: '../../{Model,Resources}'
 
     Stsbl\AdvancedPrivilegeBundle\Controller\:
         public: true
