@@ -1,4 +1,4 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@ --with iserv
+	dh $@ --with iserv --with stsbl
