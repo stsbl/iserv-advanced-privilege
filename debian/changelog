@@ -1,3 +1,15 @@
+stsbl-iserv-advanced-privilege (18.09.12-1) experimental; urgency=medium
+
+  * Added license
+  * Updated copyright
+  * Updated packaging
+  * Moved to webpack
+  * Moved controllers to abstract controllers
+  * Moved handling from controller into service
+  * Updated build rules for webpack support
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Wed, 12 Sep 2018 01:18:27 +0200
+
 stsbl-iserv-advanced-privilege (17.06.21-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
