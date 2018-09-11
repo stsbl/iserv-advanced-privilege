@@ -1,3 +1,9 @@
+stsbl-iserv-advanced-privilege (18.09.12-2) experimental; urgency=medium
+
+  * Updated packaging
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Wed, 12 Sep 2018 01:21:20 +0200
+
 stsbl-iserv-advanced-privilege (18.09.12-1) experimental; urgency=medium
 
   * Added license
