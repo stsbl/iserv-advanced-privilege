@@ -15,17 +15,16 @@ Depends: ${misc:Depends},
   stsbl-iserv3-maintenance,
 Xb-Private-IServ-Revision: ${iserv:Revision}
 Description: Erweiterte Rechte-Verwaltung für IServ
- Enthält einen Rechteeditor für die IServ 3-Oberfläche, der es erlaubt nach anpassbaren Kriterien Rechte und Gruppenmerkmale zu mehreren Gruppen auf einmal hinzuzufügen.
+ Enthält einen Rechteeditor für die IServ 3-Oberfläche, der es erlaubt nach
+ anpassbaren Kriterien Rechte und Gruppenmerkmale zu mehreren Gruppen auf
+ einmal hinzuzufügen.
  .
  https://it.stsbl.de/wp-content/uploads/2018/01/stsbl-iserv-advanced-privilege.png
  .
  Dabei können folgende Kriterien angewandt werden:
  .
  - Name der Gruppe enthält.
- .
  - Name der Gruppe beginnt mit.
- .
  - Name der Gruppe endet mit.
- .
  - Namen der Gruppe gegen eine regulären Ausdruck prüfen.
 Tag: suite::iserv:portal, role::plugin, status::recommended, implemented-in::php

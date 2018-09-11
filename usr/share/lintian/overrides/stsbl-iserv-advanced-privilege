@@ -1,2 +1,5 @@
 # by design
 stsbl-iserv-advanced-privilege: extra-license-file usr/share/doc/stsbl-iserv-advanced-privilege/LICENSE
+
+# link in description
+stsbl-iserv-advanced-privilege: extended-description-line-too-long
