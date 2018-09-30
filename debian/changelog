@@ -1,3 +1,9 @@
+stsbl-iserv-advanced-privilege (18.09.30-1) experimental; urgency=medium
+
+  * Rebuilt with 'webpack -p'
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 30 Sep 2018 13:29:11 +0200
+
 stsbl-iserv-advanced-privilege (18.09.12-2) experimental; urgency=medium
 
   * Updated packaging
