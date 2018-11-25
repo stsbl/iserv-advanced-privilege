@@ -1,3 +1,9 @@
+stsbl-iserv-advanced-privilege (18.11.25-1) experimental; urgency=medium
+
+  * Adapted module structure to web application move
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 25 Nov 2018 22:51:13 +0100
+
 stsbl-iserv-advanced-privilege (18.09.30-1) experimental; urgency=medium
 
   * Rebuilt with 'webpack -p'
