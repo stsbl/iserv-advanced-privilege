@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Model/Owner.php
+
 namespace Stsbl\AdvancedPrivilegeBundle\Model;
 
 /*
@@ -39,19 +39,15 @@ class OwnerChoice extends AbstractTargetChoice
      */
     private $owner;
 
-    /**
-     * @return User|null
-     */
-    public function getOwner()/*: ?User*/
+    public function getOwner(): ?User
     {
         return $this->owner;
     }
 
     /**
-     * @param User|null $owner
      * @return $this
      */
-    public function setOwner(User $owner): self
+    public function setOwner(User $owner = null): self
     {
         $this->owner = $owner;
 

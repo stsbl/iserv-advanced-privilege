@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Model/GroupChoice.php
+
 namespace Stsbl\AdvancedPrivilegeBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -78,25 +78,17 @@ class GroupChoice extends AbstractTargetChoice
 
     /**
      * @Assert\IsTrue(message="The action is not valid.")
-     *
-     * @return bool
      */
     public function isActionValid(): bool
     {
         return null === $this->action || in_array($this->action, self::$validActions);
     }
 
-    /**
-     * @return bool
-     */
     public function isAssignAction(): bool
     {
         return self::ACTION_ASSIGN === $this->action;
     }
 
-    /**
-     * @return bool
-     */
     public function isRevokeAction(): bool
     {
         return self::ACTION_REVOKE === $this->action;
@@ -104,8 +96,6 @@ class GroupChoice extends AbstractTargetChoice
 
     /**
      * @Assert\IsTrue(message="Please select at least one privilege or group flag.")
-     *
-     * @return bool
      */
     public function isFlagAndPrivilegeChoiceValid(): bool
     {
@@ -132,7 +122,6 @@ class GroupChoice extends AbstractTargetChoice
     }
 
     /**
-     * @param GroupFlag $flag
      * @return $this
      */
     public function addFlag(GroupFlag $flag): self
@@ -143,7 +132,6 @@ class GroupChoice extends AbstractTargetChoice
     }
 
     /**
-     * @param GroupFlag $flag
      * @return $this
      */
     public function removeFlag(GroupFlag $flag): self
@@ -172,19 +160,15 @@ class GroupChoice extends AbstractTargetChoice
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getAction()/*: ?string*/
+    public function getAction(): ?string
     {
         return $this->action;
     }
 
     /**
-     * @param null|string $action
      * @return $this
      */
-    public function setAction(string $action): self
+    public function setAction(string $action = null): self
     {
         $this->action = $action;
 

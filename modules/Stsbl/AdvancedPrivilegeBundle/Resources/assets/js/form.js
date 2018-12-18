@@ -1,4 +1,10 @@
-/* 
+import Loading from 'IServ.Loading';
+import Message from 'IServ.Message';
+import Routing from 'IServ.Routing';
+import Select2 from 'IServ.Select2';
+import Spinner from 'IServ.Spinner';
+
+/*
  * The MIT License
  *
  * Copyright 2018 Felix Jacobi.
@@ -22,12 +28,10 @@
  * THE SOFTWARE.
  */
 
-IServ.AdvancedPrivilege = {};
-
-IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
+(function () {
     "use strict";
     
-    var currentForm;
+    let $currentForm;
     
     function smoothScrollToOutput()
     {
@@ -38,17 +42,17 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
     
     function resetForm()
     {
-        currentForm[0].reset();
-        $('#' + currentForm.attr('name') + '_owner').select2('val', '');
-        $('#' + currentForm.attr('name') + '_privileges').select2('val', '');
-        $('#' + currentForm.attr('name') + '_flags').val('val', '');
-        showPattern(currentForm.attr('name'));
+        $currentForm[0].reset();
+        Select2.init($('#' + $currentForm.attr('name') + '_owner'));
+        Select2.init($('#' + $currentForm.attr('name') + '_privileges'));
+        $('#' + $currentForm.attr('name') + '_flags').val('val', '');
+        showPattern($currentForm.attr('name'));
     }
     
     function removeAlerts()
     {
         // remove old alerts
-        $('.output > .alert').each(function() {
+        $('.output > .alert').each(function () {
             $(this).alert('close');
         });
     }
@@ -66,7 +70,7 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
     }
     
     function registerTargetHandler(type)
-    {   
+    {
         if ($('#' + type + '_target_0').is(':checked')) {
             hidePattern(type);
         }
@@ -82,10 +86,10 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
     
     function registerFormHandler()
     {
-        var submitHandler = function(e) {
+        var submitHandler = function (e) {
             $('#multiple-confirm').modal('show');
             
-            currentForm = $(this);
+            $currentForm = $(this);
             
             e.preventDefault();
             return false;
@@ -95,25 +99,25 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
         
         $('#multiple-confirm-approve').click(function () {
             $('#multiple-confirm').modal('hide');
-            currentForm.unbind('submit', submitHandler);
-            var target = IServ.Routing.generate('admin_adv_priv_send');
-            var spinner = IServ.Spinner.add('#' + currentForm.attr('name') + '_submit');
+            $currentForm.unbind('submit', submitHandler);
+            const target = Routing.generate('admin_adv_priv_send');
+            const spinner = Spinner.add('#' + $currentForm.attr('name') + '_submit');
                 
-            var sendHandler = function(e) {
+            const sendHandler = function (e) {
                 $.ajax({
-                    beforeSend: function() {
+                    beforeSend: function () {
                         removeAlerts();
-                        IServ.Loading.on('stsbl.adv-priv.form');
+                        Loading.on('stsbl.adv-priv.form');
                         spinner.data('spinner').start();
                     },
-                    error: function() {
-                        IServ.Loading.off('stsbl.adv-priv.form');
+                    error: function () {
+                        Loading.off('stsbl.adv-priv.form');
                         spinner.data('spinner').stop();
                     
-                        IServ.Message.error(_('Error during applying changes.'), false, '.output');
+                        Message.error(_('Error during applying changes.'), false, '.output');
                     },
-                    success: function() {    
-                        IServ.Loading.off('stsbl.adv-priv.form');
+                    success: function () {
+                        Loading.off('stsbl.adv-priv.form');
                         spinner.data('spinner').stop();
                         resetForm();
                         smoothScrollToOutput();
@@ -130,30 +134,30 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
                 return false;
             };
             
-            currentForm.submit(sendHandler);
+            $currentForm.submit(sendHandler);
             // submit the form
-            currentForm.submit();
+            $currentForm.submit();
             
             // set back handler to default
-            currentForm.unbind('submit', sendHandler);
-            currentForm.submit(submitHandler);
+            $currentForm.unbind('submit', sendHandler);
+            $currentForm.submit(submitHandler);
         });
     }
     
     function initialize()
     {
         // Bind AJAX interceptor
-        $(document).ajaxSuccess(function(event, xhr, settings) {
+        $(document).ajaxSuccess(function (event, xhr, settings) {
             if (typeof xhr.responseJSON !== 'undefined' && typeof xhr.responseJSON.msg !== 'undefined') {
-                $.each(xhr.responseJSON.msg, function(k, v) {
+                $.each(xhr.responseJSON.msg, function (k, v) {
                     if (v.type === 'info') {
-                        IServ.Message.info(v.message, false, '.output');
+                        Message.info(v.message, false, '.output');
                     } else if (v.type === 'alert') {
-                        IServ.Message.warning(v.message, false, '.output');
+                        Message.warning(v.message, false, '.output');
                     } else if (v.type === 'error') {
-                        IServ.Message.error(v.message, false, '.output');
+                        Message.error(v.message, false, '.output');
                     } else if (v.type === 'success') {
-                        IServ.Message.success(v.message, false, '.output');
+                        Message.success(v.message, false, '.output');
                     }
                 });
             }
@@ -165,9 +169,5 @@ IServ.AdvancedPrivilege.Form = IServ.register(function(IServ) {
         registerFormHandler();
     }
 
-    // Public API
-    return {
-        init: initialize
-    };
-    
-}(IServ));
+    $(document).ready(initialize);
+})();

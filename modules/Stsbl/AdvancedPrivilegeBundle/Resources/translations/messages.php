@@ -1,7 +1,6 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Resources/translation/messages.php
 
-/* 
+/*
  * The MIT License
  *
  * Copyright 2018 Felix Jacobi.

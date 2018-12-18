@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
+
 namespace Stsbl\AdvancedPrivilegeBundle\Form\Type;
 
 use Stsbl\AdvancedPrivilegeBundle\Model\AbstractTargetChoice;

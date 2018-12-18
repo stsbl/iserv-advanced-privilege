@@ -1,5 +1,4 @@
-{# src/Stsbl/AdvancedPrivilegeBundle/Resources/views/MultipleAssign/index.html.twig #}
-{% extends "IServAdminBundle::page.html.twig" %}
+{% extends "@IServAdmin/page.html.twig" %}
 
 {% form_theme multipleAssignForm _self %}
 {% form_theme multipleRevokeForm _self %}
@@ -93,7 +92,7 @@
     {{ parent() }}
 
     {% if app.environment != 'prod' %}
-        <!-- {{ _self }} => adv_priv.js -->
+        <!-- {{ _self }} => form.js -->
     {% endif %}
-    <script type="text/javascript" src="{{ asset('js/adv_priv.js', 'stsbl_advanced_privilege') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/form.js', 'stsbl_advanced_privilege') }}"></script>
 {% endblock %}

@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-// src/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
+
 namespace Stsbl\AdvancedPrivilegeBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
@@ -51,9 +51,6 @@ class AdminController extends AbstractPageController
 {
     /**
      * Get multiple assign/revoke form
-     *
-     * @param string $action
-     * @return FormInterface
      */
     private function createGroupChoiceForm(string $action): FormInterface
     {
@@ -67,8 +64,6 @@ class AdminController extends AbstractPageController
     
     /**
      * Get form for changing the owner of mutliple groups
-     *
-     * @return FormInterface
      */
     private function getOwnerForm(): FormInterface
     {
@@ -82,9 +77,6 @@ class AdminController extends AbstractPageController
 
     /**
      * Builds a JsonErrorResponse with all form errors.
-     *
-     * @param FormInterface $form
-     * @return JsonErrorResponse
      */
     private function buildFormErrorResponse(FormInterface $form): JsonErrorResponse
     {
@@ -101,12 +93,8 @@ class AdminController extends AbstractPageController
      * Handles submitted forms
      *
      * @Route("/advanced/send", name="admin_adv_priv_send", options={"expose": true}, methods={"POST"})
-     *
-     * @param Request $request
-     * @param GroupHandler $handler
-     * @return JsonResponse
      */
-    public function sendAction(Request $request, GroupHandler $handler): JsonResponse
+    public function send(Request $request, GroupHandler $handler): JsonResponse
     {
         $assignForm = $this->createGroupChoiceForm(GroupChoice::ACTION_ASSIGN);
         $assignForm->handleRequest($request);
@@ -153,10 +141,8 @@ class AdminController extends AbstractPageController
     /**
      * @Route("/advanced", name="admin_adv_priv")
      * @Template()
-     *
-     * @return array
      */
-    public function indexAction(): array
+    public function index(): array
     {
         $assignForm = $this->createGroupChoiceForm(GroupChoice::ACTION_ASSIGN);
         $revokeForm = $this->createGroupChoiceForm(GroupChoice::ACTION_REVOKE);
@@ -176,7 +162,7 @@ class AdminController extends AbstractPageController
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         $services = parent::getSubscribedServices();
         $services['form.factory'] = FormFactoryInterface::class;

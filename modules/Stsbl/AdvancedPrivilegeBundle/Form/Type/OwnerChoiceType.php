@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Form/Type/OwnerType.php
+
 namespace Stsbl\AdvancedPrivilegeBundle\Form\Type;
 
 use IServ\CoreBundle\Form\Type\UserType;

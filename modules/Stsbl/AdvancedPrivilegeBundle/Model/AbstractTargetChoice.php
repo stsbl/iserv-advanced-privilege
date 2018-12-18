@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Model/AbstractTargetChoice.php
+
 namespace Stsbl\AdvancedPrivilegeBundle\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -97,7 +97,7 @@ abstract class AbstractTargetChoice
      *
      * @param ExecutionContextInterface $context
      */
-    public function validatePattern(ExecutionContextInterface $context)
+    public function validatePattern(ExecutionContextInterface $context): void
     {
         if (self::TARGET_ALL === $this->target) {
             return;
@@ -132,16 +132,12 @@ abstract class AbstractTargetChoice
         }
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTarget()/*: ?string*/
+    public function getTarget(): ?string
     {
         return $this->target;
     }
 
     /**
-     * @param string $target
      * @return $this
      */
     public function setTarget(string $target): self
@@ -151,16 +147,12 @@ abstract class AbstractTargetChoice
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getPattern()/*: ?string*/
+    public function getPattern(): ?string
     {
         return $this->pattern;
     }
 
     /**
-     * @param null|string $pattern
      * @return $this
      */
     public function setPattern(string $pattern = null): self

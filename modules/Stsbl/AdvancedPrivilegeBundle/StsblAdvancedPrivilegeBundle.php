@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Stsbl/StsblMultipleAssignBundle.php
+
 namespace Stsbl\AdvancedPrivilegeBundle;
 
 use IServ\CoreBundle\Routing\AutoloadRoutingBundleInterface;
@@ -36,7 +36,7 @@ use Stsbl\AdvancedPrivilegeBundle\DependencyInjection\StsblAdvancedPrivilegeExte
  */
 class StsblAdvancedPrivilegeBundle extends Bundle implements AutoloadRoutingBundleInterface
 {
-    public function getContainerExtension()
+    public function getContainerExtension(): StsblAdvancedPrivilegeExtension
     {
         return new StsblAdvancedPrivilegeExtension();
     }

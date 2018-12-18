@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/Service/GroupHandler.php
+
 namespace Stsbl\AdvancedPrivilegeBundle\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -89,11 +89,8 @@ class GroupHandler
 
     /**
      * Adds a message to the service flash bag.
-     *
-     * @param string $type
-     * @param string $message
      */
-    private function addMessage(string $type, string $message)
+    private function addMessage(string $type, string $message): void
     {
         $this->flashBag->add($type, $message);
     }
@@ -101,9 +98,9 @@ class GroupHandler
     /**
      * Add messages by the group manager to output array sorted by category (error, success e.g)
      *
-     * @param array $messages
+     * @param mixed[][] $messages
      */
-    private function addGroupManagerMessages(array $messages)
+    private function addGroupManagerMessages(array $messages): void
     {
         $success = [];
         $error = [];
@@ -130,8 +127,6 @@ class GroupHandler
 
     /**
      * Get the messages formatted for JSON response.
-     *
-     * @return array
      */
     public function getMessages(): array
     {
@@ -149,10 +144,6 @@ class GroupHandler
         return $result;
     }
 
-    /**
-     * @param OwnerChoice $ownerChoice
-     * @return bool
-     */
     public function updateOwner(OwnerChoice $ownerChoice): bool
     {
         $owner = $ownerChoice->getOwner();
@@ -200,10 +191,6 @@ class GroupHandler
         return true;
     }
 
-    /**
-     * @param GroupChoice $groupChoice
-     * @return bool
-     */
     public function updateGroups(GroupChoice $groupChoice): bool
     {
         $flags = $groupChoice->getFlags();
@@ -265,9 +252,6 @@ class GroupHandler
     /**
      * Tries to find groups by given criteria
      *
-     * @param string target
-     * @param string $pattern
-     * @param boolean $skipNoOwner
      * @return Group[]
      */
     private function findGroups(string $target, string $pattern = null, bool $skipNoOwner = false): array
@@ -344,13 +328,11 @@ class GroupHandler
     /**
      * Log owner operations and add conclusion to response array.
      *
-     * @param array $groups
-     * @param User $owner
-     * @param int $count
+     * @param Group[] $groups
      */
-    private function logOwner(array $groups, User $owner = null, int $count = null)
+    private function logOwner(array $groups, User $owner = null, int $count = null): void
     {
-        if ($count === null) {
+        if (null === $count) {
             $count = count($groups);
         }
 
@@ -365,11 +347,11 @@ class GroupHandler
                 }
             } else {
                 if ($count === 1) {
-                    $message = __('Set owner of one group to %s.', (string)$owner);
-                    $log = sprintf('Besitzer von einer Gruppe gesetzt auf %s', (string)$owner);
+                    $message = __('Set owner of one group to %s.', $owner);
+                    $log = sprintf('Besitzer von einer Gruppe gesetzt auf %s', $owner);
                 } else {
-                    $message = __('Set owner of %s groups to %s.', $count, (string)$owner);
-                    $log = sprintf('Besitzer von %s Gruppen gesetzt auf %s', $count, (string)$owner);
+                    $message = __('Set owner of %s groups to %s.', $count, $owner);
+                    $log = sprintf('Besitzer von %s Gruppen gesetzt auf %s', $count, $owner);
                 }
             }
 
@@ -381,10 +363,9 @@ class GroupHandler
     /**
      * Log operations and add conclusion to response array.
      *
-     * @param array $groups
+     * @param Group[] $groups
      * @param ArrayCollection|GroupFlag[] $flags
      * @param ArrayCollection|Privilege[] $privileges
-     * @param string $action
      */
     private function log(
         array $groups,

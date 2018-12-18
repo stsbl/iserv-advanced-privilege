@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/AdvancedPrivilegeBundle/EventListener/MenuListener.php
+
 namespace Stsbl\AdvancedPrivilegeBundle\EventListener;
 
 use IServ\AdminBundle\EventListener\AdminMenuListenerInterface;
