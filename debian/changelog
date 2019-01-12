@@ -1,3 +1,9 @@
+stsbl-iserv-advanced-privilege (19.01.13-1) experimental; urgency=medium
+
+  * Improved code
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Sun, 13 Jan 2019 00:47:38 +0100
+
 stsbl-iserv-advanced-privilege (18.11.25-1) experimental; urgency=medium
 
   * Adapted module structure to web application move
