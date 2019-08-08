@@ -1,9 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
-use IServ\CoreBundle\HttpFoundation\JsonErrorResponse;
+use IServ\CoreBundle\HttpFoundation\JsonResponse as JsonStatusResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\AdvancedPrivilegeBundle\Form\Type\GroupChoiceType;
 use Stsbl\AdvancedPrivilegeBundle\Form\Type\OwnerChoiceType;
@@ -78,7 +79,7 @@ class AdminController extends AbstractPageController
     /**
      * Builds a JsonErrorResponse with all form errors.
      */
-    private function buildFormErrorResponse(FormInterface $form): JsonErrorResponse
+    private function buildFormErrorResponse(FormInterface $form): JsonStatusResponse
     {
         $errors = [];
 
@@ -86,7 +87,7 @@ class AdminController extends AbstractPageController
             $errors[] = htmlspecialchars($error->getMessage());
         }
 
-        return new JsonErrorResponse(nl2br(join("\n", $errors)));
+        return JsonStatusResponse::createError(nl2br(join("\n", $errors)));
     }
 
     /**
@@ -106,7 +107,7 @@ class AdminController extends AbstractPageController
         if ($assignForm->isSubmitted()) {
             if ($assignForm->isValid()) {
                 if (!$handler->updateGroups($assignForm->getData())) {
-                    return new JsonErrorResponse(_('Unexpected error during updating of groups.'));
+                    return JsonStatusResponse::createError(_('Unexpected error during updating of groups.'));
                 }
 
                 return new JsonResponse(['msg' => $handler->getMessages()]);
@@ -116,7 +117,7 @@ class AdminController extends AbstractPageController
         } elseif ($revokeForm->isSubmitted()) {
             if ($revokeForm->isValid()) {
                 if (!$handler->updateGroups($revokeForm->getData())) {
-                    return new JsonErrorResponse(_('Unexpected error during updating of groups.'));
+                    return JsonStatusResponse::createError(_('Unexpected error during updating of groups.'));
                 }
 
                 return new JsonResponse(['msg' => $handler->getMessages()]);
@@ -126,7 +127,7 @@ class AdminController extends AbstractPageController
         } elseif ($ownerForm->isSubmitted()) {
             if ($ownerForm->isValid()) {
                 if (!$handler->updateOwner($ownerForm->getData())) {
-                    return new JsonErrorResponse(_('Unexpected error during updating of groups.'));
+                    return JsonStatusResponse::createError(_('Unexpected error during updating of groups.'));
                 }
 
                 return new JsonResponse(['msg' => $handler->getMessages()]);

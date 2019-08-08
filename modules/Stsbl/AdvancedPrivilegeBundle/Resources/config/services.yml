@@ -1,4 +1,3 @@
-## src/Stsbl/AdvancedPrivilegeBundle/Resources/config/services.yml
 services:
     _defaults:
         autoconfigure: true

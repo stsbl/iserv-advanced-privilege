@@ -1,4 +1,5 @@
-<?php declare(strict_types = 1);
+<?php
+declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Service;
 
@@ -7,6 +8,7 @@ use IServ\CoreBundle\Entity\Group;
 use IServ\CoreBundle\Entity\GroupFlag;
 use IServ\CoreBundle\Entity\Privilege;
 use IServ\CoreBundle\Entity\User;
+use IServ\CoreBundle\Repository\GroupRepository;
 use IServ\CoreBundle\Service\GroupManager;
 use IServ\CoreBundle\Service\Logger;
 use IServ\CrudBundle\Exception\DatabaseConstraintException;
@@ -15,7 +17,6 @@ use Psr\Log\LoggerInterface;
 use Stsbl\AdvancedPrivilegeBundle\Model\AbstractTargetChoice;
 use Stsbl\AdvancedPrivilegeBundle\Model\GroupChoice;
 use Stsbl\AdvancedPrivilegeBundle\Model\OwnerChoice;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 /*
@@ -49,11 +50,6 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 class GroupHandler
 {
     /**
-     * @var RegistryInterface
-     */
-    private $doctrine;
-
-    /**
      * @var FlashBag
      */
     private $flashBag;
@@ -62,6 +58,11 @@ class GroupHandler
      * @var GroupManager
      */
     private $groupManager;
+
+    /**
+     * @var GroupRepository
+     */
+    private $groupRepository;
 
     /**
      * @var LoggerInterface
@@ -74,13 +75,13 @@ class GroupHandler
     private $iservLogger;
 
     public function __construct(
-        RegistryInterface $doctrine,
         GroupManager $groupManager,
+        GroupRepository $groupRepository,
         LoggerInterface $logger,
         Logger $iservLogger
     ) {
-        $this->doctrine = $doctrine;
         $this->groupManager = $groupManager;
+        $this->groupRepository = $groupRepository;
         $this->logger = $logger;
         $this->iservLogger = $iservLogger;
 
@@ -116,11 +117,11 @@ class GroupHandler
             }
         }
 
-        if (count($success) > 0) {
+        if (!empty($success)) {
             $this->addMessage('success', nl2br(implode("\n", $success)));
         }
 
-        if (count($error) > 0) {
+        if (!empty($error)) {
             $this->addMessage('error', nl2br(implode("\n", $error)));
         }
     }
@@ -157,7 +158,6 @@ class GroupHandler
         }
 
         $numberUpdated = 0;
-        /* @var $group \IServ\CoreBundle\Entity\Group */
         foreach ($groups as $group) {
             $group->setOwner($owner);
 
@@ -256,18 +256,13 @@ class GroupHandler
      */
     private function findGroups(string $target, string $pattern = null, bool $skipNoOwner = false): array
     {
-        /* @var $group \IServ\CoreBundle\Entity\Group */
         if (AbstractTargetChoice::TARGET_ALL === $target) {
-            $groups = $this->doctrine->getRepository(Group::class)->findAll();
+            $groups = $this->groupRepository->findAll();
         } elseif (AbstractTargetChoice::TARGET_ENDING_WITH === $target) {
-            $queryBuilder = $this->doctrine
-                ->getRepository('IServCoreBundle:Group')
-                ->createQueryBuilder(self::class)
-            ;
+            $queryBuilder = $this->groupRepository->createQueryBuilder('g');
 
             $queryBuilder
                 ->select('g')
-                ->from('IServCoreBundle:Group', 'g')
                 ->where($queryBuilder->expr()->like('g.name', ':query'))
                 ->setParameter('query', '%'.$pattern)
             ;
@@ -278,10 +273,9 @@ class GroupHandler
 
             $groups = $queryBuilder->getQuery()->getResult();
         } elseif (AbstractTargetChoice::TARGET_STARTING_WITH === $target) {
-            $queryBuilder = $this->doctrine->getRepository(Group::class)->createQueryBuilder(self::class);
+            $queryBuilder = $this->groupRepository->createQueryBuilder('g');
             $queryBuilder
                 ->select('g')
-                ->from('IServCoreBundle:Group', 'g')
                 ->where($queryBuilder->expr()->like('g.name', ':query'))
                 ->setParameter('query', $pattern.'%')
             ;
@@ -292,10 +286,9 @@ class GroupHandler
 
             $groups = $queryBuilder->getQuery()->getResult();
         } elseif (AbstractTargetChoice::TARGET_CONTAINS === $target) {
-            $queryBuilder = $this->doctrine->getRepository(Group::class)->createQueryBuilder(self::class);
+            $queryBuilder = $this->groupRepository->createQueryBuilder('g');
             $queryBuilder
                 ->select('g')
-                ->from('IServCoreBundle:Group', 'g')
                 ->where('g.name LIKE :query')
                 ->setParameter('query', '%'.$pattern.'%')
             ;
@@ -306,7 +299,7 @@ class GroupHandler
                 throw new \InvalidArgumentException('$pattern must not be null for pattern search!');
             }
 
-            $allGroups = $this->doctrine->getRepository(Group::class)->findAll();
+            $allGroups = $this->groupRepository->findAll();
             $groups = [];
 
             foreach ($allGroups as $group) {
