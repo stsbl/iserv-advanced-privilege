@@ -5,10 +5,12 @@
 {% form_theme multipleOwnerForm _self %}
 
 {% block _assign_pattern_row %}
+    {%- set label_col = 'col-' ~ bootstrap_get_col_size() ~ '-' ~ bootstrap_get_label_col() -%}
+    {%- set widget_col = 'col-' ~ bootstrap_get_col_size() ~ '-' ~ bootstrap_get_widget_col() -%}
     <div class="form-group" id="multiple-assign-form-group-pattern">
-        <div class="col-lg-2">
+        <div class="{{ label_col }}">
         </div>
-        <div class="col-lg-10">
+        <div class="{{ widget_col }}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
         </div>
@@ -16,10 +18,12 @@
 {% endblock %}
 
 {% block _revoke_pattern_row %}
+    {%- set label_col = 'col-' ~ bootstrap_get_col_size() ~ '-' ~ bootstrap_get_label_col() -%}
+    {%- set widget_col = 'col-' ~ bootstrap_get_col_size() ~ '-' ~ bootstrap_get_widget_col() -%}
     <div class="form-group" id="multiple-revoke-form-group-pattern">
-        <div class="col-lg-2">
+        <div class="{{ label_col }}">
         </div>
-        <div class="col-lg-10">
+        <div class="{{ widget_col }}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
         </div>
@@ -27,10 +31,12 @@
 {% endblock %}
 
 {% block _owner_pattern_row %}
+    {%- set label_col = 'col-' ~ bootstrap_get_col_size() ~ '-' ~ bootstrap_get_label_col() -%}
+    {%- set widget_col = 'col-' ~ bootstrap_get_col_size() ~ '-' ~ bootstrap_get_widget_col() -%}
     <div class="form-group" id="multiple-owner-form-group-pattern">
-        <div class="col-lg-2">
+        <div class="{{ label_col }}">
         </div>
-        <div class="col-lg-10">
+        <div class="{{ widget_col }}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
         </div>
