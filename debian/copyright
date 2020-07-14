@@ -2,11 +2,11 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: stsbl-iserv-advanced-privilege
 
 Files: *
-Copyright: 2019 Felix Jacobi <felix.jacobi@stsbl.de>
+Copyright: 2020 Felix Jacobi <felix.jacobi@stsbl.de>
 License: MIT
 
 Files: debian/*
-Copyright: 2019 Stadtteilschule Blankenese <repository@stsbl.de>
+Copyright: 2020 Stadtteilschule Blankenese <repository@stsbl.de>
 License: MIT
 
 License: MIT
