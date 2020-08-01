@@ -5,6 +5,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/Stsbl/AdvancedPrivilegeBundle/Resources/assets/js/adv_priv.js:113
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/assets/js/form.js
 msgid "Error during applying changes."
 msgstr "Fehler während des Anwendens der Änderungen."
