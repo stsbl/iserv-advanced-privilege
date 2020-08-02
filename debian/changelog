@@ -1,3 +1,10 @@
+stsbl-iserv-advanced-privilege (20.08.02-1) testing; urgency=medium
+
+  * Bumped copyright
+  * Updated locale handling to use genpo
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Sun, 02 Aug 2020 06:36:10 +0200
+
 stsbl-iserv-advanced-privilege (19.11.20-1) stable; urgency=medium
 
   * Bumped copyright
