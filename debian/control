@@ -3,7 +3,7 @@ Section: misc
 Priority: optional
 Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
 Build-Depends: debhelper (>= 10), iserv3-dev
-Build-Depends-Indep: iserv3-dev
+Build-Depends-Indep: iserv-buildtools
 Standards-Version: 4.4.1
 Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-advanced-privilege
 
