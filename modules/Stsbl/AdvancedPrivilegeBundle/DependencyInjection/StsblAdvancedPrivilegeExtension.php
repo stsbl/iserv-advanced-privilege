@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\DependencyInjection;
 
@@ -35,6 +36,6 @@ use IServ\CoreBundle\DependencyInjection\IServBaseExtension;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class StsblAdvancedPrivilegeExtension extends IServBaseExtension
+final class StsblAdvancedPrivilegeExtension extends IServBaseExtension
 {
 }

@@ -1,10 +1,13 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle;
 
 use IServ\CoreBundle\Routing\AutoloadRoutingBundleInterface;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Stsbl\AdvancedPrivilegeBundle\DependencyInjection\StsblAdvancedPrivilegeExtension;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /*
  * The MIT License
@@ -34,9 +37,12 @@ use Stsbl\AdvancedPrivilegeBundle\DependencyInjection\StsblAdvancedPrivilegeExte
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class StsblAdvancedPrivilegeBundle extends Bundle implements AutoloadRoutingBundleInterface
+final class StsblAdvancedPrivilegeBundle extends Bundle implements AutoloadRoutingBundleInterface
 {
-    public function getContainerExtension(): StsblAdvancedPrivilegeExtension
+    /**
+     * {@inheritDoc}
+     */
+    public function getContainerExtension(): ?ExtensionInterface
     {
         return new StsblAdvancedPrivilegeExtension();
     }

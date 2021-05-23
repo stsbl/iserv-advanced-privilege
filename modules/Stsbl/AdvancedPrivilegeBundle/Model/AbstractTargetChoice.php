@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Model;
@@ -36,11 +37,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 abstract class AbstractTargetChoice
 {
-    const TARGET_ALL = 'all';
-    const TARGET_STARTING_WITH = 'starting-with';
-    const TARGET_ENDING_WITH = 'ending-with';
-    const TARGET_CONTAINS = 'contains';
-    const TARGET_MATCHES = 'matches';
+    public const TARGET_ALL = 'all';
+    public const TARGET_STARTING_WITH = 'starting-with';
+    public const TARGET_ENDING_WITH = 'ending-with';
+    public const TARGET_CONTAINS = 'contains';
+    public const TARGET_MATCHES = 'matches';
 
     /**
      * List of valid values for self::$target.
@@ -88,7 +89,7 @@ abstract class AbstractTargetChoice
      */
     public function isTargetValid(): bool
     {
-        return null === $this->target || in_array($this->target, self::$validTargets);
+        return null === $this->target || in_array($this->target, self::$validTargets, true);
     }
 
     /**
@@ -104,7 +105,7 @@ abstract class AbstractTargetChoice
             return;
         }
 
-        if (null === $this->pattern || strlen($this->pattern) < 1) {
+        if (null === $this->pattern || '' === $this->pattern) {
             $context
                 ->buildViolation(_('Pattern should not be empty.'))
                 ->atPath('pattern')

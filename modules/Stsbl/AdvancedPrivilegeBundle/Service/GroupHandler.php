@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Service;
@@ -47,7 +48,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class GroupHandler
+final class GroupHandler
 {
     /**
      * @var FlashBag
@@ -264,7 +265,7 @@ class GroupHandler
             $queryBuilder
                 ->select('g')
                 ->where($queryBuilder->expr()->like('g.name', ':query'))
-                ->setParameter('query', '%'.$pattern)
+                ->setParameter('query', '%' . $pattern)
             ;
 
             if ($skipNoOwner) {
@@ -277,7 +278,7 @@ class GroupHandler
             $queryBuilder
                 ->select('g')
                 ->where($queryBuilder->expr()->like('g.name', ':query'))
-                ->setParameter('query', $pattern.'%')
+                ->setParameter('query', $pattern . '%')
             ;
 
             if ($skipNoOwner) {
@@ -290,7 +291,7 @@ class GroupHandler
             $queryBuilder
                 ->select('g')
                 ->where('g.name LIKE :query')
-                ->setParameter('query', '%'.$pattern.'%')
+                ->setParameter('query', '%' . $pattern . '%')
             ;
 
             $groups = $queryBuilder->getQuery()->getResult();
@@ -415,15 +416,15 @@ class GroupHandler
         }
 
         if ($countGroups > 0 && $countPrivileges > 0) {
-            if ($countGroups == 1 && $countPrivileges == 1) {
+            if ($countGroups === 1 && $countPrivileges === 1) {
                 $message = _(sprintf('%s one privilege %s one group.', $prefix, $preposition));
                 $log = sprintf('Ein Recht %s einer Gruppe %s', $logPreposition, $logSuffix);
-            } elseif ($countGroups == 1 && $countPrivileges > 1) {
+            } elseif ($countGroups === 1 && $countPrivileges > 1) {
                 $message = sprintf(_(
                     sprintf('%s %%s privileges %s one group.', $prefix, $preposition)
                 ), $countPrivileges);
                 $log = sprintf('%s Rechte %s einer Gruppe %s', $countPrivileges, $logPreposition, $logSuffix);
-            } elseif ($countGroups > 1 && $countPrivileges == 1) {
+            } elseif ($countGroups > 1 && $countPrivileges === 1) {
                 $message = sprintf(_(sprintf('%s one privilege %s %%s groups.', $prefix, $preposition)), $countGroups);
                 $log = sprintf('Ein Recht %s %s Gruppen %s', $logPreposition, $countGroups, $logSuffix);
             } else {

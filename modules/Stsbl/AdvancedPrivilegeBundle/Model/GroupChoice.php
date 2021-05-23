@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Model;
@@ -36,10 +37,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class GroupChoice extends AbstractTargetChoice
+final class GroupChoice extends AbstractTargetChoice
 {
-    const ACTION_ASSIGN = 'assign';
-    const ACTION_REVOKE = 'revoke';
+    public const ACTION_ASSIGN = 'assign';
+    public const ACTION_REVOKE = 'revoke';
 
     /**
      * List of valid values for self::$action.

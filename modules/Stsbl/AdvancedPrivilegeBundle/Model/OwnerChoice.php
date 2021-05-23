@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Model;
@@ -33,7 +34,7 @@ use IServ\CoreBundle\Entity\User;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class OwnerChoice extends AbstractTargetChoice
+final class OwnerChoice extends AbstractTargetChoice
 {
     /**
      * @var User|null

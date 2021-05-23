@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Form\Type;
@@ -40,10 +41,8 @@ trait TargetChoiceTrait
 {
     /**
      * Adds target choice to supplied builder
-     *
-     * @param FormBuilderInterface $builder
      */
-    protected function addTargetChoice(FormBuilderInterface $builder)
+    protected function addTargetChoice(FormBuilderInterface $builder): void
     {
         $builder
             ->add('target', ChoiceType::class, [

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\EventListener;
 
@@ -36,7 +37,7 @@ use IServ\CoreBundle\Event\MenuEvent;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class MenuListener implements AdminMenuListenerInterface
+final class MenuListener implements AdminMenuListenerInterface
 {
     /**
      * {@inheritdoc}
@@ -50,7 +51,7 @@ class MenuListener implements AdminMenuListenerInterface
             'route' => 'admin_adv_priv',
             'label' => _('Advanced privilege assignment'),
         ]);
-            
+
         $item->setExtra('icon', 'keys-new');
     }
 }

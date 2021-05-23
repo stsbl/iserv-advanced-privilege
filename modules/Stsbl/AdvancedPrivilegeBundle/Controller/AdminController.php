@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Controller;
@@ -48,7 +49,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("admin/privileges")
  */
-class AdminController extends AbstractPageController
+final class AdminController extends AbstractPageController
 {
     /**
      * Get multiple assign/revoke form
@@ -62,7 +63,7 @@ class AdminController extends AbstractPageController
             ['action' =>$this->generateUrl('admin_adv_priv_send'), 'action_type' => $action]
         );
     }
-    
+
     /**
      * Get form for changing the owner of mutliple groups
      */
@@ -114,7 +115,9 @@ class AdminController extends AbstractPageController
             }
 
             return $this->buildFormErrorResponse($assignForm);
-        } elseif ($revokeForm->isSubmitted()) {
+        }
+
+        if ($revokeForm->isSubmitted()) {
             if ($revokeForm->isValid()) {
                 if (!$handler->updateGroups($revokeForm->getData())) {
                     return JsonStatusResponse::createError(_('Unexpected error during updating of groups.'));
@@ -124,7 +127,9 @@ class AdminController extends AbstractPageController
             }
 
             return $this->buildFormErrorResponse($revokeForm);
-        } elseif ($ownerForm->isSubmitted()) {
+        }
+
+        if ($ownerForm->isSubmitted()) {
             if ($ownerForm->isValid()) {
                 if (!$handler->updateOwner($ownerForm->getData())) {
                     return JsonStatusResponse::createError(_('Unexpected error during updating of groups.'));
@@ -135,7 +140,7 @@ class AdminController extends AbstractPageController
 
             return $this->buildFormErrorResponse($ownerForm);
         }
-        
+
         throw new BadRequestHttpException('This statement should never be reached!');
     }
 
@@ -148,11 +153,11 @@ class AdminController extends AbstractPageController
         $assignForm = $this->createGroupChoiceForm(GroupChoice::ACTION_ASSIGN);
         $revokeForm = $this->createGroupChoiceForm(GroupChoice::ACTION_REVOKE);
         $ownerForm = $this->getOwnerForm();
-        
+
         // track path
         $this->addBreadcrumb(_('Privileges'), $this->generateUrl('admin_privilege_index'));
         $this->addBreadcrumb(_('Advanced privilege assignment'), $this->generateUrl('admin_adv_priv'));
-        
+
         return [
             'multipleAssignForm' => $assignForm->createView(),
             'multipleRevokeForm' => $revokeForm->createView(),

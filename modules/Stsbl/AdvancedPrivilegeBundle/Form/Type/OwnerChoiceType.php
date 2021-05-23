@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Form\Type;
@@ -38,14 +39,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class OwnerChoiceType extends AbstractType
+final class OwnerChoiceType extends AbstractType
 {
     use TargetChoiceTrait;
 
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->addTargetChoice($builder);
 
@@ -69,7 +70,7 @@ class OwnerChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => OwnerChoice::class]);
     }
