@@ -1,3 +1,15 @@
+stsbl-iserv-advanced-privilege (21.06.09.1) testing; urgency=medium
+
+  * Updated license copyright
+  * Fixed Build-Depends
+  * Moved to iservinstall
+  * Updated copyright
+  * Turned source format to native
+  * Rectored code and fixed deprecations
+  * Fixed Build-Depends
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Wed, 09 Jun 2021 23:22:57 +0200
+
 stsbl-iserv-advanced-privilege (20.08.02-1) testing; urgency=medium
 
   * Bumped copyright
