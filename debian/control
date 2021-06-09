@@ -5,8 +5,6 @@ Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-iserv,
                dh-sequence-stsbl,
-               iserv3-dev
-
 Standards-Version: 4.5.0
 Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-advanced-privilege
 
