@@ -1,3 +1,9 @@
+stsbl-iserv-advanced-privilege (21.08.17.1) stable; urgency=medium
+
+  * Switched to git source format
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Tue, 17 Aug 2021 23:02:14 +0200
+
 stsbl-iserv-advanced-privilege (21.06.09.1) testing; urgency=medium
 
   * Updated license copyright
