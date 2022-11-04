@@ -50,41 +50,14 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
  */
 final class GroupHandler
 {
-    /**
-     * @var FlashBag
-     */
-    private $flashBag;
-
-    /**
-     * @var GroupManager
-     */
-    private $groupManager;
-
-    /**
-     * @var GroupRepository
-     */
-    private $groupRepository;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var Logger
-     */
-    private $iservLogger;
+    private FlashBag $flashBag;
 
     public function __construct(
-        GroupManager $groupManager,
-        GroupRepository $groupRepository,
-        LoggerInterface $logger,
-        Logger $iservLogger
+        private readonly GroupManager $groupManager,
+        private readonly GroupRepository $groupRepository,
+        private readonly LoggerInterface $logger,
+        private readonly Logger $iservLogger,
     ) {
-        $this->groupManager = $groupManager;
-        $this->groupRepository = $groupRepository;
-        $this->logger = $logger;
-        $this->iservLogger = $iservLogger;
 
         $this->flashBag = new FlashBag();
     }

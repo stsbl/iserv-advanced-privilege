@@ -48,7 +48,7 @@ abstract class AbstractTargetChoice
      *
      * @var string[]
      */
-    private static $validTargets = [
+    private static array $validTargets = [
         self::TARGET_ALL,
         self::TARGET_STARTING_WITH,
         self::TARGET_ENDING_WITH,
@@ -61,7 +61,7 @@ abstract class AbstractTargetChoice
      *
      * @var string[]
      */
-    private $pregErrorMap = [
+    private array $pregErrorMap = [
         PREG_NO_ERROR => 'No errors',
         PREG_INTERNAL_ERROR => 'There was an internal PCRE error',
         PREG_BACKTRACK_LIMIT_ERROR => 'Backtrack limit was exhausted',
@@ -72,20 +72,13 @@ abstract class AbstractTargetChoice
 
     /**
      * @Assert\NotBlank(message="Please select a target.")
-     *
-     * @var string|null
      */
-    protected $target;
+    protected ?string $target;
 
-    /**
-     * @var string|null
-     */
-    protected $pattern;
+    protected ?string $pattern;
 
     /**
      * @Assert\IsTrue(message="The target choice is not valid.")
-     *
-     * @return bool
      */
     public function isTargetValid(): bool
     {

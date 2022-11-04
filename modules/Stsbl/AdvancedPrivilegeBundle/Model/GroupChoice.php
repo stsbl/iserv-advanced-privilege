@@ -47,24 +47,22 @@ final class GroupChoice extends AbstractTargetChoice
      *
      * @var string[]
      */
-    private static $validActions = [self::ACTION_ASSIGN, self::ACTION_REVOKE];
+    private static array $validActions = [self::ACTION_ASSIGN, self::ACTION_REVOKE];
 
     /**
-     * @var ArrayCollection|GroupFlag[]
+     * @var ArrayCollection&GroupFlag[]
      */
-    private $flags;
+    private ArrayCollection $flags;
 
     /**
-     * @var ArrayCollection|Privilege[]
+     * @var ArrayCollection&Privilege[]
      */
-    private $privileges;
+    private ArrayCollection $privileges;
 
     /**
      * @Assert\NotBlank()
-     *
-     * @var string|null
      */
-    private $action;
+    private ?string $action;
 
     public function __construct()
     {
@@ -83,7 +81,7 @@ final class GroupChoice extends AbstractTargetChoice
      */
     public function isActionValid(): bool
     {
-        return null === $this->action || in_array($this->action, self::$validActions);
+        return null === $this->action || in_array($this->action, self::$validActions, true);
     }
 
     public function isAssignAction(): bool
@@ -105,7 +103,7 @@ final class GroupChoice extends AbstractTargetChoice
     }
 
     /**
-     * @return ArrayCollection|GroupFlag[]
+     * @return ArrayCollection&GroupFlag[]
      */
     public function getFlags(): ArrayCollection
     {
@@ -113,10 +111,10 @@ final class GroupChoice extends AbstractTargetChoice
     }
 
     /**
-     * @param ArrayCollection|GroupFlag[] $flags
+     * @param ArrayCollection&GroupFlag[] $flags
      * @return $this
      */
-    public function setFlags($flags): self
+    public function setFlags(ArrayCollection $flags): self
     {
         $this->flags = $flags;
 
@@ -144,7 +142,7 @@ final class GroupChoice extends AbstractTargetChoice
     }
 
     /**
-     * @return ArrayCollection|Privilege[]
+     * @return ArrayCollection&Privilege[]
      */
     public function getPrivileges(): ArrayCollection
     {
@@ -152,10 +150,10 @@ final class GroupChoice extends AbstractTargetChoice
     }
 
     /**
-     * @param ArrayCollection|Privilege[] $privileges
+     * @param ArrayCollection&Privilege[] $privileges
      * @return $this
      */
-    public function setPrivileges($privileges): self
+    public function setPrivileges(ArrayCollection $privileges): self
     {
         $this->privileges = $privileges;
 

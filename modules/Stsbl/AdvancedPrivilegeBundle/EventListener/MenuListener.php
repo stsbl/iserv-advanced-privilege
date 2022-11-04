@@ -42,7 +42,7 @@ final class MenuListener implements AdminMenuListenerInterface
     /**
      * {@inheritdoc}
      */
-    public function onBuildAdminMenu(MenuEvent $event)
+    public function onBuildAdminMenu(MenuEvent $event): void
     {
         $menu = $event->getMenu();
         $block = $menu->getChild('users');

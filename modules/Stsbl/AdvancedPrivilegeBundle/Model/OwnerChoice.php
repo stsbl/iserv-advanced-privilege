@@ -39,7 +39,7 @@ final class OwnerChoice extends AbstractTargetChoice
     /**
      * @var User|null
      */
-    private $owner;
+    private ?User $owner;
 
     public function getOwner(): ?User
     {
@@ -49,7 +49,7 @@ final class OwnerChoice extends AbstractTargetChoice
     /**
      * @return $this
      */
-    public function setOwner(User $owner = null): self
+    public function setOwner(?User $owner = null): self
     {
         $this->owner = $owner;
 
