@@ -1,3 +1,9 @@
+stsbl-iserv-advanced-privilege (23.04.21.1) stable; urgency=medium
+
+  * Fixed entity reference
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Fri, 21 Apr 2023 06:26:32 +0200
+
 stsbl-iserv-advanced-privilege (22.11.04.1) testing; urgency=medium
 
   * Modernized code
