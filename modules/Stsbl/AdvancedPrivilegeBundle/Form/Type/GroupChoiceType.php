@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stsbl\AdvancedPrivilegeBundle\Form\Type;
 
-use IServ\CoreBundle\Form\Type\GettextEntityType;
+use IServ\Bundle\Form\Form\Type\GettextEntityType;
+use IServ\CoreBundle\Entity\GroupFlag;
+use IServ\CoreBundle\Entity\Privilege;
 use Stsbl\AdvancedPrivilegeBundle\Model\GroupChoice;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -54,7 +56,7 @@ final class GroupChoiceType extends AbstractType
         $builder
             ->add('privileges', GettextEntityType::class, [
                 'label' => _('Privileges'),
-                'class' => 'IServCoreBundle:Privilege',
+                'class' => Privilege::class,
                 'select2-icon' => 'legacy-keys',
                 'select2-style' => 'stack',
                 'multiple' => true,
@@ -65,7 +67,7 @@ final class GroupChoiceType extends AbstractType
             ])
             ->add('flags', GettextEntityType::class, [
                 'label' => _('Group flags'),
-                'class' => 'IServCoreBundle:GroupFlag',
+                'class' => GroupFlag::class,
                 'select2-icon' => 'fugue-tag-label',
                 'select2-style' => 'stack',
                 'multiple' => true,
