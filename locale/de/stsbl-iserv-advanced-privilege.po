@@ -1,0 +1,216 @@
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Added %s group flags to %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Added %s group flags to one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Added %s privileges to %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Added %s privileges to one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Added one group flag to %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+msgid "Added one group flag to one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Added one privilege to %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+msgid "Added one privilege to one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/EventListener/MenuListener.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid "Advanced privilege assignment"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
+msgid "All groups"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/GroupChoiceType.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/OwnerChoiceType.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid "Apply"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid "Apply changes"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid "Assign a privilege or group flag to multiple groups"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid "Cancel"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Do you really want to apply the changes on the IServ group management? "
+"Careless settings could destroy the required privilege assignment for "
+"productive working."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
+msgid "Enter a pattern..."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/GroupChoiceType.php
+msgid "Group flags"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
+msgid "Groups whose name contains ..."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
+msgid "Groups whose name ending with ..."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
+msgid "Groups whose name match with the following regular expression ..."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
+msgid "Groups whose name starting with ..."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Model/AbstractTargetChoice.php
+#, php-format
+msgid "Invalid pattern: %s"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Service/GroupHandler.php
+msgid "No matching groups found."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/OwnerChoiceType.php
+msgid "Owner"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Model/AbstractTargetChoice.php
+msgid "Pattern should not be empty."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+msgid "Please select a target."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+msgid "Please select at least one privilege or group flag."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/GroupChoiceType.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid "Privileges"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Removed %s group flags from %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Removed %s group flags from one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Removed %s privileges from %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Removed %s privileges from one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Removed one group flag from %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+msgid "Removed one group flag from one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+#, php-format
+msgid "Removed one privilege from %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+msgid "Removed one privilege from one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Service/GroupHandler.php
+#, php-format
+msgid "Removed owner of %s groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Service/GroupHandler.php
+msgid "Removed owner of one group."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid "Revoke a privilege or group flag from multiple groups"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/TargetChoiceTrait.php
+msgid "Select target"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+msgid "Set an owner for multiple groups"
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Service/GroupHandler.php
+#, php-format
+msgid "Set owner of %s groups to %s."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Service/GroupHandler.php
+#, php-format
+msgid "Set owner of one group to %s."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+msgid "The action is not valid."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/translations/messages.php
+msgid "The target choice is not valid."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/OwnerChoiceType.php
+msgid "To remove the owner from the targets, select no owner."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
+msgid "Unexpected error during updating of groups."
+msgstr ""
+
+#: modules/Stsbl/AdvancedPrivilegeBundle/Model/AbstractTargetChoice.php
+msgid "Unknown error"
+msgstr ""

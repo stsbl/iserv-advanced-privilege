@@ -1,0 +1,3 @@
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/assets/js/form.js
+msgid "Error during applying changes."
+msgstr ""

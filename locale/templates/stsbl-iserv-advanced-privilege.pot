@@ -1,17 +1,12 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# TRANSLATION CATALOG OF STSBL-ISERV-ADVANCED-PRIVILEGE.
+# Copyright (C) 2023 IServ GmbH
+# This file is distributed under the same license as the stsbl-iserv-advanced-privilege package.
+# IServ GmbH <info@iserv.eu>, 2023.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-02 01:07+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: stsbl-iserv-advanced-privilege\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,9 +50,9 @@ msgstr ""
 msgid "Added one privilege to one group."
 msgstr ""
 
-#: modules/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
 #: modules/Stsbl/AdvancedPrivilegeBundle/EventListener/MenuListener.php
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Advanced privilege assignment"
 msgstr ""
 
@@ -65,25 +60,25 @@ msgstr ""
 msgid "All groups"
 msgstr ""
 
-#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/OwnerChoiceType.php
 #: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/GroupChoiceType.php
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/OwnerChoiceType.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Apply"
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Apply changes"
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Assign a privilege or group flag to multiple groups"
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Cancel"
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid ""
 "Do you really want to apply the changes on the IServ group management? "
 "Careless settings could destroy the required privilege assignment for "
@@ -141,7 +136,7 @@ msgstr ""
 
 #: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/GroupChoiceType.php
 #: modules/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Privileges"
 msgstr ""
 
@@ -192,7 +187,7 @@ msgstr ""
 msgid "Removed owner of one group."
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Revoke a privilege or group flag from multiple groups"
 msgstr ""
 
@@ -200,7 +195,7 @@ msgstr ""
 msgid "Select target"
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-advanced-privilege/modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Set an owner for multiple groups"
 msgstr ""
 
