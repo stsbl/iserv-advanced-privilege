@@ -8,3 +8,4 @@ debian/debhelper-build-stamp
 /system-locale
 !/locale/templates/*_misc.pot
 /public/assets
+/.php-cs-fixer.cache

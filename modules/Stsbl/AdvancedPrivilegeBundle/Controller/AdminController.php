@@ -60,7 +60,7 @@ final class AdminController extends AbstractPageController
             $action,
             GroupChoiceType::class,
             null,
-            ['action' =>$this->generateUrl('admin_adv_priv_send'), 'action_type' => $action]
+            ['action' => $this->generateUrl('admin_adv_priv_send'), 'action_type' => $action]
         );
     }
 
@@ -73,7 +73,7 @@ final class AdminController extends AbstractPageController
             'owner',
             OwnerChoiceType::class,
             null,
-            ['action' =>$this->generateUrl('admin_adv_priv_send')]
+            ['action' => $this->generateUrl('admin_adv_priv_send')]
         );
     }
 
