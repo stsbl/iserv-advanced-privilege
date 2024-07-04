@@ -1,7 +1,7 @@
 # TRANSLATION CATALOG OF STSBL-ISERV-ADVANCED-PRIVILEGE.
-# Copyright (C) 2023 IServ GmbH
+# Copyright (C) 2024 IServ GmbH
 # This file is distributed under the same license as the stsbl-iserv-advanced-privilege package.
-# IServ GmbH <info@iserv.eu>, 2023.
+# IServ GmbH <info@iserv.eu>, 2024.
 #
 #, fuzzy
 msgid ""
