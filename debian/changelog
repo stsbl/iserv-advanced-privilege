@@ -1,3 +1,14 @@
+stsbl-iserv-advanced-privilege (25.09.03.1) stable; urgency=medium
+
+  * Renamed pot files
+  * Updated .gitignore
+  * Updated CS to PSR-12
+  * iservmake: Disabled Pootle download
+  * Updated locales
+  * Fixed handling object manager exceptions
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Wed, 03 Sep 2025 14:04:28 +0200
+
 stsbl-iserv-advanced-privilege (23.04.21.1) stable; urgency=medium
 
   * Fixed entity reference
