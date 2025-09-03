@@ -50,8 +50,8 @@ msgstr ""
 msgid "Added one privilege to one group."
 msgstr ""
 
-#: modules/Stsbl/AdvancedPrivilegeBundle/EventListener/MenuListener.php
 #: modules/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/EventListener/MenuListener.php
 #: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Advanced privilege assignment"
 msgstr ""
@@ -134,8 +134,8 @@ msgstr ""
 msgid "Please select at least one privilege or group flag."
 msgstr ""
 
-#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/GroupChoiceType.php
 #: modules/Stsbl/AdvancedPrivilegeBundle/Controller/AdminController.php
+#: modules/Stsbl/AdvancedPrivilegeBundle/Form/Type/GroupChoiceType.php
 #: modules/Stsbl/AdvancedPrivilegeBundle/Resources/views/admin/index.html.twig.php
 msgid "Privileges"
 msgstr ""

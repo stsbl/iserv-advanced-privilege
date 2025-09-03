@@ -206,8 +206,6 @@ final class GroupHandler
                 return false;
             } catch (ObjectManagerException $e) {
                 $this->addMessage('error', $e->getMessage());
-
-                return false;
             }
         }
 
