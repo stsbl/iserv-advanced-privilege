@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+shopt -s nullglob
+
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]
+then
+  rm -rf /var/cache/iserv/stsbl-advanced-privilege
+  rm -f /var/lib/iserv/stsbl-advanced-privilege/app/cachedir
+fi
+
+#DEBHELPER#

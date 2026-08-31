@@ -1,0 +1,19 @@
+/.php-cs-fixer.cache
+/.phpunit.cache/
+.phpunit.result.cache
+/reports/
+/node_modules/
+/public/static/
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+/var/translations
+/assets/js/lang/*/*.js
+/assets/js/lang/*/*.json

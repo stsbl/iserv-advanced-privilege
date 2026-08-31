@@ -1,0 +1,5 @@
+framework:
+    assets:
+        packages:
+            iserv-twig-components:
+                json_manifest_path: "%kernel.project_dir%/public/bundles/iservtwigcomponents/manifest.json"

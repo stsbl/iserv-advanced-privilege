@@ -36,8 +36,8 @@ modullokales Privilege eingeführt und `ROLE_ADMIN` nicht verwendet.
 
 Ein fokussierter Service kapselt `IServ\Library\IdmApiClient\IdmClientInterface`.
 Er ist die einzige Fachkomponente, die IDM-Endpunkte anspricht. Eine
-requestgebundene IDM-Credentials-Implementierung bezieht den SAT aus dem
-Modul-Request über `iserv/authentication-bundle` und übergibt ihn für jeden
+requestgebundene IDM-Credentials-Implementierung bezieht den von
+`iserv/authentication-bundle` entpackten SATA und übergibt ihn für jeden
 IDM-Request als `X-IServ-Authentication`. IDM autorisiert und protokolliert
 dadurch die tatsächlich handelnde Person statt eines Modul-Servicekontos. Für
 Listen und Formoptionen lädt der Gateway mit `_attributes` nur die nötigen

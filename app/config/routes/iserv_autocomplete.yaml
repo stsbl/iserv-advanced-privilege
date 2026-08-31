@@ -1,0 +1,4 @@
+iserv_autocomplete:
+    resource: '@IServAutocompleteBundle/config/routes.php'
+    type: php
+    stateless: false

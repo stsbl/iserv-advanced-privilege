@@ -1,0 +1,10 @@
+parameters:
+    paths:
+        - src
+    parallel:
+        maximumNumberOfProcesses: 1
+    # Newly written code should conform to higher levels of static analysis, while migrated code
+    # with missing type information may want to start with a lower level or a baseline. Feel free
+    # to adjust the below value to something suitable.
+    level: max # Ändere mich! - PHPStan
+    inferPrivatePropertyTypeFromConstructor: true

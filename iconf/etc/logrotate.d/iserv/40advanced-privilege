@@ -1,0 +1,10 @@
+/var/log/iserv/stsbl-advanced-privilege/*.log {
+	daily
+	dateext
+	dateyesterday
+	missingok
+	rotate 7
+	su iserv-stsbl-advanced-privilege iserv-stsbl-advanced-privilege
+	compress
+	create 644 iserv-stsbl-advanced-privilege iserv-stsbl-advanced-privilege
+}

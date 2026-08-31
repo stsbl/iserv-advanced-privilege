@@ -1,0 +1,5 @@
+framework:
+    assets:
+        packages:
+            iserv-bootstrap:
+                json_manifest_path: "%kernel.project_dir%/public/bundles/iservbootstrap/manifest.json"

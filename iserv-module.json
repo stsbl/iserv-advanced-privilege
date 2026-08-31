@@ -1,0 +1,20 @@
+{
+  "module": {
+    "id": "stsbl/advanced-privilege",
+    "name": "Advanced privilege assignment",
+    "location": "http://localhost:982/iserv/stsbl/advanced-privilege",
+    "menus": {
+      "main": [
+        {
+          "name": "stsbl-advanced-privilege",
+          "label": "Advanced privilege assignment",
+          "url": "stsbl/advanced-privilege/",
+          "icon": "img/advanced-privilege.svg"
+        }
+      ]
+    },
+    "assets": {
+      "manifestFile": "app/public/static/manifest.json"
+    }
+  }
+}

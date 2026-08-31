@@ -1,0 +1,6 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_themes:
+        - '@IServForm/form.html.twig'
+        - '@IServBootstrap/Form/bootstrap.html.twig'
+        - 'bootstrap_3_horizontal_layout.html.twig'

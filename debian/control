@@ -1,31 +1,36 @@
 Source: stsbl-iserv-advanced-privilege
-Section: misc
+Section: non-free/misc
 Priority: optional
 Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
-Build-Depends: debhelper-compat (= 13),
-               dh-sequence-iserv,
-               dh-sequence-stsbl,
+Build-Depends:
+  debhelper-compat (= 13),
+  dh-sequence-iserv,
+  dh-sequence-stsbl,
+  dpkg-dev,
 Standards-Version: 4.5.0
-Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-advanced-privilege
+Homepage: ${iserv:Homepage}
 
 Package: stsbl-iserv-advanced-privilege
 Architecture: all
-Depends: iserv-portal,
-         stsbl-iserv3-maintenance,
-         ${misc:Depends},
-         ${perl:Depends}
 Xb-Private-Iserv-Revision: ${iserv:Revision}
+Depends: ${misc:Depends},
+  ${perl:Depends},
+  adduser,
+  iserv-portal-web,
+  iserv-server-nginx,
+  iserv-server-php,
+  iserv-update,
+  php-cli (>= 0),
+  php-fpm (>= 0),
+  php-intl (>= 0),
+  php-mbstring (>= 0),
+  php-xml (>= 0),
+  stsbl-iserv3-maintenance,
 Description: Erweiterte Rechte-Verwaltung für IServ
- Enthält einen Rechteeditor für die IServ 3-Oberfläche, der es erlaubt nach
- anpassbaren Kriterien Rechte und Gruppenmerkmale zu mehreren Gruppen auf
- einmal hinzuzufügen.
+ Enthält einen Rechteeditor für die IServ-Verwaltung, der nach anpassbaren
+ Kriterien Rechte und Gruppenmerkmale zu mehreren Gruppen auf einmal hinzufügt
+ oder entfernt sowie Gruppenbesitzer setzt oder entfernt.
  .
- https://it.stsbl.de/wp-content/uploads/2017/01/stsbl-iserv-advanced-privilege.png
- .
- Dabei können folgende Kriterien angewandt werden:
- .
- - Name der Gruppe enthält.
- - Name der Gruppe beginnt mit.
- - Name der Gruppe endet mit.
- - Namen der Gruppe gegen eine regulären Ausdruck prüfen.
-Tag: suite::iserv:portal, role::plugin, status::recommended, implemented-in::php
+ Dabei können Gruppen nach Name enthält, beginnt mit, endet mit oder per
+ regulärem Ausdruck ausgewählt werden.
+Tag: suite::iserv, suite::iserv:bundle-cloud, suite::iserv:bundle-full, suite::iserv:portal, role::plugin
