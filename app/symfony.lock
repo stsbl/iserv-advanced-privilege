@@ -68,6 +68,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
+    "iserv/admin-integration-bundle": {
+        "version": "2.2"
+    },
     "iserv/authentication-bundle": {
         "version": "v1.1"
     },
@@ -101,6 +104,9 @@
     },
     "iserv/common": {
         "version": "v1.4.1"
+    },
+    "iserv/config-bundle": {
+        "version": "1.1.0"
     },
     "iserv/doctrine-bundle": {
         "version": "v1.0"

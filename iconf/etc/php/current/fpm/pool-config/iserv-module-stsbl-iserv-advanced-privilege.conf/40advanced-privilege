@@ -1,0 +1,12 @@
+user = stsbl-iserv-advanced-privilege
+group = stsbl-iserv-advanced-privilege
+pm = dynamic
+pm.min_spare_servers = 8
+pm.max_spare_servers = 8
+pm.max_children = 77
+pm.start_servers = 8
+pm.max_requests = 1000
+pm.process_idle_timeout = 300
+php_value[memory_limit] = 64M
+php_value[session.save_path] = "/var/lib/iserv/stsbl-iserv-advanced-privilege/sessions"
+env["APP_SECRET_FILE"] = "/var/lib/iserv/stsbl-iserv-advanced-privilege/pwd/symfony.secret"

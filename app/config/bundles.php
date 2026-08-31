@@ -8,6 +8,7 @@ return [
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     IServ\Bundle\Authentication\IServAuthenticationBundle::class => ['all' => true],
+    IServ\Bundle\AdminIntegration\IServAdminIntegrationBundle::class => ['all' => true],
     IServ\Bundle\Module\IServModuleBundle::class => ['all' => true],
     IServ\Bundle\TranslationGettext\IServTranslationGettextBundle::class => ['all' => true],
     IServ\Bundle\Error\IServErrorBundle::class => ['all' => true],
@@ -16,4 +17,5 @@ return [
     IServ\BootstrapBundle\IServBootstrapBundle::class => ['all' => true],
     IServ\Bundle\TwigComponents\IServTwigComponentsBundle::class => ['all' => true],
     IServ\Bundle\Form\IServFormBundle::class => ['all' => true],
+    IServ\Bundle\Config\IServConfigBundle::class => ['all' => true],
 ];

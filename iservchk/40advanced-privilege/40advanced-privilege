@@ -1,1 +1,1 @@
-MkDir 2770 iserv-stsbl-advanced-privilege:iserv-stsbl-advanced-privilege /var/log/iserv/stsbl-advanced-privilege
+MkDir 2770 stsbl-iserv-advanced-privilege:stsbl-iserv-advanced-privilege /var/log/iserv/stsbl-iserv-advanced-privilege

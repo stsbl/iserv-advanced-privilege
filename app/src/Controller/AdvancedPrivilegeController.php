@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stsbl\IServ\AdvancedPrivilege\Controller;
 
 use IServ\Library\ModuleResponse\ResponseContent;
-use IServ\Library\ModuleResponse\ResponseContentBuilder;
+use IServ\Bundle\AdminIntegration\Controller\AbstractAdminController;
+use IServ\Bundle\AdminIntegration\Menu\AdminBreadcrumbsInterface;
 use Stsbl\IServ\AdvancedPrivilege\Form\GroupMutationType;
 use Stsbl\IServ\AdvancedPrivilege\Form\OwnerMutationType;
 use Stsbl\IServ\AdvancedPrivilege\Model\GroupMutation;
 use Stsbl\IServ\AdvancedPrivilege\Model\OwnerMutation;
 use Stsbl\IServ\AdvancedPrivilege\Service\BulkMutationHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,14 +19,16 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-#[Route('')]
-final class AdvancedPrivilegeController extends AbstractController
+#[Route('/admin')]
+final class AdvancedPrivilegeController extends AbstractAdminController
 {
-    public function __construct(private readonly FormFactoryInterface $forms)
-    {
+    public function __construct(
+        private readonly FormFactoryInterface $forms,
+        private readonly AdminBreadcrumbsInterface $adminBreadcrumbs,
+    ) {
     }
 
-    #[Route('', name: 'advanced_privilege_index', methods: ['GET'])]
+    #[Route('/advanced-privilege', name: 'advanced_privilege_index', methods: ['GET'])]
     public function index(): ResponseContent
     {
         $content = $this->renderView('advanced_privilege/index.html.twig', [
@@ -35,7 +37,9 @@ final class AdvancedPrivilegeController extends AbstractController
             'owner_form' => $this->ownerForm()->createView(),
         ]);
 
-        return ResponseContentBuilder::createFromContent($content, ResponseContent::TYPE_MODULE)
+        return $this->createResponseBuilder($content)
+            ->addBreadcrumb($this->adminBreadcrumbs->root())
+            ->addBreadcrumb(_('Modules'))
             ->setTitle(_('Advanced privilege assignment'))
             ->addBreadcrumb(_('Privileges'))
             ->addBreadcrumb(_('Advanced privilege assignment'))
@@ -43,7 +47,7 @@ final class AdvancedPrivilegeController extends AbstractController
         ;
     }
 
-    #[Route('/apply', name: 'advanced_privilege_apply', methods: ['POST'])]
+    #[Route('/advanced-privilege/apply', name: 'advanced_privilege_apply', methods: ['POST'])]
     public function apply(Request $request, BulkMutationHandler $handler): JsonResponse
     {
         foreach ([GroupMutation::ASSIGN, GroupMutation::REVOKE] as $action) {

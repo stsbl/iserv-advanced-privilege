@@ -1,10 +1,10 @@
-/var/log/iserv/stsbl-advanced-privilege/*.log {
+/var/log/iserv/stsbl-iserv-advanced-privilege/*.log {
 	daily
 	dateext
 	dateyesterday
 	missingok
 	rotate 7
-	su iserv-stsbl-advanced-privilege iserv-stsbl-advanced-privilege
+	su stsbl-iserv-advanced-privilege stsbl-iserv-advanced-privilege
 	compress
-	create 644 iserv-stsbl-advanced-privilege iserv-stsbl-advanced-privilege
+	create 644 stsbl-iserv-advanced-privilege stsbl-iserv-advanced-privilege
 }

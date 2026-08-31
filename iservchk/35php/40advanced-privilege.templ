@@ -1,15 +1,15 @@
-MkDir 0755 root:root /var/lib/iserv/stsbl-advanced-privilege
-MkDir 2770 iserv-stsbl-advanced-privilege:iserv-stsbl-advanced-privilege /var/lib/iserv/stsbl-advanced-privilege/app
-MkDir 2770 iserv-stsbl-advanced-privilege:iserv-stsbl-advanced-privilege /var/lib/iserv/stsbl-advanced-privilege/pwd
-MkDir 0300 iserv-stsbl-advanced-privilege:iserv-stsbl-advanced-privilege /var/lib/iserv/stsbl-advanced-privilege/sessions
+MkDir 0755 root:root /var/lib/iserv/stsbl-iserv-advanced-privilege
+MkDir 2770 stsbl-iserv-advanced-privilege:stsbl-iserv-advanced-privilege /var/lib/iserv/stsbl-iserv-advanced-privilege/app
+MkDir 2770 stsbl-iserv-advanced-privilege:stsbl-iserv-advanced-privilege /var/lib/iserv/stsbl-iserv-advanced-privilege/pwd
+MkDir 0300 stsbl-iserv-advanced-privilege:stsbl-iserv-advanced-privilege /var/lib/iserv/stsbl-iserv-advanced-privilege/sessions
 
-Touch /var/lib/iserv/stsbl-advanced-privilege/pwd/symfony.secret
-ChPerm 0440 root:iserv-stsbl-advanced-privilege /var/lib/iserv/stsbl-advanced-privilege/pwd/symfony.secret
+Touch /var/lib/iserv/stsbl-iserv-advanced-privilege/pwd/symfony.secret
+ChPerm 0440 root:stsbl-iserv-advanced-privilege /var/lib/iserv/stsbl-iserv-advanced-privilege/pwd/symfony.secret
 
 Test "generate symfony secret"
-  [ -s /var/lib/iserv/stsbl-advanced-privilege/pwd/symfony.secret ]
+  [ -s /var/lib/iserv/stsbl-iserv-advanced-privilege/pwd/symfony.secret ]
   ---
-  pwgen -snc 32 1 | tr -d '\n' >/var/lib/iserv/stsbl-advanced-privilege/pwd/symfony.secret
+  pwgen -snc 32 1 | tr -d '\n' >/var/lib/iserv/stsbl-iserv-advanced-privilege/pwd/symfony.secret
 
-Check /etc/php/current/fpm/pool-config/iserv-module-stsbl-advanced-privilege.conf
-Check /etc/php/$(/usr/lib/iserv/php_version)/fpm/pool.d/iserv-module-stsbl-advanced-privilege.conf
+Check /etc/php/current/fpm/pool-config/iserv-module-stsbl-iserv-advanced-privilege.conf
+Check /etc/php/$(/usr/lib/iserv/php_version)/fpm/pool.d/iserv-module-stsbl-iserv-advanced-privilege.conf

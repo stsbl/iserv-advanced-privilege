@@ -1,5 +1,5 @@
-location ^~ /iserv/stsbl-advanced-privilege/static/ {
-    alias /usr/share/iserv/stsbl-advanced-privilege/app/public/static/;
+location ^~ /iserv/stsbl/advanced-privilege/static/ {
+    alias /usr/share/iserv/stsbl-iserv-advanced-privilege/app/public/static/;
 
     location ~* "\.(?:ico|png|svg|woff|woff2|ttf)$" {
         gzip on;
@@ -18,8 +18,8 @@ location ^~ /iserv/stsbl-advanced-privilege/static/ {
     }
 }
 
-location ^~ /iserv/stsbl-advanced-privilege/bundles/ {
-    alias /usr/share/iserv/stsbl-advanced-privilege/app/public/bundles/;
+location ^~ /iserv/stsbl/advanced-privilege/bundles/ {
+    alias /usr/share/iserv/stsbl-iserv-advanced-privilege/app/public/bundles/;
 
     location ~* "\.(?:ico|png|svg|woff|woff2|ttf)$" {
         gzip on;
