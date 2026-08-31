@@ -1,8 +1,8 @@
 {
   "name": "stsbl-iserv-advanced-privilege",
-  "description": "The Portal Web Skeleton",
-  "author": "IServ GmbH <info@iserv.de>",
-  "homepage": "https://git.iserv.eu/iserv/stsbl-advanced-privilege/",
+  "description": "Portal-Web v4 module for bulk privilege and group-owner administration",
+  "author": "Stadtteilschule Blankenese <repository@stsbl.de>",
+  "homepage": "https://github.com/stsbl/iserv-advanced-privilege",
   "license": "proprietary",
   "preferGlobal": true,
   "private": true,

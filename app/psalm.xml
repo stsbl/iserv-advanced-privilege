@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!-- Ändere mich! - Psalm -->
 <psalm
     errorLevel="1"
     resolveFromConfigFile="true"

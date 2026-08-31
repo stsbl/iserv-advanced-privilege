@@ -21,8 +21,7 @@ final class Kernel extends BaseKernel implements CompilerPassInterface
             return;
         }
 
-        // We have to work around some nasty PoWeb session stuff, which breaks our tests.
-        // TODO: Remove after #68370 got implemented and AuthBundle updated.
+        // Use a distinct mock-session name for Portal-Web module tests.
         $container
             ->getDefinition('session.storage.factory.mock_file')
             ->setArgument('$name', 'IServPortalWebSession')

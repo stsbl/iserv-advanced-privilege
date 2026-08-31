@@ -1,0 +1,15 @@
+# Preserve the legacy IServ 3 administration URLs after moving to the
+# vendor-aware Portal-Web v4 module path.
+location = /iserv/admin/privileges/advanced {
+    return 301 /iserv/stsbl/advanced-privilege/\$is_args\$args;
+}
+
+location = /iserv/admin/privileges/advanced/ {
+    return 301 /iserv/stsbl/advanced-privilege/\$is_args\$args;
+}
+
+# Keep POST bodies from stale v3 forms intact while forwarding them to the
+# corresponding v4 mutation endpoint.
+location = /iserv/admin/privileges/advanced/send {
+    return 307 /iserv/stsbl/advanced-privilege/apply\$is_args\$args;
+}

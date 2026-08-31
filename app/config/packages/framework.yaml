@@ -23,4 +23,4 @@ framework:
 
 when@dev:
     framework:
-        secret: 'random-skeleton-framework-secret' # We don't have a secret file in DEV. Therefore, we just use a simple secret.
+        secret: 'advanced-privilege-development-secret'

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 /** Dedicated owner lookup; access is protected globally by AUTHENTICATED_AS_ADMIN. */
-#[Route('/admin/advanced-privilege/api/owner-autocomplete')]
+#[Route('/api/owner-autocomplete')]
 final class AdminOwnerAutocompleteController extends AbstractController
 {
     #[Route('', name: 'advanced_privilege_owner_autocomplete', methods: ['GET'])]

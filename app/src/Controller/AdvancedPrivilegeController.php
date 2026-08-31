@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-#[Route('/admin/advanced-privilege')]
+#[Route('')]
 final class AdvancedPrivilegeController extends AbstractController
 {
     public function __construct(private readonly FormFactoryInterface $forms)
