@@ -16,7 +16,7 @@ final readonly class IdmReferenceProvider
     /** @return array<string, string> */
     public function privileges(): array
     {
-        return $this->references('privileges', 'privilege', ['module', 'name']);
+        return $this->references('privileges', 'privilege', ['name']);
     }
 
     /** @return array<string, string> */
@@ -25,20 +25,20 @@ final readonly class IdmReferenceProvider
         return $this->references('group_flags', 'groupFlag', ['title', 'name']);
     }
 
-    /** @return list<array{uuid: string, name: string, owner: ?string}> */
+    /** @return list<array{uuid: string, group: string, name: string, owner: ?string}> */
     public function groups(): array
     {
-        /** @var list<array{uuid: string, name: string, owner: ?string}> $groups */
-        $groups = $this->client->performRequest('GET', 'iserv/idm/api/v1/groups?_attributes=hexUuid,name,owner', new CallbackHydrator(
+        /** @var list<array{uuid: string, group: string, name: string, owner: ?string}> $groups */
+        $groups = $this->client->performRequest('GET', 'iserv/idm/api/v1/groups?_attributes=hexUuid,group,name,owner', new CallbackHydrator(
             static function (array $items): array {
                 $groups = [];
                 foreach ($items as $item) {
-                    if (!is_array($item) || !is_string($item['hexUuid'] ?? null) || !is_string($item['name'] ?? null)) {
+                    if (!is_array($item) || !is_string($item['hexUuid'] ?? null) || !is_string($item['group'] ?? null) || !is_string($item['name'] ?? null)) {
                         continue;
                     }
                     $ownerData = $item['owner'] ?? null;
                     $owner = is_array($ownerData) ? ($ownerData['hexUuid'] ?? null) : null;
-                    $groups[] = ['uuid' => $item['hexUuid'], 'name' => $item['name'], 'owner' => is_string($owner) ? $owner : null];
+                    $groups[] = ['uuid' => $item['hexUuid'], 'group' => $item['group'], 'name' => $item['name'], 'owner' => is_string($owner) ? $owner : null];
                 }
 
                 return $groups;
@@ -61,7 +61,8 @@ final readonly class IdmReferenceProvider
                         continue;
                     }
                     $parts = array_filter(array_map(static fn(string $label): mixed => $item[$label] ?? null, $labels), 'is_string');
-                    $result[$item['hexUuid']] = '' === implode(' – ', $parts) ? ($item[$fallback] ?? $item['hexUuid']) : implode(' – ', $parts);
+                    $label = '' === implode(' – ', $parts) ? ($item[$fallback] ?? $item['hexUuid']) : implode(' – ', $parts);
+                    $result[$item['hexUuid']] = is_string($label) ? _($label) : $item['hexUuid'];
                 }
                 asort($result, SORT_NATURAL | SORT_FLAG_CASE);
 

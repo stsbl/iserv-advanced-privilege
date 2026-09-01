@@ -9,10 +9,13 @@ const __dirname = path.dirname(__filename);
 
 const config = {
     mode: 'production',
-    entry: {},
+    entry: {
+        'js/advanced-privilege': './assets/js/advanced-privilege.js',
+    },
     output: {
         path: path.resolve(__dirname, 'public/static'),
         publicPath: 'static/',
+        filename: '[name].[contenthash:8].js',
     },
     plugins: [
         new CleanWebpackPlugin(),

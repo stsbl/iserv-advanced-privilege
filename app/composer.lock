@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "537ea529a69269b6b03c4acbad88b27f",
+    "content-hash": "41cd17edc3c2ab43771f115c04be8209",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -158,6 +158,36 @@
             "autoload": {
                 "psr-4": {
                     "IServ\\Library\\AppKernel\\": "src/"
+                }
+            }
+        },
+        {
+            "name": "iserv/asset-bundle",
+            "version": "1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://repoflow.iserv.eu/api/composer/iserv/composer-internal/iserv/asset-bundle/1.5.zip"
+            },
+            "require": {
+                "php": ">=8.1",
+                "symfony/asset": "^5.4 || ^6.0",
+                "symfony/config": "^5.4 || ^6.0",
+                "symfony/dependency-injection": "^5.4 || ^6.0",
+                "symfony/http-kernel": "^5.4 || ^6.0"
+            },
+            "require-dev": {
+                "matthiasnoback/symfony-config-test": "^4.3",
+                "matthiasnoback/symfony-dependency-injection-test": "^4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IServ\\Bundle\\Asset\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "IServ\\Bundle\\Asset\\Tests\\": "tests/"
                 }
             }
         },

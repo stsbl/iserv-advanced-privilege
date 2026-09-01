@@ -8,16 +8,14 @@ use IServ\Bundle\Autocomplete\Form\Data\AutocompleteTagsData;
 
 final class OwnerMutation extends TargetSelection
 {
-    /** @var list<AutocompleteTagsData> */
-    public array $owner = [];
+    public ?AutocompleteTagsData $owner = null;
 
     public function ownerUuid(): ?string
     {
-        $owner = $this->owner[0] ?? null;
-        if (!$owner instanceof AutocompleteTagsData || 'user' !== $owner->getSource()) {
+        if (!$this->owner instanceof AutocompleteTagsData || 'user' !== $this->owner->getSource()) {
             return null;
         }
 
-        return $owner->getId();
+        return $this->owner->getId();
     }
 }

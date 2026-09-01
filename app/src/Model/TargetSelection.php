@@ -7,7 +7,7 @@ namespace Stsbl\IServ\AdvancedPrivilege\Model;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-abstract class TargetSelection
+class TargetSelection
 {
     public const ALL = 'all';
     public const STARTS_WITH = 'starts-with';
@@ -41,8 +41,34 @@ abstract class TargetSelection
 
             return;
         }
-        if (self::MATCHES === $this->target && false === @preg_match('/' . $this->pattern . '/', 'group')) {
-            $context->buildViolation(_('Invalid regular expression.'))->atPath('pattern')->addViolation();
+        if (self::MATCHES === $this->target && null !== $error = self::regularExpressionError($this->pattern)) {
+            $context->buildViolation(__('Invalid regular expression: %s', $error))->atPath('pattern')->addViolation();
         }
+    }
+
+    public static function regularExpression(string $pattern): string
+    {
+        return '~' . str_replace('~', '\\~', $pattern) . '~u';
+    }
+
+    public static function regularExpressionError(string $pattern): ?string
+    {
+        $warning = null;
+        set_error_handler(static function (int $_severity, string $message) use (&$warning): bool {
+            $warning = $message;
+
+            return true;
+        });
+        try {
+            $result = preg_match(self::regularExpression($pattern), '');
+        } finally {
+            restore_error_handler();
+        }
+
+        if (false !== $result) {
+            return null;
+        }
+
+        return $warning ?? preg_last_error_msg();
     }
 }

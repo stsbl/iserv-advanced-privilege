@@ -27,10 +27,10 @@ final class GroupMutationType extends AbstractType
     {
         $this->addTargetSelection($builder);
         $builder
-            ->add('privileges', ChoiceType::class, ['label' => _('Privileges'), 'choices' => array_flip($this->references->privileges()), 'multiple' => true, 'required' => false])
-            ->add('flags', ChoiceType::class, ['label' => _('Group flags'), 'choices' => array_flip($this->references->flags()), 'multiple' => true, 'required' => false])
+            ->add('privileges', ChoiceType::class, ['label' => _('Privileges'), 'choices' => array_flip($this->references->privileges()), 'multiple' => true, 'required' => false, 'select2' => true])
+            ->add('flags', ChoiceType::class, ['label' => _('Group flags'), 'choices' => array_flip($this->references->flags()), 'multiple' => true, 'required' => false, 'select2' => true])
             ->add('action', HiddenType::class, ['data' => $options['mutation_action']])
-            ->add('submit', SubmitType::class, ['label' => _('Apply')])
+            ->add('submit', SubmitType::class, ['label' => _('Apply'), 'button_class' => 'success', 'icon' => 'fa-check'])
         ;
     }
 

@@ -6,9 +6,10 @@
   "require": {
     "php": ">=8.2",
     "ext-gettext": "*",
-    "iserv/appkernel": "^1.4",
-    "iserv/authentication-bundle": "^2.10",
     "iserv/admin-integration-bundle": "^2.2",
+    "iserv/appkernel": "^1.4",
+    "iserv/asset-bundle": "^1.5",
+    "iserv/authentication-bundle": "^2.10",
     "iserv/autocomplete-bundle": "^1.9",
     "iserv/error-bundle": "^1.0",
     "iserv/idm-api-client": "^1.1",

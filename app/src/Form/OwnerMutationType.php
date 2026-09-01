@@ -36,7 +36,7 @@ final class OwnerMutationType extends AbstractType
                 'autocomplete_lookup_url' => $this->router->generate('advanced_privilege_owner_autocomplete'),
                 'attr' => ['help_text' => _('To remove the owner from the targets, select no owner.')],
             ])
-            ->add('submit', SubmitType::class, ['label' => _('Apply')])
+            ->add('submit', SubmitType::class, ['label' => _('Apply'), 'button_class' => 'success', 'icon' => 'fa-check'])
         ;
     }
 

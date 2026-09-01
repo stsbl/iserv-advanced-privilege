@@ -3,12 +3,12 @@ set -e
 
 umask 0002
 
-CONSOLE_BIN=/usr/share/iserv/stsbl-advanced-privilege/app/bin/console
-USER_WEB=iserv-stsbl-advanced-privilege
+CONSOLE_BIN=/usr/share/iserv/stsbl-iserv-advanced-privilege/app/bin/console
+USER_WEB=stsbl-iserv-advanced-privilege
 USER_WEB_UID="$(id -u "$USER_WEB")"
 EUID="$(id -u)"
 
-export APP_SECRET_FILE=/var/lib/iserv/stsbl-advanced-privilege/pwd/symfony.secret
+export APP_SECRET_FILE=/var/lib/iserv/stsbl-iserv-advanced-privilege/pwd/symfony.secret
 
 if [ -z "$USER_WEB_UID" ]
 then

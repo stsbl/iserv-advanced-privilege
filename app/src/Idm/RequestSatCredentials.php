@@ -22,6 +22,6 @@ final readonly class RequestSatCredentials implements Credentials
             throw new \LogicException('Missing authenticated user token.');
         }
 
-        return $request->withHeader('X-IServ-Authentication', $token->getAccessToken()->toString());
+        return $request->withHeader('Authorization', 'Bearer ' . $token->getAccessToken()->toString());
     }
 }

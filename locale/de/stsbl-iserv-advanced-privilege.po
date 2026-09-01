@@ -5,9 +5,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Added %d group flags to %d groups."
+msgstr "%d Gruppenmerkmale zu %d Gruppen hinzugefügt."
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Added %d privileges to %d groups."
+msgstr "%d Rechte zu %d Gruppen hinzugefügt."
+
 #: app/src/Controller/AdvancedPrivilegeController.php
 #: app/translations/messages.php
-#: app/templates/advanced_privilege/index.html.twig.php
+#: share/shared/administration/menu/advanced-privilege.php
 msgid "Advanced privilege assignment"
 msgstr "Erweiterte Rechte-Zuweisung"
 
@@ -16,21 +26,55 @@ msgid "All groups"
 msgstr "Alle Gruppen"
 
 #: app/src/Form/GroupMutationType.php app/src/Form/OwnerMutationType.php
+#: app/templates/advanced_privilege/index.html.twig.php
 msgid "Apply"
 msgstr "Übernehmen"
 
 #: app/templates/advanced_privilege/index.html.twig.php
-#, fuzzy
-msgid "Assign privileges and group flags"
-msgstr "Ein Recht oder Gruppenmerkmal mehreren Gruppen zuweisen"
+msgid "Apply changes"
+msgstr "Änderungen übernehmen"
 
 #: app/templates/advanced_privilege/index.html.twig.php
-msgid "Change owner"
+msgid "Assign a privilege or group flag to multiple groups"
+msgstr "Ein Recht oder Gruppenmerkmal mehreren Gruppen zuweisen"
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Assign group flag: %s"
+msgstr "Gruppenmerkmal zuweisen: %s"
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Assign privilege: %s"
+msgstr "Recht zuweisen: %s"
+
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: app/translations/messages.php
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Changes applied."
+msgstr "Änderungen übernommen."
+
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid ""
+"Do you really want to apply the changes on the IServ group management? "
+"Careless settings could destroy the required privilege assignment for "
+"productive working."
 msgstr ""
+"Möchten Sie die Änderungen wirklich auf die IServ-Gruppenverwaltung "
+"anwenden? Unvorsichtige Einstellungen könnten die benötigte Rechtezuweisung "
+"für den produktiven Arbeitsablauf beschädigen."
 
 #: app/src/Form/TargetSelectionFields.php
 msgid "Enter a pattern..."
 msgstr "Muster eingeben..."
+
+#: app/translations/messages.php
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Error during applying changes."
+msgstr "Fehler beim Übernehmen der Änderungen."
 
 #: app/src/Form/GroupMutationType.php
 msgid "Group flags"
@@ -57,11 +101,24 @@ msgstr "Gruppen, dessen Name mit ... beginnt"
 
 #: app/src/Controller/AdvancedPrivilegeController.php
 msgid "Invalid form submission."
-msgstr ""
+msgstr "Ungültige Formularübermittlung."
 
-#: app/src/Model/TargetSelection.php
-msgid "Invalid regular expression."
-msgstr ""
+#: app/src/Model/TargetSelection.php app/src/Service/BulkMutationHandler.php
+#, php-format
+msgid "Invalid regular expression: %s"
+msgstr "Ungültiger regulärer Ausdruck: %s"
+
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Matching groups"
+msgstr "Passende Gruppen"
+
+#: app/translations/messages.php
+msgid "Matching groups:"
+msgstr "Passende Gruppen:"
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+msgid "No matching groups found."
+msgstr "Keine passenden Gruppen gefunden."
 
 #: app/src/Form/OwnerMutationType.php
 msgid "Owner"
@@ -80,18 +137,70 @@ msgstr "Bitte wählen Sie zumindest ein Recht oder Gruppenmerkmal aus."
 msgid "Privileges"
 msgstr "Rechte"
 
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+msgid "Remove owner"
+msgstr "Besitzer entfernen"
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Removed %d group flags from %d groups."
+msgstr "%d Gruppenmerkmale von %d Gruppen entfernt."
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Removed %d privileges from %d groups."
+msgstr "%d Rechte von %d Gruppen entfernt."
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Removed owner of %d groups."
+msgstr "Besitzer von %d Gruppen entfernt."
+
 #: app/templates/advanced_privilege/index.html.twig.php
-#, fuzzy
-msgid "Revoke privileges and group flags"
-msgstr "Ein Recht oder Gruppenmerkmal von mehreren Gruppen entfernen"
+msgid "Revoke a privilege or group flag from multiple groups"
+msgstr "Ein Recht oder Gruppenmerkmal mehreren Gruppen entziehen"
+
+#: app/translations/messages.php
+#, php-format
+msgid "Revoke group flag: %s"
+msgstr "Gruppenmerkmal entziehen: %s"
+
+#: app/translations/messages.php
+#, php-format
+msgid "Revoke privilege: %s"
+msgstr "Recht entziehen: %s"
 
 #: app/src/Form/TargetSelectionFields.php
 msgid "Select target"
 msgstr "Ziel auswählen"
 
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Set an owner for multiple groups"
+msgstr "Einen Besitzer für mehrere Gruppen setzen"
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Set owner of %d groups to %s."
+msgstr "Besitzer von %d Gruppen auf %s gesetzt."
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Set owner: %s"
+msgstr "Besitzer setzen: %s"
+
 #: app/src/Model/GroupMutation.php
 msgid "The action is not valid."
 msgstr "Die Aktion ist nicht gültig."
+
+#: app/translations/messages.php
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "The following changes will be applied:"
+msgstr "Die folgenden Änderungen werden durchgeführt:"
+
+#: app/translations/messages.php
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "The following groups will be changed:"
+msgstr "Die folgenden Gruppen werden geändert:"
 
 #: app/src/Model/TargetSelection.php
 msgid "The target choice is not valid."
@@ -101,6 +210,20 @@ msgstr "Die Zielauswahl ist nicht gültig."
 msgid "To remove the owner from the targets, select no owner."
 msgstr ""
 "Um den Besitzer von den Zielen zu entfernen, wählen Sie keinen Besitzer aus."
+
+#~ msgid "Invalid regular expression."
+#~ msgstr "Ungültiger regulärer Ausdruck."
+
+#~ msgid "Close"
+#~ msgstr "Schließen"
+
+#, fuzzy
+#~ msgid "Assign privileges and group flags"
+#~ msgstr "Ein Recht oder Gruppenmerkmal mehreren Gruppen zuweisen"
+
+#, fuzzy
+#~ msgid "Revoke privileges and group flags"
+#~ msgstr "Ein Recht oder Gruppenmerkmal von mehreren Gruppen entfernen"
 
 #, php-format
 #~ msgid "Added %s group flags to %s groups."
@@ -132,27 +255,9 @@ msgstr ""
 #~ msgid "Added one privilege to one group."
 #~ msgstr "Ein Recht zu einer Gruppe hinzugefügt."
 
-#~ msgid "Apply changes"
-#~ msgstr "Änderungen übernehmen"
-
-#~ msgid "Cancel"
-#~ msgstr "Abbrechen"
-
-#~ msgid ""
-#~ "Do you really want to apply the changes on the IServ group management? "
-#~ "Careless settings could destroy the required privilege assignment for "
-#~ "productive working."
-#~ msgstr ""
-#~ "Möchten Sie die Änderungen wirklich auf die IServ-Gruppenverwaltung "
-#~ "anwenden? Unvorsichtige Einstellungen könnten die benötigte "
-#~ "Rechtezuweisung für den produktiven Arbeitsablauf beschädigen."
-
 #, php-format
 #~ msgid "Invalid pattern: %s"
 #~ msgstr "Ungültiger Ausdruck: %s"
-
-#~ msgid "No matching groups found."
-#~ msgstr "Keine passenden Gruppen gefunden."
 
 #~ msgid "Please select a target."
 #~ msgstr "Bitte wählen Sie ein Ziel."
@@ -193,9 +298,6 @@ msgstr ""
 
 #~ msgid "Removed owner of one group."
 #~ msgstr "Benitzer von einer Gruppe entfernt."
-
-#~ msgid "Set an owner for multiple groups"
-#~ msgstr "Einen Besitzer für mehrere Gruppen setzen"
 
 #, php-format
 #~ msgid "Set owner of %s groups to %s."

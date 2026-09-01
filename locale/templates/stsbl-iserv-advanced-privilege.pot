@@ -12,9 +12,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Added %d group flags to %d groups."
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Added %d privileges to %d groups."
+msgstr ""
+
 #: app/src/Controller/AdvancedPrivilegeController.php
 #: app/translations/messages.php
-#: app/templates/advanced_privilege/index.html.twig.php
+#: share/shared/administration/menu/advanced-privilege.php
 msgid "Advanced privilege assignment"
 msgstr ""
 
@@ -23,19 +33,51 @@ msgid "All groups"
 msgstr ""
 
 #: app/src/Form/GroupMutationType.php app/src/Form/OwnerMutationType.php
+#: app/templates/advanced_privilege/index.html.twig.php
 msgid "Apply"
 msgstr ""
 
 #: app/templates/advanced_privilege/index.html.twig.php
-msgid "Assign privileges and group flags"
+msgid "Apply changes"
 msgstr ""
 
 #: app/templates/advanced_privilege/index.html.twig.php
-msgid "Change owner"
+msgid "Assign a privilege or group flag to multiple groups"
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Assign group flag: %s"
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Assign privilege: %s"
+msgstr ""
+
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Cancel"
+msgstr ""
+
+#: app/translations/messages.php
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Changes applied."
+msgstr ""
+
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid ""
+"Do you really want to apply the changes on the IServ group management? "
+"Careless settings could destroy the required privilege assignment for "
+"productive working."
 msgstr ""
 
 #: app/src/Form/TargetSelectionFields.php
 msgid "Enter a pattern..."
+msgstr ""
+
+#: app/translations/messages.php
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Error during applying changes."
 msgstr ""
 
 #: app/src/Form/GroupMutationType.php
@@ -62,8 +104,21 @@ msgstr ""
 msgid "Invalid form submission."
 msgstr ""
 
-#: app/src/Model/TargetSelection.php
-msgid "Invalid regular expression."
+#: app/src/Model/TargetSelection.php app/src/Service/BulkMutationHandler.php
+#, php-format
+msgid "Invalid regular expression: %s"
+msgstr ""
+
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Matching groups"
+msgstr ""
+
+#: app/translations/messages.php
+msgid "Matching groups:"
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+msgid "No matching groups found."
 msgstr ""
 
 #: app/src/Form/OwnerMutationType.php
@@ -83,16 +138,69 @@ msgstr ""
 msgid "Privileges"
 msgstr ""
 
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+msgid "Remove owner"
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Removed %d group flags from %d groups."
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Removed %d privileges from %d groups."
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Removed owner of %d groups."
+msgstr ""
+
 #: app/templates/advanced_privilege/index.html.twig.php
-msgid "Revoke privileges and group flags"
+msgid "Revoke a privilege or group flag from multiple groups"
+msgstr ""
+
+#: app/translations/messages.php
+#, php-format
+msgid "Revoke group flag: %s"
+msgstr ""
+
+#: app/translations/messages.php
+#, php-format
+msgid "Revoke privilege: %s"
 msgstr ""
 
 #: app/src/Form/TargetSelectionFields.php
 msgid "Select target"
 msgstr ""
 
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "Set an owner for multiple groups"
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Set owner of %d groups to %s."
+msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#, php-format
+msgid "Set owner: %s"
+msgstr ""
+
 #: app/src/Model/GroupMutation.php
 msgid "The action is not valid."
+msgstr ""
+
+#: app/translations/messages.php
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "The following changes will be applied:"
+msgstr ""
+
+#: app/translations/messages.php
+#: app/templates/advanced_privilege/index.html.twig.php
+msgid "The following groups will be changed:"
 msgstr ""
 
 #: app/src/Model/TargetSelection.php
