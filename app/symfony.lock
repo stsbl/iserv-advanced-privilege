@@ -138,6 +138,16 @@
     "iserv/module-response-symfony-bridge": {
         "version": "v1.0"
     },
+    "iserv/testbrowser-bundle": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "git.iserv.eu/iserv/lib/flex-recipes",
+            "branch": "master",
+            "version": "2.1",
+            "ref": "672da3151bd8f9d8180e0f0e342119d0150ff79b"
+        },
+        "files": []
+    },
     "iserv/translation-gettext": {
         "version": "v1.0"
     },

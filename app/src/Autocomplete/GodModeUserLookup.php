@@ -74,10 +74,12 @@ final readonly class GodModeUserLookup
     private function toSuggestions(array $lookup): array
     {
         $suggestions = [];
-        $users = [];
-        foreach (['exact', 'partial', 'fuzzy'] as $matches) {
-            if (is_array($lookup[$matches] ?? null)) {
-                $users = array_merge($users, $lookup[$matches]);
+        $users = array_is_list($lookup) ? $lookup : [];
+        if ([] === $users) {
+            foreach (['exact', 'partial', 'fuzzy'] as $matches) {
+                if (is_array($lookup[$matches] ?? null)) {
+                    $users = array_merge($users, $lookup[$matches]);
+                }
             }
         }
         foreach ($users as $user) {

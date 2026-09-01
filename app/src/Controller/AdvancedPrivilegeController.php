@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stsbl\IServ\AdvancedPrivilege\Controller;
 
 use IServ\Library\ModuleResponse\ResponseContent;
+use IServ\Library\IdmApiClient\Exception\ClientException;
 use IServ\Library\Breadcrumb\Breadcrumb;
 use IServ\Bundle\TranslationGettext\Asset\TranslationAssetLoader;
 use IServ\Bundle\AdminIntegration\Controller\AbstractAdminController;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Psr\Log\LoggerInterface;
 
 #[AsController]
 #[Route('/admin')]
@@ -30,6 +32,7 @@ final class AdvancedPrivilegeController extends AbstractAdminController
         private readonly AdminBreadcrumbsInterface $adminBreadcrumbs,
         private readonly Packages $assets,
         private readonly TranslationAssetLoader $translationAssets,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -64,7 +67,11 @@ final class AdvancedPrivilegeController extends AbstractAdminController
     public function apply(Request $request, BulkMutationHandler $handler): JsonResponse
     {
         foreach ([GroupMutation::ASSIGN, GroupMutation::REVOKE] as $action) {
-            $form = $this->groupForm($action);
+            try {
+                $form = $this->groupForm($action);
+            } catch (ClientException $exception) {
+                return $this->idmError($exception, []);
+            }
             $form->handleRequest($request);
             if ($form->isSubmitted()) {
                 if (!$form->isValid()) {
@@ -73,7 +80,11 @@ final class AdvancedPrivilegeController extends AbstractAdminController
                 /** @var GroupMutation $mutation */
                 $mutation = $form->getData();
 
-                $updated = $handler->updateGroups($mutation);
+                try {
+                    $updated = $handler->updateGroups($mutation);
+                } catch (ClientException $exception) {
+                    return $this->idmError($exception, $mutation);
+                }
 
                 return new JsonResponse(['updated' => $updated, 'messages' => $handler->resultMessages($mutation, $updated)]);
             }
@@ -89,7 +100,11 @@ final class AdvancedPrivilegeController extends AbstractAdminController
         /** @var OwnerMutation $mutation */
         $mutation = $form->getData();
 
-        $updated = $handler->updateOwner($mutation);
+        try {
+            $updated = $handler->updateOwner($mutation);
+        } catch (ClientException $exception) {
+            return $this->idmError($exception, $mutation);
+        }
 
         return new JsonResponse(['updated' => $updated, 'messages' => $handler->resultMessages($mutation, $updated)]);
     }
@@ -98,7 +113,11 @@ final class AdvancedPrivilegeController extends AbstractAdminController
     public function preview(Request $request, BulkMutationHandler $handler): JsonResponse
     {
         foreach ([GroupMutation::ASSIGN, GroupMutation::REVOKE] as $action) {
-            $form = $this->groupForm($action);
+            try {
+                $form = $this->groupForm($action);
+            } catch (ClientException $exception) {
+                return $this->idmError($exception, []);
+            }
             $form->handleRequest($request);
             if ($form->isSubmitted()) {
                 if (!$form->isValid()) {
@@ -107,7 +126,11 @@ final class AdvancedPrivilegeController extends AbstractAdminController
                 /** @var GroupMutation $mutation */
                 $mutation = $form->getData();
 
-                return new JsonResponse(['groups' => $handler->affectedGroups($mutation), 'changes' => $handler->changes($mutation)]);
+                try {
+                    return new JsonResponse(['groups' => $handler->affectedGroups($mutation), 'changes' => $handler->changes($mutation)]);
+                } catch (ClientException $exception) {
+                    return $this->idmError($exception, $mutation);
+                }
             }
         }
 
@@ -122,7 +145,11 @@ final class AdvancedPrivilegeController extends AbstractAdminController
         /** @var OwnerMutation $mutation */
         $mutation = $form->getData();
 
-        return new JsonResponse(['groups' => $handler->affectedGroups($mutation), 'changes' => $handler->changes($mutation)]);
+        try {
+            return new JsonResponse(['groups' => $handler->affectedGroups($mutation), 'changes' => $handler->changes($mutation)]);
+        } catch (ClientException $exception) {
+            return $this->idmError($exception, $mutation);
+        }
     }
 
     #[Route('/advanced-privilege/groups-preview', name: 'advanced_privilege_groups_preview', methods: ['GET'])]
@@ -135,6 +162,11 @@ final class AdvancedPrivilegeController extends AbstractAdminController
             );
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], 422);
+        } catch (ClientException $exception) {
+            return $this->idmError($exception, [
+                'target' => $request->query->getString('target'),
+                'pattern' => $request->query->getString('pattern'),
+            ]);
         }
 
         return new JsonResponse(['groups' => $groups]);
@@ -173,5 +205,27 @@ final class AdvancedPrivilegeController extends AbstractAdminController
         }
 
         return new JsonResponse(['error' => implode("\n", $errors)], 422);
+    }
+
+    /** @param GroupMutation|OwnerMutation|array<string, string> $input */
+    private function idmError(ClientException $exception, GroupMutation|OwnerMutation|array $input): JsonResponse
+    {
+        $this->logger->error('IDM rejected advanced-privilege mutation.', [
+            'exception' => $exception,
+            'idm_error' => $exception->getMessage(),
+            'input' => $input instanceof GroupMutation ? [
+                'action' => $input->action,
+                'target' => $input->target,
+                'pattern' => $input->pattern,
+                'privileges' => $input->privileges,
+                'flags' => $input->flags,
+            ] : ($input instanceof OwnerMutation ? [
+                'target' => $input->target,
+                'pattern' => $input->pattern,
+                'owner' => $input->ownerUuid(),
+            ] : $input),
+        ]);
+
+        return new JsonResponse(['error' => __('IDM rejected the requested changes: %s', $exception->getMessage())], 502);
     }
 }

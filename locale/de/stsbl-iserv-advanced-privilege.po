@@ -4,16 +4,12 @@ msgstr ""
 "POT-Creation-Date: 2018-08-20 05:05+0200\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#: app/src/Service/BulkMutationHandler.php
 #, php-format
-msgid "Added %d group flags to %d groups."
-msgstr "%d Gruppenmerkmale zu %d Gruppen hinzugefügt."
-
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
-#, php-format
-msgid "Added %d privileges to %d groups."
-msgstr "%d Rechte zu %d Gruppen hinzugefügt."
+msgid "Added %s to %s."
+msgstr "%s zu %s hinzugefügt."
 
 #: app/src/Controller/AdvancedPrivilegeController.php
 #: app/translations/messages.php
@@ -100,6 +96,11 @@ msgid "Groups whose name starts with ..."
 msgstr "Gruppen, dessen Name mit ... beginnt"
 
 #: app/src/Controller/AdvancedPrivilegeController.php
+#, php-format
+msgid "IDM rejected the requested changes: %s"
+msgstr "IDM hat die angeforderten Änderungen abgelehnt: %s"
+
+#: app/src/Controller/AdvancedPrivilegeController.php
 msgid "Invalid form submission."
 msgstr "Ungültige Formularübermittlung."
 
@@ -141,20 +142,15 @@ msgstr "Rechte"
 msgid "Remove owner"
 msgstr "Besitzer entfernen"
 
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#: app/src/Service/BulkMutationHandler.php
 #, php-format
-msgid "Removed %d group flags from %d groups."
-msgstr "%d Gruppenmerkmale von %d Gruppen entfernt."
+msgid "Removed %s from %s."
+msgstr "%s von %s entfernt."
 
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#: app/src/Service/BulkMutationHandler.php
 #, php-format
-msgid "Removed %d privileges from %d groups."
-msgstr "%d Rechte von %d Gruppen entfernt."
-
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
-#, php-format
-msgid "Removed owner of %d groups."
-msgstr "Besitzer von %d Gruppen entfernt."
+msgid "Removed owner of %s."
+msgstr "Besitzer von %s entfernt."
 
 #: app/templates/advanced_privilege/index.html.twig.php
 msgid "Revoke a privilege or group flag from multiple groups"
@@ -178,10 +174,10 @@ msgstr "Ziel auswählen"
 msgid "Set an owner for multiple groups"
 msgstr "Einen Besitzer für mehrere Gruppen setzen"
 
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#: app/src/Service/BulkMutationHandler.php
 #, php-format
-msgid "Set owner of %d groups to %s."
-msgstr "Besitzer von %d Gruppen auf %s gesetzt."
+msgid "Set owner of %s to %s."
+msgstr "Besitzer von %s auf %s gesetzt."
 
 #: app/src/Service/BulkMutationHandler.php app/translations/messages.php
 #, php-format
@@ -210,6 +206,72 @@ msgstr "Die Zielauswahl ist nicht gültig."
 msgid "To remove the owner from the targets, select no owner."
 msgstr ""
 "Um den Besitzer von den Zielen zu entfernen, wählen Sie keinen Besitzer aus."
+
+#: app/src/Service/BulkMutationHandler.php
+#, php-format
+msgid "one group"
+msgid_plural "%d groups"
+msgstr[0] "eine Gruppe"
+msgstr[1] "%d Gruppen"
+
+#: app/src/Service/BulkMutationHandler.php
+#, php-format
+msgid "one group flag"
+msgid_plural "%d group flags"
+msgstr[0] "ein Gruppenmerkmal"
+msgstr[1] "%d Gruppenmerkmale"
+
+#: app/src/Service/BulkMutationHandler.php
+#, php-format
+msgid "one privilege"
+msgid_plural "%d privileges"
+msgstr[0] "ein Recht"
+msgstr[1] "%d Rechte"
+
+#, php-format
+#~ msgid "%d group"
+#~ msgid_plural "%d groups"
+#~ msgstr[0] "%d Gruppe"
+#~ msgstr[1] "%d Gruppen"
+
+#, php-format
+#~ msgid "%d group flag"
+#~ msgid_plural "%d group flags"
+#~ msgstr[0] "%d Gruppenmerkmal"
+#~ msgstr[1] "%d Gruppenmerkmale"
+
+#, php-format
+#~ msgid "%d privilege"
+#~ msgid_plural "%d privileges"
+#~ msgstr[0] "%d Recht"
+#~ msgstr[1] "%d Rechte"
+
+#, php-format
+#~ msgid "Added %d group flags to %d groups."
+#~ msgstr "%d Gruppenmerkmale zu %d Gruppen hinzugefügt."
+
+#, php-format
+#~ msgid "Added %d privileges to %d groups."
+#~ msgstr "%d Rechte zu %d Gruppen hinzugefügt."
+
+#~ msgid "IDM rejected the requested changes."
+#~ msgstr "IDM hat die angeforderten Änderungen abgelehnt."
+
+#, php-format
+#~ msgid "Removed %d group flags from %d groups."
+#~ msgstr "%d Gruppenmerkmale von %d Gruppen entfernt."
+
+#, php-format
+#~ msgid "Removed %d privileges from %d groups."
+#~ msgstr "%d Rechte von %d Gruppen entfernt."
+
+#, php-format
+#~ msgid "Removed owner of %d groups."
+#~ msgstr "Besitzer von %d Gruppen entfernt."
+
+#, php-format
+#~ msgid "Set owner of %d groups to %s."
+#~ msgstr "Besitzer von %d Gruppen auf %s gesetzt."
 
 #~ msgid "Invalid regular expression."
 #~ msgstr "Ungültiger regulärer Ausdruck."

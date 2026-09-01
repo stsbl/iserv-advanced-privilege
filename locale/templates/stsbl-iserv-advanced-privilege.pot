@@ -11,15 +11,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#: app/src/Service/BulkMutationHandler.php
 #, php-format
-msgid "Added %d group flags to %d groups."
-msgstr ""
-
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
-#, php-format
-msgid "Added %d privileges to %d groups."
+msgid "Added %s to %s."
 msgstr ""
 
 #: app/src/Controller/AdvancedPrivilegeController.php
@@ -101,6 +97,11 @@ msgid "Groups whose name starts with ..."
 msgstr ""
 
 #: app/src/Controller/AdvancedPrivilegeController.php
+#, php-format
+msgid "IDM rejected the requested changes: %s"
+msgstr ""
+
+#: app/src/Controller/AdvancedPrivilegeController.php
 msgid "Invalid form submission."
 msgstr ""
 
@@ -142,19 +143,14 @@ msgstr ""
 msgid "Remove owner"
 msgstr ""
 
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#: app/src/Service/BulkMutationHandler.php
 #, php-format
-msgid "Removed %d group flags from %d groups."
+msgid "Removed %s from %s."
 msgstr ""
 
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#: app/src/Service/BulkMutationHandler.php
 #, php-format
-msgid "Removed %d privileges from %d groups."
-msgstr ""
-
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
-#, php-format
-msgid "Removed owner of %d groups."
+msgid "Removed owner of %s."
 msgstr ""
 
 #: app/templates/advanced_privilege/index.html.twig.php
@@ -179,9 +175,9 @@ msgstr ""
 msgid "Set an owner for multiple groups"
 msgstr ""
 
-#: app/src/Service/BulkMutationHandler.php app/translations/messages.php
+#: app/src/Service/BulkMutationHandler.php
 #, php-format
-msgid "Set owner of %d groups to %s."
+msgid "Set owner of %s to %s."
 msgstr ""
 
 #: app/src/Service/BulkMutationHandler.php app/translations/messages.php
@@ -210,3 +206,24 @@ msgstr ""
 #: app/src/Form/OwnerMutationType.php
 msgid "To remove the owner from the targets, select no owner."
 msgstr ""
+
+#: app/src/Service/BulkMutationHandler.php
+#, php-format
+msgid "one group"
+msgid_plural "%d groups"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/src/Service/BulkMutationHandler.php
+#, php-format
+msgid "one group flag"
+msgid_plural "%d group flags"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/src/Service/BulkMutationHandler.php
+#, php-format
+msgid "one privilege"
+msgid_plural "%d privileges"
+msgstr[0] ""
+msgstr[1] ""

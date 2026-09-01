@@ -60,6 +60,10 @@ final readonly class IdmGateway
     /** @param list<string> $uuids */
     private function post(string $path, string $key, string $resource, array $uuids): void
     {
+        if ([] === $uuids) {
+            return;
+        }
+
         $this->client->performRequest(
             'POST',
             'iserv/idm/api/v1/groups/' . $path,

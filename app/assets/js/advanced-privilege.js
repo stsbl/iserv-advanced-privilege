@@ -44,6 +44,19 @@
         $pattern.prop('required', needsPattern);
     }
 
+    function clearAutocompleteFields(form) {
+        $(form).find('[data-autocomplete-standalone]').each(function () {
+            if (this.selectize) {
+                this.selectize.clear(true);
+                return;
+            }
+
+            $(this).val('').trigger('change');
+        });
+
+        $(form).find('select.select2').val([]).trigger('change');
+    }
+
     function groupsPreview(type) {
         const target = $('[name="' + type + '[target]"]:checked').val();
         const $pattern = $('#' + type + '_pattern');
@@ -145,7 +158,9 @@
                 showAlert('success', message);
             });
             form.reset();
+            clearAutocompleteFields(form);
             patternVisibility(form.name);
+            groupsPreview(form.name);
         }).fail(function (xhr) {
             const message = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : $output.data('error');
             showAlert('error', message);

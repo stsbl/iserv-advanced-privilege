@@ -11,6 +11,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Symfony\Component\HttpClient\Psr18Client;
 use Stsbl\IServ\AdvancedPrivilege\Idm\RequestSatCredentials;
+use Stsbl\IServ\AdvancedPrivilege\Config\ModuleConfigInterface;
 
 return static function (ContainerConfigurator $configurator): void {
     $services = $configurator->services()
@@ -22,6 +23,7 @@ return static function (ContainerConfigurator $configurator): void {
     $services->load('Stsbl\\IServ\\AdvancedPrivilege\\', '../src/*')
         ->exclude(['../src/{DependencyInjection,Tests}/', '../src/Kernel.php'])
     ;
+    $services->alias(ModuleConfigInterface::class, \Stsbl\IServ\AdvancedPrivilege\Config\ModuleConfig::class);
 
     $services->set(Psr18Client::class);
     $services->alias(ClientInterface::class, Psr18Client::class);

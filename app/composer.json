@@ -33,6 +33,7 @@
     "symfony/yaml": "^6.4"
   },
   "require-dev": {
+    "iserv/testbrowser-bundle": "^2.0",
     "roave/security-advisories": "dev-latest",
     "symfony/browser-kit": "^6.4",
     "symfony/debug-bundle": "^6.4",
@@ -79,8 +80,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Stsbl\\IServ\\AdvancedPrivilege\\Tests\\Unit\\": "tests/Unit",
-      "Stsbl\\IServ\\AdvancedPrivilege\\Tests\\Functional\\": "tests/Functional"
+      "Stsbl\\IServ\\AdvancedPrivilege\\Tests\\": "tests/"
     }
   },
   "config": {

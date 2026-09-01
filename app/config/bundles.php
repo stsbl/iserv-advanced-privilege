@@ -19,4 +19,5 @@ return [
     IServ\Bundle\TwigComponents\IServTwigComponentsBundle::class => ['all' => true],
     IServ\Bundle\Form\IServFormBundle::class => ['all' => true],
     IServ\Bundle\Config\IServConfigBundle::class => ['all' => true],
+    IServ\Bundle\TestBrowser\IServTestBrowserBundle::class => ['test' => true],
 ];

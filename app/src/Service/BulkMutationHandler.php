@@ -30,13 +30,13 @@ final readonly class BulkMutationHandler
         $groups = $this->affectedGroups($mutation);
         foreach ($groups as $group) {
             if (GroupMutation::ASSIGN === $mutation->action) {
-                $this->gateway->addPrivileges($group['uuid'], $mutation->privileges);
-                $this->gateway->addFlags($group['uuid'], $mutation->flags);
+                $this->gateway->addPrivileges($group['uuid'], $this->without($mutation->privileges, $group['privileges']));
+                $this->gateway->addFlags($group['uuid'], $this->without($mutation->flags, $group['flags']));
             } else {
-                foreach ($mutation->privileges as $uuid) {
+                foreach ($this->present($mutation->privileges, $group['privileges']) as $uuid) {
                     $this->gateway->removePrivilege($group['uuid'], $uuid);
                 }
-                foreach ($mutation->flags as $uuid) {
+                foreach ($this->present($mutation->flags, $group['flags']) as $uuid) {
                     $this->gateway->removeFlag($group['uuid'], $uuid);
                 }
             }
@@ -55,13 +55,13 @@ final readonly class BulkMutationHandler
         return count($groups);
     }
 
-    /** @return list<array{uuid: string, group: string, name: string, owner: ?string}> */
+    /** @return list<array{uuid: string, group: string, name: string, owner: ?string, privileges: list<string>, flags: list<string>}> */
     public function affectedGroups(GroupMutation|OwnerMutation $mutation): array
     {
         return $this->sortedTargets($this->targets($mutation, $mutation instanceof OwnerMutation && null === $mutation->ownerUuid()));
     }
 
-    /** @return list<array{uuid: string, group: string, name: string, owner: ?string}> */
+    /** @return list<array{uuid: string, group: string, name: string, owner: ?string, privileges: list<string>, flags: list<string>}> */
     public function groupsForTarget(string $target, ?string $pattern): array
     {
         if (!in_array($target, TargetSelection::targets(), true)) {
@@ -101,8 +101,8 @@ final readonly class BulkMutationHandler
         }, $this->groupsForTarget($target, $pattern));
     }
 
-    /** @param list<array{uuid: string, group: string, name: string, owner: ?string}> $groups
-     * @return list<array{uuid: string, group: string, name: string, owner: ?string}> */
+    /** @param list<array{uuid: string, group: string, name: string, owner: ?string, privileges: list<string>, flags: list<string>}> $groups
+     * @return list<array{uuid: string, group: string, name: string, owner: ?string, privileges: list<string>, flags: list<string>}> */
     private function sortedTargets(array $groups): array
     {
         usort($groups, static fn(array $left, array $right): int => strnatcasecmp($left['name'], $right['name']));
@@ -143,28 +143,28 @@ final readonly class BulkMutationHandler
 
         if ($mutation instanceof OwnerMutation) {
             if (null === $uuid = $mutation->ownerUuid()) {
-                return [__('Removed owner of %d groups.', $groups)];
+                return [__('Removed owner of %s.', $this->groupCount($groups))];
             }
 
-            return [__('Set owner of %d groups to %s.', $groups, $this->users->label($uuid) ?? $uuid)];
+            return [__('Set owner of %s to %s.', $this->groupCount($groups), $this->users->label($uuid) ?? $uuid)];
         }
 
         $messages = [];
         if ([] !== $mutation->privileges) {
             $messages[] = GroupMutation::ASSIGN === $mutation->action
-                ? __('Added %d privileges to %d groups.', count($mutation->privileges), $groups)
-                : __('Removed %d privileges from %d groups.', count($mutation->privileges), $groups);
+                ? $this->assignmentMessage(true, false, count($mutation->privileges), $groups)
+                : $this->assignmentMessage(false, false, count($mutation->privileges), $groups);
         }
         if ([] !== $mutation->flags) {
             $messages[] = GroupMutation::ASSIGN === $mutation->action
-                ? __('Added %d group flags to %d groups.', count($mutation->flags), $groups)
-                : __('Removed %d group flags from %d groups.', count($mutation->flags), $groups);
+                ? $this->assignmentMessage(true, true, count($mutation->flags), $groups)
+                : $this->assignmentMessage(false, true, count($mutation->flags), $groups);
         }
 
         return $messages;
     }
 
-    /** @return list<array{uuid: string, group: string, name: string, owner: ?string}> */
+    /** @return list<array{uuid: string, group: string, name: string, owner: ?string, privileges: list<string>, flags: list<string>}> */
     private function targets(TargetSelection $selection, bool $onlyWithOwner): array
     {
         return array_values(array_filter($this->references->groups(), static function (array $group) use ($selection, $onlyWithOwner): bool {
@@ -180,5 +180,38 @@ final readonly class BulkMutationHandler
                 default => false,
             };
         }));
+    }
+
+    /** @param list<string> $requested
+     * @param list<string> $current
+     * @return list<string> */
+    private function without(array $requested, array $current): array
+    {
+        return array_values(array_diff($requested, $current));
+    }
+
+    /** @param list<string> $requested
+     * @param list<string> $current
+     * @return list<string> */
+    private function present(array $requested, array $current): array
+    {
+        return array_values(array_intersect($requested, $current));
+    }
+
+    private function assignmentMessage(bool $assign, bool $flags, int $items, int $groups): string
+    {
+        $items = $flags
+            ? __n('one group flag', '%d group flags', $items, $items)
+            : __n('one privilege', '%d privileges', $items, $items);
+        $groups = $this->groupCount($groups);
+
+        return $assign
+            ? __('Added %s to %s.', $items, $groups)
+            : __('Removed %s from %s.', $items, $groups);
+    }
+
+    private function groupCount(int $groups): string
+    {
+        return __n('one group', '%d groups', $groups, $groups);
     }
 }

@@ -25,11 +25,11 @@ final readonly class IdmReferenceProvider
         return $this->references('group_flags', 'groupFlag', ['title', 'name']);
     }
 
-    /** @return list<array{uuid: string, group: string, name: string, owner: ?string}> */
+    /** @return list<array{uuid: string, group: string, name: string, owner: ?string, privileges: list<string>, flags: list<string>}> */
     public function groups(): array
     {
-        /** @var list<array{uuid: string, group: string, name: string, owner: ?string}> $groups */
-        $groups = $this->client->performRequest('GET', 'iserv/idm/api/v1/groups?_attributes=hexUuid,group,name,owner', new CallbackHydrator(
+        /** @var list<array{uuid: string, group: string, name: string, owner: ?string, privileges: list<string>, flags: list<string>}> $groups */
+        $groups = $this->client->performRequest('GET', 'iserv/idm/api/v1/groups?_attributes=hexUuid,group,name,owner,privileges.hexUuid,flags.hexUuid', new CallbackHydrator(
             static function (array $items): array {
                 $groups = [];
                 foreach ($items as $item) {
@@ -38,7 +38,14 @@ final readonly class IdmReferenceProvider
                     }
                     $ownerData = $item['owner'] ?? null;
                     $owner = is_array($ownerData) ? ($ownerData['hexUuid'] ?? null) : null;
-                    $groups[] = ['uuid' => $item['hexUuid'], 'group' => $item['group'], 'name' => $item['name'], 'owner' => is_string($owner) ? $owner : null];
+                    $groups[] = [
+                        'uuid' => $item['hexUuid'],
+                        'group' => $item['group'],
+                        'name' => $item['name'],
+                        'owner' => is_string($owner) ? $owner : null,
+                        'privileges' => self::referenceUuids($item['privileges'] ?? []),
+                        'flags' => self::referenceUuids($item['flags'] ?? []),
+                    ];
                 }
 
                 return $groups;
@@ -46,6 +53,19 @@ final readonly class IdmReferenceProvider
         ));
 
         return $groups;
+    }
+
+    /** @return list<string> */
+    private static function referenceUuids(mixed $references): array
+    {
+        if (!is_array($references)) {
+            return [];
+        }
+
+        return array_values(array_filter(array_map(
+            static fn(mixed $reference): mixed => is_array($reference) ? ($reference['hexUuid'] ?? null) : null,
+            $references,
+        ), 'is_string'));
     }
 
     /** @param list<string> $labels
