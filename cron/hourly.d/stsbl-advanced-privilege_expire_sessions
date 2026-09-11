@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ -d /var/lib/iserv/stsbl-iserv-advanced-privilege/sessions ]
+then
+  find -O3 /var/lib/iserv/stsbl-iserv-advanced-privilege/sessions -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin +1200 -delete
+fi

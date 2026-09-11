@@ -1,0 +1,81 @@
+{% do admin_menu_current('modules.advanced-privilege') %}
+{% extends '@IServAdminIntegration/admin_base.html.twig' %}
+
+{% block admin_content %}
+<div class="output pt" data-success="{{ _('Changes applied.') }}" data-error="{{ _('Error during applying changes.') }}"></div>
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">{{ _('Set an owner for multiple groups') }}</h3></div>
+    <div class="panel-body">
+        {{ form_start(owner_form) }}
+        {{ form_row(owner_form.target) }}
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="{{ owner_form.pattern.vars.id }}"></label>
+            <div class="col-md-9">{{ form_widget(owner_form.pattern) }}{{ form_errors(owner_form.pattern) }}</div>
+        </div>
+        <div id="owner-groups-preview" class="form-group matching-groups-preview" hidden>
+            <label class="col-md-3 control-label">{{ _('Matching groups') }}</label>
+            <div class="col-md-9"><div class="form-control-static"><ul class="list-unstyled mb-0"></ul></div></div>
+        </div>
+        {{ form_row(owner_form.owner) }}
+        {{ form_row(owner_form.submit) }}
+        {{ form_end(owner_form) }}
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">{{ _('Assign a privilege or group flag to multiple groups') }}</h3></div>
+    <div class="panel-body">
+        {{ form_start(assign_form) }}
+        {{ form_row(assign_form.target) }}
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="{{ assign_form.pattern.vars.id }}"></label>
+            <div class="col-md-9">{{ form_widget(assign_form.pattern) }}{{ form_errors(assign_form.pattern) }}</div>
+        </div>
+        <div id="assign-groups-preview" class="form-group matching-groups-preview" hidden>
+            <label class="col-md-3 control-label">{{ _('Matching groups') }}</label>
+            <div class="col-md-9"><div class="form-control-static"><ul class="list-unstyled mb-0"></ul></div></div>
+        </div>
+        {{ form_row(assign_form.privileges) }}
+        {{ form_row(assign_form.flags) }}
+        {{ form_row(assign_form.submit) }}
+        {{ form_end(assign_form) }}
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">{{ _('Revoke a privilege or group flag from multiple groups') }}</h3></div>
+    <div class="panel-body">
+        {{ form_start(revoke_form) }}
+        {{ form_row(revoke_form.target) }}
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="{{ revoke_form.pattern.vars.id }}"></label>
+            <div class="col-md-9">{{ form_widget(revoke_form.pattern) }}{{ form_errors(revoke_form.pattern) }}</div>
+        </div>
+        <div id="revoke-groups-preview" class="form-group matching-groups-preview" hidden>
+            <label class="col-md-3 control-label">{{ _('Matching groups') }}</label>
+            <div class="col-md-9"><div class="form-control-static"><ul class="list-unstyled mb-0"></ul></div></div>
+        </div>
+        {{ form_row(revoke_form.privileges) }}
+        {{ form_row(revoke_form.flags) }}
+        {{ form_row(revoke_form.submit) }}
+        {{ form_end(revoke_form) }}
+    </div>
+</div>
+<div id="multiple-confirm" class="modal fade" role="dialog" aria-labelledby="multiple-confirm-title">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="{{ _('Cancel') }}"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="multiple-confirm-title">{{ _('Apply changes') }}</h4>
+        </div>
+        <div class="modal-body">
+            <p>{{ _('Do you really want to apply the changes on the IServ group management? Careless settings could destroy the required privilege assignment for productive working.') }}</p>
+            <p>{{ _('The following groups will be changed:') }}</p>
+            <ul id="multiple-confirm-groups"></ul>
+            <p>{{ _('The following changes will be applied:') }}</p>
+            <ul id="multiple-confirm-changes"></ul>
+            <div class="form-group">
+                <button type="button" id="multiple-confirm-approve" class="btn btn-success">{{ icon('fa-check', 'bootstrap-button-icon') }}{{ _('Apply') }}</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">{{ icon('fa-xmark', 'bootstrap-button-icon') }}{{ _('Cancel') }}</button>
+            </div>
+        </div>
+    </div></div>
+</div>
+{% endblock %}

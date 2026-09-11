@@ -1,0 +1,4 @@
+MkDir 2770 stsbl-iserv-advanced-privilege:stsbl-iserv-advanced-privilege /var/log/iserv/stsbl-iserv-advanced-privilege
+
+Shell "Clear app cache"
+  iservstsbl-advanced-privilege-console cache:pool:clear --quiet --no-interaction cache.app

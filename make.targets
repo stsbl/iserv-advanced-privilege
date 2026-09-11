@@ -1,0 +1,16 @@
+./mk/config.mk
+php
+phpunit
+phpcsfixer
+phpstan
+psalm
+symfony
+assets
+js
+extract_translations
+locale
+translations
+deploy_translations
+iservinstall
+help
+debug

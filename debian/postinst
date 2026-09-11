@@ -1,0 +1,52 @@
+#!/bin/bash
+set -e
+
+shopt -s nullglob
+
+CURRENT_VERSION="#ENV.DEB_VERSION#"
+# in dev installations, we somehow cannot determine our version number
+CURRENT_VERSION="${CURRENT_VERSION:=unspecified}"
+CACHE_DIR="/var/cache/iserv/stsbl-iserv-advanced-privilege/app"
+CACHE_MARKER="/var/lib/iserv/stsbl-iserv-advanced-privilege/app/cachedir"
+CACHE_DIR_CURRENT="$CACHE_DIR/$CURRENT_VERSION"
+
+if [ "$1" = "configure" ]
+then
+  adduser --system --group --disabled-password --home /usr/share/iserv/stsbl-iserv-advanced-privilege \
+  --no-create-home --shell /bin/false stsbl-iserv-advanced-privilege ||:
+
+  LAST_VERSION="$2"
+  CACHE_DIR_LAST="$CACHE_DIR/$LAST_VERSION"
+
+  for DIR in "$CACHE_DIR"/*
+  do
+    # only look at actual cache directory, not our marker file etc.
+    [ -d "$DIR" ] || continue
+    # don't delete the last cache. we might be processing old requests
+    [ "$DIR" != "$CACHE_DIR_LAST" ] || continue
+    [ "$DIR" != "$CACHE_DIR_CURRENT" ] || continue
+
+    # we should be able to safely delete stale cache dirs
+    rm -rf "$DIR" ||:
+  done
+
+  # handle same version "upgrades"
+  if [ -d "$CACHE_DIR_CURRENT" ]
+  then
+    TEMP_DIR="$(mktemp -p "$CACHE_DIR" -d stsbl-iserv-advanced-privilege.stale-cache.XXXXXX)"
+    # Move directories before renaming to avoid a race condition where web
+    # interface still writes in the cache while it it is deleted causing the
+    # rmdir syscall at the end to fail as directory is not empty (again)
+    for i in "$CACHE_DIR_CURRENT"/*
+    do
+      mv "$i" "$TEMP_DIR/"
+    done
+    rm -rf "$TEMP_DIR" ||:
+  fi
+
+  install -d -o stsbl-iserv-advanced-privilege -g stsbl-iserv-advanced-privilege -m 2770 "$CACHE_DIR_CURRENT" "$CACHE_DIR_CURRENT/pools" "$CACHE_DIR_CURRENT/templates"
+  deb-systemd-invoke reload php-fpm ||:
+  echo "$CACHE_DIR_CURRENT" >"$CACHE_MARKER"
+fi
+
+#DEBHELPER#

@@ -190,7 +190,7 @@ stsbl-iserv-advanced-privilege (17.01.19-0) experimental; urgency=medium
 stsbl-iserv-advanced-privilege (17.01.18-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
-  * Fixed package dependencies. 
+  * Fixed package dependencies.
   * Fixed package description.
 
  -- Stadtteilschule Blankenese <repository@stsbl.de>  Wed, 18 Jan 2017 03:17:19 +0100

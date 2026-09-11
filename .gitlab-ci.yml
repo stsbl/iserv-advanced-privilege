@@ -1,0 +1,3 @@
+include:
+  - project: "iserv/git/ci/core"
+    file: "/iserv-app-symfony.yml"

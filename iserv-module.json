@@ -1,0 +1,10 @@
+{
+  "module": {
+    "id": "stsbl/advanced-privilege",
+    "name": "Advanced privilege assignment",
+    "location": "http://localhost:982/iserv/stsbl/advanced-privilege",
+    "assets": {
+      "manifestFile": "app/public/static/manifest.json"
+    }
+  }
+}

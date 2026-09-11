@@ -1,0 +1,20 @@
+security:
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # Authenticate with JSON web token passed by web portal
+        portal:
+            custom_authenticators:
+                - IServ\Bundle\Authentication\Authentication\PortalAuthenticator
+            request_matcher: IServ\Bundle\Authentication\Firewall\PortalFirewallMatcher
+            entry_point: IServ\Bundle\Authentication\Firewall\PortalAuthenticationEntryPoint
+            stateless: true
+            logout: ~
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/public, roles: PUBLIC_ACCESS }
+        - { path: ^/, allow_if: 'is_granted("AUTHENTICATED_AS_ADMIN")' }
